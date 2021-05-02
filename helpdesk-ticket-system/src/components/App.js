@@ -5,8 +5,14 @@ import Sidebar from './Sidebar';
 const App = () => {
   return (
     <div className="container">
-      <Sidebar />
-      <Dashboard />
+      <div className="row">
+        <div className="col">
+          <Sidebar />
+        </div>
+        <div className="col">
+          <Dashboard />
+        </div>
+      </div>
     </div>
   );
 };
