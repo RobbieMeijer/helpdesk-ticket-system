@@ -1,8 +1,14 @@
 import React from 'react';
-// add the initial component imports here
+import Dashboard from './Dashboard';
+import Sidebar from './Sidebar';
 
 const App = () => {
-  return <div>App component</div>;
+  return (
+    <div className="container">
+      <Sidebar />
+      <Dashboard />
+    </div>
+  );
 };
 
 export default App;
