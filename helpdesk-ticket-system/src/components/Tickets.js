@@ -71,10 +71,9 @@ const tickets = [
   },
 ];
 
-function Tickets() {
+const Tickets = () => {
   // getting all ticket data
   const getTickets = tickets.map((ticket) => {
-    // console.log(ticket);
     return (
       <tr key={ticket.ticketId}>
         <td>{ticket.ticketId}</td>
@@ -104,6 +103,6 @@ function Tickets() {
       <tbody>{getTickets}</tbody>
     </table>
   );
-}
+};
 
 export default Tickets;
