@@ -7,6 +7,7 @@ import Customers from './Customers';
 import Reports from './Reports';
 import KnowledgeBase from './KnowledgeBase';
 import Search from './Search';
+import CreateTicket from './CreateTicket';
 
 const App = () => {
   return (
@@ -21,6 +22,9 @@ const App = () => {
           </Route>
           <Route path="/tickets">
             <Tickets />
+          </Route>
+          <Route path="/create-ticket">
+            <CreateTicket />
           </Route>
           <Route path="/customers">
             <Customers />

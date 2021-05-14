@@ -13,6 +13,9 @@ const Sidebar = () => {
             <NavigationLink href="/tickets">Tickets</NavigationLink>
           </li>
           <li>
+            <NavigationLink href="/create-ticket">Create Ticket</NavigationLink>
+          </li>
+          <li>
             <NavigationLink href="/customers">Customers</NavigationLink>
           </li>
           <li>
