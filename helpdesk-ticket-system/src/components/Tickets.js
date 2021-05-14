@@ -76,10 +76,11 @@ function Tickets() {
   const getTickets = tickets.map((ticket) => {
     // console.log(ticket);
     return (
-      <tr>
+      <tr key={ticket.ticketId}>
         <td>{ticket.ticketId}</td>
         <td>{ticket.summary}</td>
         <td>{ticket.reporter}</td>
+        <td>{ticket.priority}</td>
         <td>{ticket.assignedTo}</td>
         <td>{ticket.status}</td>
         <td>{ticket.created}</td>
@@ -91,9 +92,10 @@ function Tickets() {
     <table>
       <thead>
         <tr>
-          <th>Key</th>
+          <th>Ticket nr.</th>
           <th>Summary</th>
           <th>Reporter</th>
+          <th>Priority</th>
           <th>Assignee</th>
           <th>Status</th>
           <th>Created</th>
