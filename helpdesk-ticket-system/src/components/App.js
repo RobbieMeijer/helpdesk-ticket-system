@@ -11,7 +11,7 @@ import CreateTicket from './CreateTicket';
 
 const App = () => {
   return (
-    <div className="container">
+    <div className="">
       <div className="row">
         <div className="col-2">
           <Sidebar />
