@@ -1,40 +1,52 @@
-const initialState = 0;
+const initialState = {
+  ticketId: '',
+  priority: '',
+  issueType: '',
+  summary: '',
+  description: '',
+  reporter: '',
+  assignee: '',
+  created: '',
+  updated: '',
+  status: '',
+  timeRemaining: '',
+};
 
-export const ticketReducer = (state = initialState, action) => {
-  // return state; // returning the old state
-
+const ticketReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'PRIORITY':
-      // return logic for PRIORITY;
-      return state + 'low';
-    case 'ISSUE_TYPE':
-    // return logic for ISSUE_TYPE;
     case 'TICKET_ID':
-    // return logic for TICKET_ID;
+      return { ...state, ticketId: action.ticketId };
+    case 'PRIORITY':
+      return { ...state, priority: action.priority };
+    case 'ISSUE_TYPE':
+      return { ...state, issueType: action.issueType };
     case 'SUMMARY':
-    // return logic for SUMMARY;
+      return { ...state, summary: action.summary };
     case 'DESCRIPTION':
-    // return logic for DESCRIPTION;
+      return { ...state, description: action.description };
     case 'REPORTER':
-    // return logic for REPORTER;
+      return { ...state, reporter: action.reporter };
     case 'ASSIGNEE':
-    // return logic for ASSIGNEE;
+      return { ...state, assignee: action.assignee };
     case 'CREATED':
-    // return logic for CREATED;
+      return { ...state, created: action.created };
     case 'UPDATED':
-    // return logic for UPDATED;
+      return { ...state, updated: action.updated };
     case 'STATUS':
-    // return logic for STATUS;
+      return { ...state, status: action.status };
     case 'TIME_REMAINING':
-    // return logic for TIME_REMAINING;
+      return { ...state, timeRemaining: action.timeRemaining };
     default:
       return state; // return the old state if nothing changes
   }
 };
 
+export default ticketReducer;
+
 /*
 const priority = {
-  type: 'PRIORITY'
+  type: 'PRIORITY',
+  importance: ''
 };
 
 const issueType = {
@@ -43,7 +55,8 @@ const issueType = {
 };
 
 const ticketId = {
-  type: 'TICKET_ID'
+  type: 'TICKET_ID',
+  id: 
 };
 
 const summary = {

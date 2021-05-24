@@ -4,13 +4,13 @@ import App from './components/App';
 import { createStore } from 'redux';
 // import rootReducer from './reducers/combineReducers';
 import { Provider } from 'react-redux';
-import { ticketReducer } from './reducers/ticketReducer';
+import ticketReducer from './reducers/ticketReducer';
 
 const store = createStore(ticketReducer);
-
+console.log(store.getState());
 ReactDOM.render(
-  // <Provider store={store}>
-  <App />,
-  // </Provider>
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );
