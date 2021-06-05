@@ -2,7 +2,7 @@ import React from 'react';
 import Dashboard from './Dashboard';
 import Route from './Route';
 import Sidebar from './Sidebar';
-import Tickets from './Tickets';
+import TicketList from './TicketList';
 import Customers from './Customers';
 import Reports from './Reports';
 import KnowledgeBase from './KnowledgeBase';
@@ -21,7 +21,7 @@ const App = () => {
             <Dashboard />
           </Route>
           <Route path="/tickets">
-            <Tickets />
+            <TicketList />
           </Route>
           <Route path="/create-ticket">
             <CreateTicket />

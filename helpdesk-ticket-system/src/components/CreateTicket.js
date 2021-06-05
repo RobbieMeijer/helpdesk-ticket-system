@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const CreateTicket = () => {
+  // sending action to
+  const dispatch = useDispatch();
+
+  // setting up local ticket state for temporary storage/reference
+  // before sending form data to the store
   const [ticketId, setTicketId] = useState(null);
   const [issueType, setIssueType] = useState('');
   const [summary, setSummary] = useState('');
   const [description, setDescription] = useState('');
   const [assignee, setAssignee] = useState('automatic');
   const reporter = 'Reporter Name';
-  const dispatch = useDispatch();
-  const ticket = useSelector((state) => state);
 
   useEffect(() => {
     setTicketId(Date());
@@ -60,23 +63,17 @@ const CreateTicket = () => {
   };
 
   const onSaveTicket = () => {
-    console.log(
-      getPriority(issueType),
-      issueType,
-      summary,
-      description,
-      assignee,
-      reporter
-    );
-
-    // dispatch({ type: 'PRIORITY', importance: getPriority(issueType) });
-    // dispatch({ type: 'ISSUE_TYPE', issue: issueType });
-    // dispatch({ type: 'TICKET_ID', id: ticketId });
-    // dispatch({ type: 'SUMMARY', text: summary });
-    // dispatch({ type: 'DESCRIPTION', text: description });
-    dispatch({ type: 'ASSIGNEE', name: assignee });
-
-    console.log(ticket);
+    dispatch({
+      type: 'TICKET_LIST',
+      payload: {
+        importance: getPriority(issueType),
+        ticketId: ticketId,
+        issue: issueType,
+        summary: summary,
+        description: description,
+        assignee: assignee,
+      },
+    });
   };
 
   return (

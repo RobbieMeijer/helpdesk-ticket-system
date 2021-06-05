@@ -1,6 +1,6 @@
-import React from 'react';
+import { combineReducers } from 'redux';
 
-const tickets = [
+const initialTicketList = [
   {
     priority: 'high',
     issueType: 'bug',
@@ -12,7 +12,6 @@ const tickets = [
     reporter: 'Bertje de Boer',
     created: '14:02 13/05/2021',
     updated: '14:20 13/05/2021',
-    // activity: [{ comments: [], history: [], workLog: [] }],
     status: 'waiting for support',
     timeRemaining: '04:00',
     requestParticipants: ['Rianna Vos', 'Ronald Peters', 'Hanna van Leeuwen'],
@@ -28,7 +27,6 @@ const tickets = [
     reporter: 'Birna Jansen',
     created: '14:02 13/05/2021',
     updated: '14:20 13/05/2021',
-    // activity: [{ comments: [], history: [], workLog: [] }],
     status: 'waiting for support',
     timeRemaining: '06:00',
     requestParticipants: [
@@ -48,7 +46,6 @@ const tickets = [
     reporter: 'Boris Bakker',
     created: '14:02 13/05/2021',
     updated: '14:20 13/05/2021',
-    // activity: [{ comments: [], history: [], workLog: [] }],
     status: 'waiting for support',
     timeRemaining: '05:00',
     requestParticipants: ['Robbie Meijer', 'Rianna Vos', 'Hanna van Leeuwen'],
@@ -64,51 +61,20 @@ const tickets = [
     reporter: 'Svetlana Mulder',
     created: '14:02 13/05/2021',
     updated: '14:20 13/05/2021',
-    // activity: [{ comments: [], history: [], workLog: [] }],
     status: 'waiting for support',
     timeRemaining: '03:00',
     requestParticipants: ['Robbie Meijer', 'Rianna Vos', 'Ronald Peters'],
   },
 ];
 
-const Tickets = () => {
-  // getting all ticket data
-  const getTickets = tickets.map((ticket) => {
-    return (
-      <tr key={ticket.ticketId}>
-        <td>{ticket.priority}</td>
-        <td>{ticket.issueType}</td>
-        <td>{ticket.ticketId}</td>
-        <td>{ticket.summary}</td>
-        <td>{ticket.reporter}</td>
-        <td>{ticket.assignedTo}</td>
-        <td>{ticket.created}</td>
-        <td>{ticket.updated}</td>
-        <td>{ticket.status}</td>
-        <td>{ticket.timeRemaining}</td>
-      </tr>
-    );
-  });
+const ticketsReducer = (ticketList = initialTicketList, action) => {
+  if (action.type === 'TICKET_LIST') {
+    return [...ticketList, action.payload];
+  }
 
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>Priority</th>
-          <th>Issue Type</th>
-          <th>Ticket nr.</th>
-          <th>Summary</th>
-          <th>Reporter</th>
-          <th>Assignee</th>
-          <th>Created</th>
-          <th>Updated</th>
-          <th>Status</th>
-          <th>Time Remaining</th>
-        </tr>
-      </thead>
-      <tbody>{getTickets}</tbody>
-    </table>
-  );
+  return ticketList;
 };
 
-export default Tickets;
+export default combineReducers({
+  ticketList: ticketsReducer,
+});

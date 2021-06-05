@@ -1,15 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
-import { createStore } from 'redux';
-// import rootReducer from './reducers/combineReducers';
 import { Provider } from 'react-redux';
-import ticketReducer from './reducers/ticketReducer';
+import { createStore } from 'redux';
 
-const store = createStore(ticketReducer);
-console.log(store.getState());
+import App from './components/App';
+import reducers from './reducers';
+
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={createStore(reducers)}>
     <App />
   </Provider>,
   document.getElementById('root')
