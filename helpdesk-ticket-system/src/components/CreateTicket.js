@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const CreateTicket = () => {
-  // sending action to
+  // sending action to store
   const dispatch = useDispatch();
 
   // setting up local ticket state for temporary storage/reference
@@ -66,12 +66,13 @@ const CreateTicket = () => {
     dispatch({
       type: 'TICKET_LIST',
       payload: {
-        importance: getPriority(issueType),
+        priority: getPriority(issueType),
         ticketId: ticketId,
-        issue: issueType,
-        summary: summary,
-        description: description,
-        assignee: assignee,
+        issueType,
+        summary,
+        description,
+        assignee,
+        reporter,
       },
     });
   };

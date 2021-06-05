@@ -14,7 +14,7 @@ const TicketList = () => {
       issueType,
       summary,
       reporter,
-      assignedTo,
+      assignee,
       created,
       updated,
       status,
@@ -28,7 +28,7 @@ const TicketList = () => {
         <td>{ticketId}</td>
         <td>{summary}</td>
         <td>{reporter}</td>
-        <td>{assignedTo}</td>
+        <td>{assignee}</td>
         <td>{created}</td>
         <td>{updated}</td>
         <td>{status}</td>
