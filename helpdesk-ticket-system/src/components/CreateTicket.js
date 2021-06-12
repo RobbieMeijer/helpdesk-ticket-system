@@ -13,10 +13,13 @@ const CreateTicket = () => {
   const [description, setDescription] = useState('');
   const [assignee, setAssignee] = useState('automatic');
   const reporter = 'Reporter Name';
+  const [ticketCreated, setTicketCreated] = useState('');
+  const [ticketSubmitted, setTicketSubmitted] = useState(false);
 
+  // run code when component initially renders and rerendered
   useEffect(() => {
-    setTicketId(Date());
-  }, []);
+    setTicketId(new Date().getTime());
+  });
 
   const onFormSubmit = (event) => {
     event.preventDefault();
@@ -62,91 +65,120 @@ const CreateTicket = () => {
     }
   };
 
-  const onSaveTicket = () => {
-    dispatch({
-      type: 'TICKET_LIST',
-      payload: {
-        priority: getPriority(issueType),
-        ticketId: ticketId,
-        issueType,
-        summary,
-        description,
-        assignee,
-        reporter,
-      },
-    });
+  // must be fixed first!
+  const dateCreated = () => {
+    const dateObj = new Date(),
+      time = dateObj.toLocaleTimeString('nl-NL'),
+      date = dateObj.toLocaleDateString('nl-NL', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+    // year = dateObj.getFullYear(),
+    // dayOfMonth = dateObj.getDate(),
+    // hours = dateObj.getHours(),
+    // minutes = dateObj.getMinutes();
+
+    setTicketCreated(`${date} at ${time}`);
   };
 
-  return (
-    <form onSubmit={onFormSubmit}>
-      <h4>Create Issue</h4>
-      <div>
-        <label htmlFor="issueType">Issue Type*</label>
-        <select onClick={setFormValue} id="issueType" required>
-          <option className="option" value="none" selected disabled hidden>
-            Select an issue type
-          </option>
-          <option className="option" value="bug">
-            Bug
-          </option>
-          <option className="option" value="feature request">
-            Feature Request
-          </option>
-          <option className="option" value="how to">
-            How To
-          </option>
-          <option className="option" value="technical issue">
-            Technical Issue
-          </option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="summary">Summary*</label>
-        <input onChange={setFormValue} id="summary" type="text" required />
-      </div>
-      <div>
-        <label htmlFor="description">Description</label>
-        <textarea
-          onChange={setFormValue}
-          id="description"
-          rows="5"
-          cols="33"
-          required
-        ></textarea>
-      </div>
-      <div>
-        <label htmlFor="assignee">Assignee</label>
-        <select onClick={setFormValue} id="assignee">
-          <option className="option" value="automatic">
-            Automatic
-          </option>
-          <option className="option" value="Robbie Meijer">
-            Robbie Meijer
-          </option>
-          <option className="option" value="Rianna Vos">
-            Rianna Vos
-          </option>
-          <option className="option" value="Ronald Peters">
-            Ronald Peters
-          </option>
-          <option className="option" value="Hanna van Leeuwen">
-            Hanna van Leeuwen
-          </option>
-        </select>
+  const renderTicketForm = () => {
+    return (
+      <form onSubmit={onFormSubmit}>
+        <h4>Create Issue</h4>
         <div>
-          <a href="#">Assign to me</a>
+          <label htmlFor="issueType">Issue Type*</label>
+          <select onChange={setFormValue} id="issueType" required>
+            <option className="option" defaultValue={issueType}>
+              Select an issue type
+            </option>
+            <option className="option" value="bug">
+              Bug
+            </option>
+            <option className="option" value="feature request">
+              Feature Request
+            </option>
+            <option className="option" value="how to">
+              How To
+            </option>
+            <option className="option" value="technical issue">
+              Technical Issue
+            </option>
+          </select>
         </div>
-      </div>
-      <div>
-        <label htmlFor="reporter">Reporter</label>
-        <input id="reporter" type="text" value={reporter} />
-      </div>
-      <div>
-        <button onClick={onSaveTicket}>Create</button>
-        <button>Cancel</button>
-      </div>
-    </form>
-  );
+        <div>
+          <label htmlFor="summary">Summary*</label>
+          <input onChange={setFormValue} id="summary" type="text" required />
+        </div>
+        <div>
+          <label htmlFor="description">Description</label>
+          <textarea
+            onChange={setFormValue}
+            id="description"
+            rows="5"
+            cols="33"
+            required
+          ></textarea>
+        </div>
+        <div>
+          <label htmlFor="assignee">Assignee</label>
+          <select onChange={setFormValue} id="assignee">
+            <option className="option" defaultValue={assignee}>
+              Automatic
+            </option>
+            <option className="option" value="Robbie Meijer">
+              Robbie Meijer
+            </option>
+            <option className="option" value="Rianna Vos">
+              Rianna Vos
+            </option>
+            <option className="option" value="Ronald Peters">
+              Ronald Peters
+            </option>
+            <option className="option" value="Hanna van Leeuwen">
+              Hanna van Leeuwen
+            </option>
+          </select>
+          <div>
+            <a href="#">Assign to me</a>
+          </div>
+        </div>
+        <div>
+          <label htmlFor="reporter">Reporter</label>
+          <input id="reporter" type="text" value={reporter} />
+        </div>
+        <div>
+          <button onClick={onSaveTicket}>Create</button>
+          <button>Cancel</button>
+        </div>
+      </form>
+    );
+  };
+
+  const onSaveTicket = () => {
+    dateCreated();
+
+    if ((issueType && summary && description) !== '') {
+      setTicketSubmitted(true);
+
+      dispatch({
+        type: 'TICKET_LIST',
+        payload: {
+          priority: getPriority(issueType),
+          ticketId,
+          issueType,
+          summary,
+          description,
+          assignee,
+          reporter,
+          ticketCreated,
+        },
+      });
+    }
+  };
+
+  return ticketSubmitted ? 'Thank you for submitting' : renderTicketForm();
 };
 
 export default CreateTicket;
