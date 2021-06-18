@@ -9,14 +9,19 @@ const CreateTicket = () => {
   // before sending form data to the store
   const [ticketId, setTicketId] = useState(null),
     [assignee, setAssignee] = useState('automatic'),
-    [created, setCreated] = useState(''),
+    [createdYear, setCreatedYear] = useState(''),
+    [createdMonth, setCreatedMonth] = useState(''),
+    [createdDay, setCreatedDay] = useState(''),
+    [createdHours, setCreatedHours] = useState(''),
+    [createdMinutes, setCreatedMinutes] = useState(''),
+    [createdSeconds, setCreatedSeconds] = useState(''),
     [description, setDescription] = useState(''),
     [issueType, setIssueType] = useState(''),
     [summary, setSummary] = useState(''),
     reporter = 'Reporter Name',
     [updated, setUpdated] = useState(''),
     [status, setStatus] = useState('Open'),
-    TimeRemaining = '',
+    timeRemaining = '',
     [ticketSubmitted, setTicketSubmitted] = useState(false);
 
   // run code when component initially renders and rerendered
@@ -73,19 +78,34 @@ const CreateTicket = () => {
   };
 
   const createDate = () => {
-    const created = new Date(),
-      options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hc: 'h24',
-      },
-      theDateAndTime = created.toLocaleDateString(undefined, options);
+    // const created = new Date(),
+    //   options = {
+    //     // weekday: 'long',
+    //     year: 'numeric',
+    //     month: 'long',
+    //     day: 'numeric',
+    //     hour: '2-digit',
+    //     minute: '2-digit',
+    //     second: '2-digit',
+    //     hc: 'h24',
+    //   },
+    //   theDateAndTime = created.toLocaleDateString(undefined, options);
+    // setCreated(theDateAndTime);
 
-    setCreated(theDateAndTime);
+    const dateObject = new Date(),
+      year = dateObject.getFullYear(),
+      month = dateObject.getMonth() + 1,
+      day = dateObject.getDate(),
+      hours = dateObject.getHours(),
+      minutes = dateObject.getMinutes(),
+      seconds = dateObject.getSeconds();
+
+    setCreatedYear(year);
+    setCreatedMonth(month);
+    setCreatedDay(day);
+    setCreatedHours(hours);
+    setCreatedMinutes(minutes);
+    setCreatedSeconds(seconds);
   };
 
   const renderTicketForm = () => {
@@ -170,12 +190,18 @@ const CreateTicket = () => {
         type: 'TICKET_LIST',
         payload: {
           assignee,
-          created,
+          createdYear,
+          createdMonth,
+          createdDay,
+          createdHours,
+          createdMinutes,
+          createdSeconds,
           description,
           issueType,
           priority: getPriority(issueType),
           reporter,
           status,
+          timeRemaining,
           summary,
           ticketId,
           updated,
