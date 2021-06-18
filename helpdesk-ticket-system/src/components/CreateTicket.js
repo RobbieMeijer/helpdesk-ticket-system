@@ -7,19 +7,26 @@ const CreateTicket = () => {
 
   // setting up local ticket state for temporary storage/reference
   // before sending form data to the store
-  const [ticketId, setTicketId] = useState(null);
-  const [issueType, setIssueType] = useState('');
-  const [summary, setSummary] = useState('');
-  const [description, setDescription] = useState('');
-  const [assignee, setAssignee] = useState('automatic');
-  const reporter = 'Reporter Name';
-  const [ticketCreated, setTicketCreated] = useState('');
-  const [ticketSubmitted, setTicketSubmitted] = useState(false);
+  const [ticketId, setTicketId] = useState(null),
+    [assignee, setAssignee] = useState('automatic'),
+    [created, setCreated] = useState(''),
+    [description, setDescription] = useState(''),
+    [issueType, setIssueType] = useState(''),
+    [summary, setSummary] = useState(''),
+    reporter = 'Reporter Name',
+    [updated, setUpdated] = useState(''),
+    [status, setStatus] = useState('Open'),
+    TimeRemaining = '',
+    [ticketSubmitted, setTicketSubmitted] = useState(false);
 
   // run code when component initially renders and rerendered
   useEffect(() => {
+    // create id based on timestamp
     setTicketId(new Date().getTime());
-  });
+
+    // create date of ticket creation
+    createDate();
+  }, []);
 
   const onFormSubmit = (event) => {
     event.preventDefault();
@@ -65,22 +72,20 @@ const CreateTicket = () => {
     }
   };
 
-  // must be fixed first!
-  const dateCreated = () => {
-    const dateObj = new Date(),
-      time = dateObj.toLocaleTimeString('nl-NL'),
-      date = dateObj.toLocaleDateString('nl-NL', {
+  const createDate = () => {
+    const created = new Date(),
+      options = {
         weekday: 'long',
-        day: 'numeric',
-        month: 'long',
         year: 'numeric',
-      });
-    // year = dateObj.getFullYear(),
-    // dayOfMonth = dateObj.getDate(),
-    // hours = dateObj.getHours(),
-    // minutes = dateObj.getMinutes();
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hc: 'h24',
+      },
+      theDateAndTime = created.toLocaleDateString(undefined, options);
 
-    setTicketCreated(`${date} at ${time}`);
+    setCreated(theDateAndTime);
   };
 
   const renderTicketForm = () => {
@@ -141,7 +146,7 @@ const CreateTicket = () => {
             </option>
           </select>
           <div>
-            <a href="#">Assign to me</a>
+            <button>Assign to me</button>
           </div>
         </div>
         <div>
@@ -157,22 +162,23 @@ const CreateTicket = () => {
   };
 
   const onSaveTicket = () => {
-    dateCreated();
-
+    // check if fields are not empty before submitting ticket
     if ((issueType && summary && description) !== '') {
       setTicketSubmitted(true);
 
       dispatch({
         type: 'TICKET_LIST',
         payload: {
-          priority: getPriority(issueType),
-          ticketId,
-          issueType,
-          summary,
-          description,
           assignee,
+          created,
+          description,
+          issueType,
+          priority: getPriority(issueType),
           reporter,
-          ticketCreated,
+          status,
+          summary,
+          ticketId,
+          updated,
         },
       });
     }
