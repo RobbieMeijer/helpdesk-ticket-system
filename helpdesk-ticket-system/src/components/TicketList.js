@@ -4,12 +4,16 @@ import { useSelector } from 'react-redux';
 const TicketList = () => {
   const [timeUntilDeadline, setTimeUntilDeadline] = useState('');
 
+  //temporary to log the store once the component lads into the view
+  useEffect(() => {
+    console.log(ticketList);
+  }, []);
+
   // hook that extracts data from the redux store
   const ticketList = useSelector((state) => state.ticketList);
-  // console.log(ticketList);
 
   // define deadline by priority category
-  const timeByPriority = (priority) => {
+  const deadlineInHours = (priority) => {
     switch (priority) {
       case 'urgent':
         return 1;
@@ -24,10 +28,17 @@ const TicketList = () => {
     }
   };
 
-  const getTimeRemaining = (year, month, day, hours, minutes, seconds) => {
+  const getTimeRemaining = (
+    year,
+    month,
+    day,
+    deadlineInHours,
+    minutes,
+    seconds
+  ) => {
     // const countDownTime = new Date('Sep 1, 2021 15:37:25').getTime();
     const countDownTime = new Date(
-      `${month} ${day}, ${year} ${hours}:${minutes}:${seconds}`
+      `${month} ${day}, ${year} ${deadlineInHours}:${minutes}:${seconds}`
     ).getTime();
 
     // update countdown every second
@@ -36,18 +47,17 @@ const TicketList = () => {
       let currentTimeDate = new Date().getTime();
 
       /// find distance between now and countdown date
-      let distance = countDownTime - currentTimeDate;
+      let distance = currentTimeDate - countDownTime;
 
       /// calculate time for days, hours, minutes and seconds
-      let days = Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        ),
-        minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      let hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       /// define time until deadline
-      setTimeUntilDeadline(`${days} days, ${hours}:${minutes}:${seconds}`);
+      setTimeUntilDeadline(`${hours}:${minutes}:${seconds}`);
 
       /// if countdown is expired display 'expired'
       // return 'Expired';
@@ -77,7 +87,7 @@ const TicketList = () => {
       createdYear,
       createdMonth,
       createdDay,
-      createdHours,
+      deadlineInHours(priority),
       createdMinutes,
       createdSeconds
     );

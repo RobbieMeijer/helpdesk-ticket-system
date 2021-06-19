@@ -11,17 +11,17 @@ const CreateTicket = () => {
     [assignee, setAssignee] = useState('automatic'),
     [createdYear, setCreatedYear] = useState(''),
     [createdMonth, setCreatedMonth] = useState(''),
-    [createdDay, setCreatedDay] = useState(''),
-    [createdHours, setCreatedHours] = useState(''),
-    [createdMinutes, setCreatedMinutes] = useState(''),
-    [createdSeconds, setCreatedSeconds] = useState(''),
+    [createdDay, setCreatedDay] = useState(0),
+    [createdHours, setCreatedHours] = useState(0),
+    [createdMinutes, setCreatedMinutes] = useState(0),
+    [createdSeconds, setCreatedSeconds] = useState(0),
     [description, setDescription] = useState(''),
     [issueType, setIssueType] = useState(''),
     [summary, setSummary] = useState(''),
     reporter = 'Reporter Name',
     [updated, setUpdated] = useState(''),
     [status, setStatus] = useState('Open'),
-    timeRemaining = '',
+    timeRemaining = null,
     [ticketSubmitted, setTicketSubmitted] = useState(false);
 
   // run code when component initially renders and rerendered
@@ -78,20 +78,6 @@ const CreateTicket = () => {
   };
 
   const createDate = () => {
-    // const created = new Date(),
-    //   options = {
-    //     // weekday: 'long',
-    //     year: 'numeric',
-    //     month: 'long',
-    //     day: 'numeric',
-    //     hour: '2-digit',
-    //     minute: '2-digit',
-    //     second: '2-digit',
-    //     hc: 'h24',
-    //   },
-    //   theDateAndTime = created.toLocaleDateString(undefined, options);
-    // setCreated(theDateAndTime);
-
     const dateObject = new Date(),
       year = dateObject.getFullYear(),
       month = dateObject.getMonth() + 1,
@@ -100,8 +86,39 @@ const CreateTicket = () => {
       minutes = dateObject.getMinutes(),
       seconds = dateObject.getSeconds();
 
+    const monthAbbreviated = (month) => {
+      switch (month) {
+        case 1:
+          return 'Jan';
+        case 2:
+          return 'Feb';
+        case 3:
+          return 'Mar';
+        case 4:
+          return 'Apr';
+        case 5:
+          return 'May';
+        case 6:
+          return 'Jun';
+        case 7:
+          return 'Jul';
+        case 8:
+          return 'Aug';
+        case 9:
+          return 'Sep';
+        case 10:
+          return 'Oct';
+        case 11:
+          return 'Nov';
+        case 12:
+          return 'Dec';
+        default:
+          return '';
+      }
+    };
+
     setCreatedYear(year);
-    setCreatedMonth(month);
+    setCreatedMonth(monthAbbreviated(month));
     setCreatedDay(day);
     setCreatedHours(hours);
     setCreatedMinutes(minutes);
