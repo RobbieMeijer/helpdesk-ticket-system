@@ -83,14 +83,14 @@ const TicketList = () => {
       status,
     } = ticket;
 
-    getTimeRemaining(
-      createdYear,
-      createdMonth,
-      createdDay,
-      deadlineInHours(priority),
-      createdMinutes,
-      createdSeconds
-    );
+    // getTimeRemaining(
+    //   createdYear,
+    //   createdMonth,
+    //   createdDay,
+    //   deadlineInHours(priority),
+    //   createdMinutes,
+    //   createdSeconds
+    // );
 
     return (
       <tr key={ticketId}>
