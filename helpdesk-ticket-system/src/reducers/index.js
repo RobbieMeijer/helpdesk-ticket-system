@@ -25,6 +25,15 @@ const ticketsReducer = (ticketList = [], action) => {
   return ticketList;
 };
 
+const theUserReducer = (systemUser = [], action) => {
+  if (action.type === 'TICKET_LIST') {
+    return [...systemUser, action.payload];
+  }
+
+  return systemUser;
+};
+
 export default combineReducers({
   ticketList: ticketsReducer,
+  systemUser: theUserReducer,
 });

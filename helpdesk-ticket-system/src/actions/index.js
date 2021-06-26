@@ -4,3 +4,10 @@ export const ticketList = (tickets) => {
     payload: tickets,
   };
 };
+
+export const systemUser = (theUser) => {
+  return {
+    type: 'SYSTEM_USER',
+    payload: theUser,
+  };
+};
