@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const CreateTicket = () => {
   // sending action to store
   const dispatch = useDispatch();
+
+  // auth0 hook
+  const { user, isAuthenticated } = useAuth0();
 
   // setting up local ticket state for temporary storage/reference
   // before sending form data to the store
@@ -18,7 +22,7 @@ const CreateTicket = () => {
     [description, setDescription] = useState(''),
     [issueType, setIssueType] = useState(''),
     [summary, setSummary] = useState(''),
-    reporter = 'Reporter Name',
+    reporter = isAuthenticated ? user.name : 'Reporter Name',
     [updated, setUpdated] = useState(''),
     [status, setStatus] = useState('Open'),
     timeRemaining = null,
@@ -126,76 +130,80 @@ const CreateTicket = () => {
   };
 
   const renderTicketForm = () => {
-    return (
-      <form onSubmit={onFormSubmit}>
-        <h4>Create Issue</h4>
-        <div>
-          <label htmlFor="issueType">Issue Type*</label>
-          <select onChange={setFormValue} id="issueType" required>
-            <option className="option" defaultValue={issueType}>
-              Select an issue type
-            </option>
-            <option className="option" value="bug">
-              Bug
-            </option>
-            <option className="option" value="feature request">
-              Feature Request
-            </option>
-            <option className="option" value="how to">
-              How To
-            </option>
-            <option className="option" value="technical issue">
-              Technical Issue
-            </option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="summary">Summary*</label>
-          <input onChange={setFormValue} id="summary" type="text" required />
-        </div>
-        <div>
-          <label htmlFor="description">Description</label>
-          <textarea
-            onChange={setFormValue}
-            id="description"
-            rows="5"
-            cols="33"
-            required
-          ></textarea>
-        </div>
-        <div>
-          <label htmlFor="assignee">Assignee</label>
-          <select onChange={setFormValue} id="assignee">
-            <option className="option" defaultValue={assignee}>
-              Automatic
-            </option>
-            <option className="option" value="Robbie Meijer">
-              Robbie Meijer
-            </option>
-            <option className="option" value="Rianna Vos">
-              Rianna Vos
-            </option>
-            <option className="option" value="Ronald Peters">
-              Ronald Peters
-            </option>
-            <option className="option" value="Hanna van Leeuwen">
-              Hanna van Leeuwen
-            </option>
-          </select>
+    if (isAuthenticated) {
+      return (
+        <form onSubmit={onFormSubmit}>
+          <h4>Create Issue</h4>
           <div>
-            <button>Assign to me</button>
+            <label htmlFor="issueType">Issue Type*</label>
+            <select onChange={setFormValue} id="issueType" required>
+              <option className="option" defaultValue={issueType}>
+                Select an issue type
+              </option>
+              <option className="option" value="bug">
+                Bug
+              </option>
+              <option className="option" value="feature request">
+                Feature Request
+              </option>
+              <option className="option" value="how to">
+                How To
+              </option>
+              <option className="option" value="technical issue">
+                Technical Issue
+              </option>
+            </select>
           </div>
-        </div>
-        <div>
-          <label htmlFor="reporter">Reporter</label>
-          <input id="reporter" type="text" value={reporter} />
-        </div>
-        <div>
-          <button onClick={onSaveTicket}>Create</button>
-          <button>Cancel</button>
-        </div>
-      </form>
-    );
+          <div>
+            <label htmlFor="summary">Summary*</label>
+            <input onChange={setFormValue} id="summary" type="text" required />
+          </div>
+          <div>
+            <label htmlFor="description">Description</label>
+            <textarea
+              onChange={setFormValue}
+              id="description"
+              rows="5"
+              cols="33"
+              required
+            ></textarea>
+          </div>
+          <div>
+            <label htmlFor="assignee">Assignee</label>
+            <select onChange={setFormValue} id="assignee">
+              <option className="option" defaultValue={assignee}>
+                Automatic
+              </option>
+              <option className="option" value="Robbie Meijer">
+                Robbie Meijer
+              </option>
+              <option className="option" value="Rianna Vos">
+                Rianna Vos
+              </option>
+              <option className="option" value="Ronald Peters">
+                Ronald Peters
+              </option>
+              <option className="option" value="Hanna van Leeuwen">
+                Hanna van Leeuwen
+              </option>
+            </select>
+            <div>
+              <button>Assign to me</button>
+            </div>
+          </div>
+          <div>
+            <label htmlFor="reporter">Reporter</label>
+            <input id="reporter" type="text" value={reporter} />
+          </div>
+          <div>
+            <button onClick={onSaveTicket}>Create</button>
+            <button>Cancel</button>
+          </div>
+        </form>
+      );
+    }
+
+    return 'Please log in to create a ticket.';
   };
 
   const onSaveTicket = () => {
