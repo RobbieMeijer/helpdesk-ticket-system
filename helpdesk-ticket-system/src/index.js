@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { EasybaseProvider } from 'easybase-react';
+import ebconfig from './ebconfig';
 
 import App from './components/App';
 import reducers from './reducers';
@@ -17,7 +19,9 @@ ReactDOM.render(
     redirectUri={window.location.origin}
   >
     <Provider store={createStore(reducers)}>
-      <App />
+      <EasybaseProvider ebconfig={ebconfig}>
+        <App />
+      </EasybaseProvider>
     </Provider>
   </Auth0Provider>,
   document.getElementById('root')

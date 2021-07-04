@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useEasybase } from 'easybase-react';
 
 const TicketList = () => {
   const [timeUntilDeadline, setTimeUntilDeadline] = useState('');
 
+  // easybase hook
+  const { Frame, configureFrame, sync } = useEasybase();
+
   //temporary to log the store once the component lads into the view
   useEffect(() => {
     console.log(ticketList);
+
+    // setup the amount of rows avalaible from remote table and begin with index 0
+    configureFrame({ limit: 3, offset: 0 });
+
+    // synchronize/up to date with remote table
+    sync();
   }, []);
 
   // hook that extracts data from the redux store
@@ -109,23 +119,30 @@ const TicketList = () => {
   });
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Priority</th>
-          <th>Issue Type</th>
-          <th>Ticket nr.</th>
-          <th>Summary</th>
-          <th>Reporter</th>
-          <th>Assignee</th>
-          <th>Created</th>
-          <th>Updated</th>
-          <th>Status</th>
-          <th>Time Remaining</th>
-        </tr>
-      </thead>
-      <tbody>{getTickets}</tbody>
-    </table>
+    <div>
+      <h4>rendering test content from remote table/db</h4>
+      <div>{Frame().map((element) => JSON.stringify(element))}</div>
+      <br />
+      <hr />
+      <br />
+      <table>
+        <thead>
+          <tr>
+            <th>Priority</th>
+            <th>Issue Type</th>
+            <th>Ticket nr.</th>
+            <th>Summary</th>
+            <th>Reporter</th>
+            <th>Assignee</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th>Status</th>
+            <th>Time Remaining</th>
+          </tr>
+        </thead>
+        <tbody>{getTickets}</tbody>
+      </table>
+    </div>
   );
 };
 
