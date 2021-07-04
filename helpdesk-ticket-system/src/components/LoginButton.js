@@ -6,6 +6,7 @@ const LoginButton = () => {
   // sending action to store
   const dispatch = useDispatch();
 
+  // auth0 hook
   const { loginWithRedirect } = useAuth0();
 
   // hook that extracts data from the redux store

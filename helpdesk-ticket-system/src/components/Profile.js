@@ -5,7 +5,7 @@ const Profile = () => {
   // auth0 hook
   const { user, isAuthenticated } = useAuth0();
 
-  const renderContent = () => {
+  const renderProfileContent = () => {
     console.log('auth0 user object: ', user);
 
     return (
@@ -14,11 +14,17 @@ const Profile = () => {
         <h2>{user.name}</h2>
         <p>e-mail: {user.email}</p>
         <p>updated at: {user.updated_at}</p>
+        <p>
+          role: {''}
+          {user['https://localhost:3000']
+            ? user['https://localhost:3000'][0]
+            : null}
+        </p>
       </div>
     );
   };
 
-  return isAuthenticated ? renderContent() : 'Profile Component';
+  return isAuthenticated ? renderProfileContent() : 'Profile Component';
 };
 
 export default Profile;
