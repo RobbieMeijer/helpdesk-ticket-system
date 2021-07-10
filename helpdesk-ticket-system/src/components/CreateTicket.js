@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useEasybase } from 'easybase-react';
 
 const CreateTicket = () => {
   // sending action to store
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+
+  // easybase hook
+  const { sync, db } = useEasybase();
 
   // auth0 hook
   const { user, isAuthenticated } = useAuth0();
 
   // setting up local ticket state for temporary storage/reference
   // before sending form data to the store
-  const [ticketId, setTicketId] = useState(null),
+  const [ticketid, setTicketid] = useState(null),
     [assignee, setAssignee] = useState('automatic'),
     [createdYear, setCreatedYear] = useState(''),
     [createdMonth, setCreatedMonth] = useState(''),
@@ -20,7 +24,8 @@ const CreateTicket = () => {
     [createdMinutes, setCreatedMinutes] = useState(0),
     [createdSeconds, setCreatedSeconds] = useState(0),
     [description, setDescription] = useState(''),
-    [issueType, setIssueType] = useState(''),
+    [issuetype, setIssuetype] = useState(''),
+    [priority, setPriority] = useState('not set'),
     [summary, setSummary] = useState(''),
     reporter = isAuthenticated ? user.name : 'Reporter Name',
     [updated, setUpdated] = useState(''),
@@ -31,7 +36,7 @@ const CreateTicket = () => {
   // run code when component initially renders and rerendered
   useEffect(() => {
     // create id based on timestamp
-    setTicketId(new Date().getTime());
+    setTicketid(new Date().getTime());
 
     // create date of ticket creation
     createDate();
@@ -50,7 +55,7 @@ const CreateTicket = () => {
       (element.className === 'option' && element.parentElement.id)
     ) {
       case 'issueType':
-        setIssueType(inputValue);
+        setIssuetype(inputValue);
         break;
       case 'summary':
         setSummary(inputValue);
@@ -66,8 +71,8 @@ const CreateTicket = () => {
     }
   };
 
-  const getPriority = (issueType) => {
-    switch (issueType) {
+  const getPriority = (issuetype) => {
+    switch (issuetype) {
       case 'technical issue':
         return 'urgent';
       case 'bug':
@@ -137,7 +142,7 @@ const CreateTicket = () => {
           <div>
             <label htmlFor="issueType">Issue Type*</label>
             <select onChange={setFormValue} id="issueType" required>
-              <option className="option" defaultValue={issueType}>
+              <option className="option" defaultValue={issuetype}>
                 Select an issue type
               </option>
               <option className="option" value="bug">
@@ -196,7 +201,24 @@ const CreateTicket = () => {
             <input id="reporter" type="text" value={reporter} />
           </div>
           <div>
-            <button onClick={onSaveTicket}>Create</button>
+            <button
+              onClick={() => {
+                setPriority(getPriority(issuetype));
+
+                onSaveTicket(
+                  assignee,
+                  description,
+                  issuetype,
+                  priority,
+                  reporter,
+                  status,
+                  summary,
+                  ticketid
+                );
+              }}
+            >
+              Create
+            </button>
             <button>Cancel</button>
           </div>
         </form>
@@ -208,30 +230,46 @@ const CreateTicket = () => {
 
   const onSaveTicket = () => {
     // check if fields are not empty before submitting ticket
-    if ((issueType && summary && description) !== '') {
+    if ((issuetype && summary && description) !== '') {
       setTicketSubmitted(true);
 
-      dispatch({
-        type: 'TICKET_LIST',
-        payload: {
+      db('TICKETLIST')
+        .insert({
           assignee,
-          createdYear,
-          createdMonth,
-          createdDay,
-          createdHours,
-          createdMinutes,
-          createdSeconds,
           description,
-          issueType,
-          priority: getPriority(issueType),
+          issuetype,
+          priority,
           reporter,
           status,
-          timeRemaining,
           summary,
-          ticketId,
-          updated,
-        },
-      });
+          ticketid,
+        })
+        .one();
+
+      // save local ticket data to remote db
+      sync();
+
+      // dispatch({
+      //   type: 'TICKET_LIST',
+      //   payload: {
+      //     assignee,
+      //     createdYear,
+      //     createdMonth,
+      //     createdDay,
+      //     createdHours,
+      //     createdMinutes,
+      //     createdSeconds,
+      //     description,
+      //     issueType,
+      //     priority: getPriority(issueType),
+      //     reporter,
+      //     status,
+      //     timeRemaining,
+      //     summary,
+      //     ticketid,
+      //     updated,
+      //   },
+      // });
     }
   };
 

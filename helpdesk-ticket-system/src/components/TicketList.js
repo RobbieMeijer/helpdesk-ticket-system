@@ -10,7 +10,7 @@ const TicketList = () => {
   //temporary to log the store once the component lads into the view
   useEffect(() => {
     // setup the amount of rows avalaible from remote table and begin with index 0
-    configureFrame({ limit: 3, offset: 0 });
+    configureFrame({ limit: 10, offset: 0 });
 
     // synchronize with remote table
     sync();
