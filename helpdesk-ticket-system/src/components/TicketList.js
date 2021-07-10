@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useEasybase } from 'easybase-react';
 
 const TicketList = () => {
@@ -10,17 +9,12 @@ const TicketList = () => {
 
   //temporary to log the store once the component lads into the view
   useEffect(() => {
-    console.log(ticketList);
-
     // setup the amount of rows avalaible from remote table and begin with index 0
     configureFrame({ limit: 3, offset: 0 });
 
-    // synchronize/up to date with remote table
+    // synchronize with remote table
     sync();
   }, []);
-
-  // hook that extracts data from the redux store
-  const ticketList = useSelector((state) => state.ticketList);
 
   // define deadline by priority category
   const deadlineInHours = (priority) => {
@@ -75,11 +69,11 @@ const TicketList = () => {
   };
 
   // getting all ticket data
-  const getTickets = ticketList.map((ticket) => {
+  const getTickets = Frame().map((ticket) => {
     const {
-      ticketId,
+      ticketid,
       priority,
-      issueType,
+      issuetype,
       summary,
       reporter,
       assignee,
@@ -93,38 +87,28 @@ const TicketList = () => {
       status,
     } = ticket;
 
-    // getTimeRemaining(
-    //   createdYear,
-    //   createdMonth,
-    //   createdDay,
-    //   deadlineInHours(priority),
-    //   createdMinutes,
-    //   createdSeconds
-    // );
-
     return (
-      <tr key={ticketId}>
+      <tr key={ticketid}>
         <td>{priority}</td>
-        <td>{issueType}</td>
-        <td>{ticketId}</td>
+        <td>{issuetype}</td>
+        <td>{ticketid}</td>
         <td>{summary}</td>
         <td>{reporter}</td>
         <td>{assignee}</td>
-        <td>{`${createdMonth} ${createdDay}, ${createdYear}, ${createdHours}:${createdMinutes}:${createdSeconds}`}</td>
-        <td>{updated}</td>
+        <td>
+          {/* {`${createdMonth} ${createdDay}, ${createdYear}, ${createdHours}:${createdMinutes}:${createdSeconds}`}*/}
+        </td>
+        <td>{/* {updated} */}</td>
         <td>{status}</td>
-        <td>{timeUntilDeadline}</td>
+        <td>{/* {timeUntilDeadline} */}</td>
       </tr>
     );
   });
 
   return (
     <div>
-      <h4>rendering test content from remote table/db</h4>
-      <div>{Frame().map((element) => JSON.stringify(element))}</div>
-      <br />
+      <h4>rendering content from remote table/db</h4>
       <hr />
-      <br />
       <table>
         <thead>
           <tr>
