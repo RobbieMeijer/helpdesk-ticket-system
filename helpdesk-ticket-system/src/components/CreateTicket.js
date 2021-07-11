@@ -16,7 +16,7 @@ const CreateTicket = () => {
   // setting up local ticket state for temporary storage/reference
   // before sending form data to the store
   const [ticketid, setTicketid] = useState(null),
-    [assignee, setAssignee] = useState('automatic'),
+    [assignee, setAssignee] = useState('support'),
     [createdYear, setCreatedYear] = useState(''),
     [createdMonth, setCreatedMonth] = useState(''),
     [createdDay, setCreatedDay] = useState(0),
@@ -29,7 +29,7 @@ const CreateTicket = () => {
     [summary, setSummary] = useState(''),
     reporter = isAuthenticated ? user.name : 'Reporter Name',
     [updated, setUpdated] = useState(''),
-    [status, setStatus] = useState('Open'),
+    [status, setStatus] = useState('open'),
     timeRemaining = null,
     [ticketSubmitted, setTicketSubmitted] = useState(false);
 
@@ -42,6 +42,7 @@ const CreateTicket = () => {
     createDate();
   }, []);
 
+  // prevent form submitting while typing
   const onFormSubmit = (event) => {
     event.preventDefault();
   };
@@ -54,7 +55,7 @@ const CreateTicket = () => {
       element.id ||
       (element.className === 'option' && element.parentElement.id)
     ) {
-      case 'issueType':
+      case 'issuetype':
         setIssuetype(inputValue);
         break;
       case 'summary':
@@ -140,8 +141,8 @@ const CreateTicket = () => {
         <form onSubmit={onFormSubmit}>
           <h4>Create Issue</h4>
           <div>
-            <label htmlFor="issueType">Issue Type*</label>
-            <select onChange={setFormValue} id="issueType" required>
+            <label htmlFor="issuetype">Issue Type*</label>
+            <select onChange={setFormValue} id="issuetype" required>
               <option className="option" defaultValue={issuetype}>
                 Select an issue type
               </option>
@@ -177,7 +178,7 @@ const CreateTicket = () => {
             <label htmlFor="assignee">Assignee</label>
             <select onChange={setFormValue} id="assignee">
               <option className="option" defaultValue={assignee}>
-                Automatic
+                Support
               </option>
               <option className="option" value="Robbie Meijer">
                 Robbie Meijer
@@ -203,8 +204,6 @@ const CreateTicket = () => {
           <div>
             <button
               onClick={() => {
-                setPriority(getPriority(issuetype));
-
                 onSaveTicket(
                   assignee,
                   description,
@@ -229,6 +228,9 @@ const CreateTicket = () => {
   };
 
   const onSaveTicket = () => {
+    setPriority(getPriority(issuetype));
+    console.log(priority);
+
     // check if fields are not empty before submitting ticket
     if ((issuetype && summary && description) !== '') {
       setTicketSubmitted(true);

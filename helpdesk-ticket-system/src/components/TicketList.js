@@ -10,7 +10,7 @@ const TicketList = () => {
   //temporary to log the store once the component lads into the view
   useEffect(() => {
     // setup the amount of rows avalaible from remote table and begin with index 0
-    configureFrame({ limit: 10, offset: 0 });
+    configureFrame({ limit: 20, offset: 0 });
 
     // synchronize with remote table
     sync();
@@ -68,6 +68,8 @@ const TicketList = () => {
     }, 1000);
   };
 
+  const formattedDate = (date) => (date !== null ? date.slice(0, 10) : '');
+
   // getting all ticket data
   const getTickets = Frame().map((ticket) => {
     const {
@@ -77,13 +79,8 @@ const TicketList = () => {
       summary,
       reporter,
       assignee,
-      createdYear,
-      createdMonth,
-      createdDay,
-      createdHours,
-      createdMinutes,
-      createdSeconds,
-      updated,
+      date,
+      time,
       status,
     } = ticket;
 
@@ -95,9 +92,7 @@ const TicketList = () => {
         <td>{summary}</td>
         <td>{reporter}</td>
         <td>{assignee}</td>
-        <td>
-          {/* {`${createdMonth} ${createdDay}, ${createdYear}, ${createdHours}:${createdMinutes}:${createdSeconds}`}*/}
-        </td>
+        <td>{`${formattedDate(date)} at ${time}`}</td>
         <td>{/* {updated} */}</td>
         <td>{status}</td>
         <td>{/* {timeUntilDeadline} */}</td>
@@ -107,8 +102,6 @@ const TicketList = () => {
 
   return (
     <div>
-      <h4>rendering content from remote table/db</h4>
-      <hr />
       <table>
         <thead>
           <tr>
