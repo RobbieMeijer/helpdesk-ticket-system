@@ -8,7 +8,7 @@ const CreateTicket = () => {
   // const dispatch = useDispatch();
 
   // easybase hook
-  const { sync, db } = useEasybase();
+  const { db } = useEasybase();
 
   // auth0 hook
   const { user, isAuthenticated } = useAuth0();
@@ -202,22 +202,7 @@ const CreateTicket = () => {
             <input id="reporter" type="text" value={reporter} />
           </div>
           <div>
-            <button
-              onClick={() => {
-                onSaveTicket(
-                  assignee,
-                  description,
-                  issuetype,
-                  priority,
-                  reporter,
-                  status,
-                  summary,
-                  ticketid
-                );
-              }}
-            >
-              Create
-            </button>
+            <button onClick={onSaveTicket}>Create</button>
             <button>Cancel</button>
           </div>
         </form>
@@ -227,52 +212,56 @@ const CreateTicket = () => {
     return 'Please log in to create a ticket.';
   };
 
-  const onSaveTicket = () => {
-    setPriority(getPriority(issuetype));
-    console.log(priority);
+  const onSaveTicket = async () => {
+    try {
+      // input values can not be empty
+      if (issuetype === '' || summary === '' || description === '') return;
 
-    // check if fields are not empty before submitting ticket
-    if ((issuetype && summary && description) !== '') {
-      setTicketSubmitted(true);
+      // get priority to add to insert below
+      // const fetchPriority = await setPriority(getPriority(issuetype));
+      const checkPriority =
+        (await priority) !== 'not set' ? priority : 'not set';
 
-      db('TICKETLIST')
+      // insert and update the db
+      await db('TICKETLIST')
         .insert({
           assignee,
           description,
           issuetype,
-          priority,
+          checkPriority,
           reporter,
           status,
           summary,
           ticketid,
         })
-        .one();
-
-      // save local ticket data to remote db
-      sync();
-
-      // dispatch({
-      //   type: 'TICKET_LIST',
-      //   payload: {
-      //     assignee,
-      //     createdYear,
-      //     createdMonth,
-      //     createdDay,
-      //     createdHours,
-      //     createdMinutes,
-      //     createdSeconds,
-      //     description,
-      //     issueType,
-      //     priority: getPriority(issueType),
-      //     reporter,
-      //     status,
-      //     timeRemaining,
-      //     summary,
-      //     ticketid,
-      //     updated,
-      //   },
-      // });
+        .one(); // Inserts, updates, and deletes will refresh the `frame` below
+    } catch (error) {
+      // error if above fails
+      console.log('Error: ', error);
     }
+
+    // dispatch({
+    //   type: 'TICKET_LIST',
+    //   payload: {
+    //     assignee,
+    //     createdYear,
+    //     createdMonth,
+    //     createdDay,
+    //     createdHours,
+    //     createdMinutes,
+    //     createdSeconds,
+    //     description,
+    //     issueType,
+    //     priority: getPriority(issueType),
+    //     reporter,
+    //     status,
+    //     timeRemaining,
+    //     summary,
+    //     ticketid,
+    //     updated,
+    //   },
+    // });
+    // }
   };
 
   return ticketSubmitted ? 'Thank you for submitting' : renderTicketForm();
