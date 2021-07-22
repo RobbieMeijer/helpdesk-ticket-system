@@ -199,7 +199,7 @@ const CreateTicket = () => {
           </div>
           <div>
             <label htmlFor="reporter">Reporter</label>
-            <input id="reporter" type="text" value={reporter} />
+            <input id="reporter" type="text" value={reporter} readOnly />
           </div>
           <div>
             <button onClick={onSaveTicket}>Create</button>
