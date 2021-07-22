@@ -15,31 +15,23 @@ const CreateTicket = () => {
 
   // setting up local ticket state for temporary storage/reference
   // before sending form data to the store
-  const [ticketid, setTicketid] = useState(null),
-    [assignee, setAssignee] = useState('support'),
-    [createdYear, setCreatedYear] = useState(''),
-    [createdMonth, setCreatedMonth] = useState(''),
-    [createdDay, setCreatedDay] = useState(0),
-    [createdHours, setCreatedHours] = useState(0),
-    [createdMinutes, setCreatedMinutes] = useState(0),
-    [createdSeconds, setCreatedSeconds] = useState(0),
-    [description, setDescription] = useState(''),
-    [issuetype, setIssuetype] = useState(''),
-    [priority, setPriority] = useState('not set'),
-    [summary, setSummary] = useState(''),
-    reporter = isAuthenticated ? user.name : 'Reporter Name',
-    [updated, setUpdated] = useState(''),
-    [status, setStatus] = useState('open'),
-    timeRemaining = null,
-    [ticketSubmitted, setTicketSubmitted] = useState(false);
+  const [ticketid, setTicketid] = useState(null);
+  const [assignee, setAssignee] = useState('support');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [description, setDescription] = useState('');
+  const [issuetype, setIssuetype] = useState('');
+  const [summary, setSummary] = useState('');
+  const reporter = isAuthenticated ? user.name : 'Reporter Name';
+  const [updated, setUpdated] = useState('');
+  const [status, setStatus] = useState('open');
+  let timeRemaining = null;
+  const [ticketSubmitted, setTicketSubmitted] = useState(false);
 
   // run code when component initially renders and rerendered
   useEffect(() => {
     // create id based on timestamp
     setTicketid(new Date().getTime());
-
-    // create date of ticket creation
-    createDate();
   }, []);
 
   // prevent form submitting while typing
@@ -87,52 +79,26 @@ const CreateTicket = () => {
     }
   };
 
-  const createDate = () => {
-    const dateObject = new Date(),
-      year = dateObject.getFullYear(),
-      month = dateObject.getMonth() + 1,
-      day = dateObject.getDate(),
-      hours = dateObject.getHours(),
-      minutes = dateObject.getMinutes(),
-      seconds = dateObject.getSeconds();
+  const createCurrentDateAndTime = () => {
+    const theDate = new Date();
+    const year = theDate.getFullYear();
+    const month = theDate.getMonth() + 1;
+    const day = theDate.getDate();
+    const thisDate = `${year}-${month}-${day}`;
 
-    const monthAbbreviated = (month) => {
-      switch (month) {
-        case 1:
-          return 'Jan';
-        case 2:
-          return 'Feb';
-        case 3:
-          return 'Mar';
-        case 4:
-          return 'Apr';
-        case 5:
-          return 'May';
-        case 6:
-          return 'Jun';
-        case 7:
-          return 'Jul';
-        case 8:
-          return 'Aug';
-        case 9:
-          return 'Sep';
-        case 10:
-          return 'Oct';
-        case 11:
-          return 'Nov';
-        case 12:
-          return 'Dec';
-        default:
-          return '';
-      }
-    };
+    // store current date in local state
+    setDate(thisDate);
 
-    setCreatedYear(year);
-    setCreatedMonth(monthAbbreviated(month));
-    setCreatedDay(day);
-    setCreatedHours(hours);
-    setCreatedMinutes(minutes);
-    setCreatedSeconds(seconds);
+    const hours = theDate.getHours();
+    const minutes = theDate.getMinutes();
+    // const seconds = theDate.getSeconds();
+    const thisTime = `${hours}:${minutes}`;
+
+    // store current time in local state
+    setTime(thisTime);
+
+    console.log('date: ', date);
+    console.log('time: ', time);
   };
 
   const renderTicketForm = () => {
@@ -168,6 +134,7 @@ const CreateTicket = () => {
             <label htmlFor="description">Description</label>
             <textarea
               onChange={setFormValue}
+              onBlur={createCurrentDateAndTime}
               id="description"
               rows="5"
               cols="33"
@@ -217,10 +184,8 @@ const CreateTicket = () => {
       // input values can not be empty
       if (issuetype === '' || summary === '' || description === '') return;
 
-      // get priority to add to insert below
-      // const fetchPriority = await setPriority(getPriority(issuetype));
-      const checkPriority =
-        (await priority) !== 'not set' ? priority : 'not set';
+      // set ticket submitted state to true
+      setTicketSubmitted(true);
 
       // insert and update the db
       await db('TICKETLIST')
@@ -228,11 +193,13 @@ const CreateTicket = () => {
           assignee,
           description,
           issuetype,
-          checkPriority,
+          priority: getPriority(issuetype),
           reporter,
           status,
           summary,
           ticketid,
+          date,
+          time,
         })
         .one(); // Inserts, updates, and deletes will refresh the `frame` below
     } catch (error) {
