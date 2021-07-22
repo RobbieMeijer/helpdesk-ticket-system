@@ -19,8 +19,6 @@ const LoginButton = () => {
         loggedIn: false,
       },
     });
-
-    console.log('systemUser: ', systemUser);
   }, []);
 
   return (

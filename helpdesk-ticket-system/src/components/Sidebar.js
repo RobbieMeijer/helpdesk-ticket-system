@@ -14,10 +14,13 @@ const Sidebar = () => {
         <ul>
           <li>{isAuthenticated ? <LogoutButton /> : <LoginButton />}</li>
           <li>
+            <NavigationLink href="/dashboard">Dashboard</NavigationLink>
+          </li>
+          <li>
             <NavigationLink href="/profile">Profile</NavigationLink>
           </li>
           <li>
-            <NavigationLink href="/dashboard">Dashboard</NavigationLink>
+            <NavigationLink href="/ticket">Test Ticket</NavigationLink>
           </li>
           <li>
             <NavigationLink href="/tickets">Tickets</NavigationLink>

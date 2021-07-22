@@ -9,6 +9,7 @@ import KnowledgeBase from './KnowledgeBase';
 import Search from './Search';
 import CreateTicket from './CreateTicket';
 import Profile from './Profile';
+import Ticket from './Ticket';
 
 const App = () => {
   return (
@@ -18,11 +19,14 @@ const App = () => {
           <Sidebar />
         </div>
         <div className="col-10">
+          <Route path="/dashboard">
+            <Dashboard />
+          </Route>
           <Route path="/profile">
             <Profile />
           </Route>
-          <Route path="/dashboard">
-            <Dashboard />
+          <Route path="/ticket">
+            <Ticket />
           </Route>
           <Route path="/tickets">
             <TicketList />
