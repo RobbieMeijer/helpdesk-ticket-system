@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useEasybase } from 'easybase-react';
+import Ticket from './Ticket';
 
 const TicketList = () => {
   const [timeUntilDeadline, setTimeUntilDeadline] = useState('');
+  const [ticketClicked, setTicketClicked] = useState(false);
+  const [ticketid, setTicketid] = useState('');
 
   // easybase hook
   const { Frame, configureFrame, sync } = useEasybase();
@@ -70,6 +73,19 @@ const TicketList = () => {
 
   const formattedDate = (date) => (date !== null ? date.slice(0, 10) : '');
 
+  const setThisTicketToClicked = (ticketid) => {
+    setTicketClicked(true);
+    setTicketid(ticketid);
+
+    console.log('ticketClicked: ', ticketClicked);
+    console.log('ticketid from list: ', ticketid);
+  };
+
+  // getting all ticket data
+  const renderTicket = (ticketid) => {
+    return <Ticket ticketid={ticketid} />;
+  };
+
   // getting all ticket data
   const getTickets = Frame().map((ticket) => {
     const {
@@ -85,7 +101,7 @@ const TicketList = () => {
     } = ticket;
 
     return (
-      <tr key={ticketid}>
+      <tr key={ticketid} onClick={() => setThisTicketToClicked(ticketid)}>
         <td>{priority}</td>
         <td>{issuetype}</td>
         <td>{ticketid}</td>
@@ -100,27 +116,31 @@ const TicketList = () => {
     );
   });
 
-  return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>Priority</th>
-            <th>Issue Type</th>
-            <th>Ticket nr.</th>
-            <th>Summary</th>
-            <th>Reporter</th>
-            <th>Assignee</th>
-            <th>Created</th>
-            <th>Updated</th>
-            <th>Status</th>
-            <th>Time Remaining</th>
-          </tr>
-        </thead>
-        <tbody>{getTickets}</tbody>
-      </table>
-    </div>
-  );
+  const renderTickets = () => {
+    return (
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Issue Type</th>
+              <th>Ticket nr.</th>
+              <th>Summary</th>
+              <th>Reporter</th>
+              <th>Assignee</th>
+              <th>Created</th>
+              <th>Updated</th>
+              <th>Status</th>
+              <th>Time Remaining</th>
+            </tr>
+          </thead>
+          <tbody>{getTickets}</tbody>
+        </table>
+      </div>
+    );
+  };
+
+  return !ticketClicked ? renderTickets() : renderTicket(ticketid);
 };
 
 export default TicketList;
