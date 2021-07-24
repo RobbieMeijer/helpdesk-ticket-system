@@ -6,6 +6,15 @@ const TicketList = () => {
   const [timeUntilDeadline, setTimeUntilDeadline] = useState('');
   const [ticketClicked, setTicketClicked] = useState(false);
   const [ticketid, setTicketid] = useState('');
+  const [priority, setPriority] = useState('');
+  const [issuetype, setIssuetype] = useState('');
+  const [summary, setSummary] = useState('');
+  const [description, setDescription] = useState('');
+  const [reporter, setReporter] = useState('');
+  const [assignee, setAssignee] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [status, setStatus] = useState('');
 
   // easybase hook
   const { Frame, configureFrame, sync } = useEasybase();
@@ -73,17 +82,61 @@ const TicketList = () => {
 
   const formattedDate = (date) => (date !== null ? date.slice(0, 10) : '');
 
-  const setThisTicketToClicked = (ticketid) => {
+  const showTicket = (
+    ticketid,
+    priority,
+    issuetype,
+    summary,
+    description,
+    reporter,
+    assignee,
+    date,
+    time,
+    status
+  ) => {
     setTicketClicked(true);
     setTicketid(ticketid);
+    setPriority(priority);
+    setIssuetype(issuetype);
+    setSummary(summary);
+    setDescription(description);
+    setReporter(reporter);
+    setAssignee(assignee);
+    setDate(date);
+    setTime(time);
+    setStatus(status);
 
     console.log('ticketClicked: ', ticketClicked);
     console.log('ticketid from list: ', ticketid);
   };
 
   // getting all ticket data
-  const renderTicket = (ticketid) => {
-    return <Ticket ticketid={ticketid} />;
+  const renderTicket = (
+    ticketid,
+    priority,
+    issuetype,
+    summary,
+    description,
+    reporter,
+    assignee,
+    date,
+    time,
+    status
+  ) => {
+    return (
+      <Ticket
+        ticketid={ticketid}
+        priority={priority}
+        issuetype={issuetype}
+        summary={summary}
+        description={description}
+        reporter={reporter}
+        assignee={assignee}
+        date={date}
+        time={time}
+        status={status}
+      />
+    );
   };
 
   // getting all ticket data
@@ -93,6 +146,7 @@ const TicketList = () => {
       priority,
       issuetype,
       summary,
+      description,
       reporter,
       assignee,
       date,
@@ -101,7 +155,23 @@ const TicketList = () => {
     } = ticket;
 
     return (
-      <tr key={ticketid} onClick={() => setThisTicketToClicked(ticketid)}>
+      <tr
+        key={ticketid}
+        onClick={() =>
+          showTicket(
+            ticketid,
+            priority,
+            issuetype,
+            summary,
+            description,
+            reporter,
+            assignee,
+            date,
+            time,
+            status
+          )
+        }
+      >
         <td>{priority}</td>
         <td>{issuetype}</td>
         <td>{ticketid}</td>
@@ -140,7 +210,20 @@ const TicketList = () => {
     );
   };
 
-  return !ticketClicked ? renderTickets() : renderTicket(ticketid);
+  return !ticketClicked
+    ? renderTickets()
+    : renderTicket(
+        ticketid,
+        priority,
+        issuetype,
+        summary,
+        description,
+        reporter,
+        assignee,
+        date,
+        time,
+        status
+      );
 };
 
 export default TicketList;
