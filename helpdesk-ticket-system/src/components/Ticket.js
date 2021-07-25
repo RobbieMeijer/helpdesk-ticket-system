@@ -31,7 +31,7 @@ const Ticket = (props) => {
           <section>
             <h2>Comments</h2>
             <article>
-              <h3>{reporter} 1 minute ago</h3>
+              <h3>Reporter Name 1 minute ago</h3>
               <p>
                 Proin eget iaculis ex. In hendrerit massa sit amet ante
                 tincidunt.
