@@ -3,7 +3,13 @@ import { useEasybase } from 'easybase-react';
 import Ticket from './Ticket';
 
 const TicketList = () => {
+  // easybase stateful data
+  const [easybaseData, setEasybaseData] = useState([]);
+
+  // to do: time remaining state stuff for tickets
   const [timeUntilDeadline, setTimeUntilDeadline] = useState('');
+
+  // single ticket state, setting state for clicked ticket
   const [ticketClicked, setTicketClicked] = useState(false);
   const [ticketid, setTicketid] = useState('');
   const [priority, setPriority] = useState('');
@@ -17,15 +23,19 @@ const TicketList = () => {
   const [status, setStatus] = useState('');
 
   // easybase hook
-  const { Frame, configureFrame, sync } = useEasybase();
+  const { db } = useEasybase();
 
-  //temporary to log the store once the component lads into the view
+  // getting the easybase table data
+  const mounted = async () => {
+    const ebData = await db('TICKETLIST').return().limit(20).all();
+
+    // storing table data to state
+    setEasybaseData(ebData);
+  };
+
   useEffect(() => {
-    // setup the amount of rows avalaible from remote table and begin with index 0
-    configureFrame({ limit: 20, offset: 0 });
-
-    // synchronize with remote table
-    sync();
+    // get the data from easybase when component is rendered
+    mounted();
   }, []);
 
   // define deadline by priority category
@@ -82,7 +92,8 @@ const TicketList = () => {
 
   const formattedDate = (date) => (date !== null ? date.slice(0, 10) : '');
 
-  const showTicket = (
+  // set ticket details to state, passing through data to single Ticket component
+  const setTicketState = (
     ticketid,
     priority,
     issuetype,
@@ -110,7 +121,7 @@ const TicketList = () => {
     console.log('ticketid from list: ', ticketid);
   };
 
-  // getting all ticket data
+  // render ticket detail data
   const renderTicket = (
     ticketid,
     priority,
@@ -140,7 +151,7 @@ const TicketList = () => {
   };
 
   // getting all ticket data
-  const getTickets = Frame().map((ticket) => {
+  const getTicketList = easybaseData.map((ticket) => {
     const {
       ticketid,
       priority,
@@ -158,7 +169,7 @@ const TicketList = () => {
       <tr
         key={ticketid}
         onClick={() =>
-          showTicket(
+          setTicketState(
             ticketid,
             priority,
             issuetype,
@@ -186,7 +197,8 @@ const TicketList = () => {
     );
   });
 
-  const renderTickets = () => {
+  // rendering the ticket list data
+  const renderTicketList = () => {
     return (
       <div>
         <table>
@@ -204,14 +216,14 @@ const TicketList = () => {
               <th>Time Remaining</th>
             </tr>
           </thead>
-          <tbody>{getTickets}</tbody>
+          <tbody>{getTicketList}</tbody>
         </table>
       </div>
     );
   };
 
   return !ticketClicked
-    ? renderTickets()
+    ? renderTicketList()
     : renderTicket(
         ticketid,
         priority,
