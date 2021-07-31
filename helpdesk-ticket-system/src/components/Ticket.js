@@ -4,7 +4,7 @@ import { useEasybase } from 'easybase-react';
 const Ticket = (props) => {
   console.log('props from ticket: ', props);
 
-  // deconstruct ticket details from props object
+  // deconstruct ticket details from parent props object
   const {
     ticketid,
     priority,
@@ -16,21 +16,21 @@ const Ticket = (props) => {
   } = props;
 
   // easybase stateful data
-  const [easybaseData, setEasybaseData] = useState([]);
+  const [comments, setComments] = useState([]);
 
   // easybase hook
   const { db } = useEasybase();
 
-  // getting the easybase table data
   const mounted = async () => {
-    const ebData = await db('COMMENTS').return().limit(20).all();
+    // getting the easybase table data: comments linked to current ticket
+    const ebData = await db('COMMENTS') // FROM table
+      .return() // SELECT * column statement
+      .where({ comment_ticketid: ticketid }) // WHERE condition statement
+      .orderBy({ by: 'date' }, { by: 'time' }) // ORDER BY statement
+      .all(); // execute queries returning all records true to condition
 
-    const commentsLinkedToTicket = ebData.filter(
-      (comment) => comment.comment_ticket_id === ticketid
-    );
-
-    // storing table data to state
-    setEasybaseData(commentsLinkedToTicket);
+    // save requested data to the easybaseData state
+    setComments(ebData);
   };
 
   useEffect(() => {
@@ -38,8 +38,24 @@ const Ticket = (props) => {
     mounted();
   }, []);
 
-  // render all comment data linked to ticket
-  const renderCommentList = easybaseData.map((comment) => {
+  const renderEditSaveButton = (currentButton) => {
+    // render edit or save button
+  };
+
+  const editComment = (comment) => {
+    // edit comment
+  };
+
+  const saveComment = () => {
+    // updating comment
+  };
+
+  const deleteComment = () => {
+    // delete comment
+  };
+
+  // render all comment data linked to ticket from state
+  const renderCommentList = comments.map((comment) => {
     console.log(comment);
     const { content, reporter_name, _key } = comment;
 
@@ -48,13 +64,26 @@ const Ticket = (props) => {
         <h3>{reporter_name} .. minute(s) ago</h3>
         <p>{content}</p>
         <div>
-          <button>Edit</button> <button>Delete</button>
+          <button
+            onClick={() => {
+              editComment(_key);
+            }}
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => {
+              deleteComment(_key);
+            }}
+          >
+            Delete
+          </button>
         </div>
       </article>
     );
   });
 
-  // getting all ticket data
+  // render all ticket data to the UI
   const renderTicket = () => {
     return (
       <div key={ticketid}>
