@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useEasybase } from 'easybase-react';
 
 const Ticket = (props) => {
@@ -15,8 +15,17 @@ const Ticket = (props) => {
     status,
   } = props;
 
-  // easybase stateful data
+  // state
   const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState({});
+  const [updatedCommentContent, setUpdatedCommentContent] = useState('');
+  const [commentDateUpdated, setCommentDateUpdated] = useState('');
+  const [commentTimeUpdated, setCommentTimeUpdated] = useState('');
+  const [commentEditable, setCommentEditable] = useState(false);
+  const [commentDeleted, setCommentDeleted] = useState(false);
+
+  //ref
+  // const currentTextarea = useRef(null);
 
   // easybase hook
   const { db } = useEasybase();
@@ -36,22 +45,27 @@ const Ticket = (props) => {
   useEffect(() => {
     // get the data from easybase when component is rendered
     mounted();
-  }, []);
+  }, [commentDeleted]);
 
-  const renderEditSaveButton = (currentButton) => {
-    // render edit or save button
+  const editComment = (key) => {
+    const textarea = document.getElementById(key);
+    textarea.disabled = false;
   };
 
-  const editComment = (comment) => {
-    // edit comment
+  const saveComment = async (key) => {
+    const textarea = document.getElementById(key);
+    textarea.disabled = true;
+
+    await db('COMMENTS') // FROM table comments
+      .where({ _key: key }) // WHERE condition current comment record
+      .set({ content: updatedCommentContent }) // change column value of record
+      .one(); // execute queries for current record
   };
 
-  const saveComment = () => {
-    // updating comment
-  };
+  const deleteComment = async (key) => {
+    await db('COMMENTS').delete().where({ _key: key }).one();
 
-  const deleteComment = () => {
-    // delete comment
+    setCommentDeleted(true);
   };
 
   // render all comment data linked to ticket from state
@@ -62,23 +76,40 @@ const Ticket = (props) => {
     return (
       <article key={_key}>
         <h3>{reporter_name} .. minute(s) ago</h3>
-        <p>{content}</p>
-        <div>
-          <button
-            onClick={() => {
-              editComment(_key);
-            }}
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => {
-              deleteComment(_key);
-            }}
-          >
-            Delete
-          </button>
-        </div>
+        <textarea
+          // ref={currentTextarea}
+          name="commentContent"
+          id={_key}
+          cols="60"
+          rows="10"
+          defaultValue={content}
+          disabled
+          onChange={(e) => {
+            setTimeout(setUpdatedCommentContent(e.target.value), 600);
+          }}
+        ></textarea>
+        <button
+          onClick={() => {
+            // editComment(comment, e);
+            editComment(_key);
+          }}
+        >
+          Edit
+        </button>
+        <button
+          onClick={(e) => {
+            saveComment(_key);
+          }}
+        >
+          Save
+        </button>
+        <button
+          onClick={() => {
+            deleteComment(_key);
+          }}
+        >
+          Delete
+        </button>
       </article>
     );
   });
