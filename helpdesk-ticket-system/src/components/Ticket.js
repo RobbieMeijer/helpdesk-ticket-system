@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useEasybase } from 'easybase-react';
+import AddComment from './AddComment';
 
 const Ticket = (props) => {
   console.log('props from ticket: ', props);
@@ -139,15 +140,7 @@ const Ticket = (props) => {
             <h2>Comments</h2>
             {renderCommentList}
           </section>
-          <section>
-            <h2>Add comment</h2>
-            <form action="">
-              <textarea name="" id="" cols="30" rows="10"></textarea>
-              <div>
-                <button>Save</button> <button>Cancel</button>
-              </div>
-            </form>
-          </section>
+          <AddComment ticketid={ticketid} />
         </main>
         <aside>
           <section>
@@ -193,7 +186,6 @@ const Ticket = (props) => {
         </aside>
       </div>
     );
-    // }
   };
 
   return ticketid !== undefined

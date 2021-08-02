@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEasybase } from 'easybase-react';
 
+import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
+
 const CreateTicket = () => {
   // sending action to store
   // const dispatch = useDispatch();
@@ -79,106 +81,6 @@ const CreateTicket = () => {
     }
   };
 
-  const createCurrentDateAndTime = () => {
-    const theDate = new Date();
-    const year = theDate.getFullYear();
-    const month = theDate.getMonth() + 1;
-    const day = theDate.getDate();
-    const thisDate = `${year}-${month}-${day}`;
-
-    // store current date in local state
-    setDate(thisDate);
-
-    const hours = theDate.getHours();
-    const minutes = theDate.getMinutes();
-    // const seconds = theDate.getSeconds();
-    const thisTime = `${hours}:${minutes}`;
-
-    // store current time in local state
-    setTime(thisTime);
-
-    console.log('date: ', date);
-    console.log('time: ', time);
-  };
-
-  const renderTicketForm = () => {
-    if (isAuthenticated) {
-      return (
-        <form onSubmit={onFormSubmit}>
-          <h4>Create Issue</h4>
-          <div>
-            <label htmlFor="issuetype">Issue Type*</label>
-            <select onChange={setFormValue} id="issuetype" required>
-              <option className="option" defaultValue={issuetype}>
-                Select an issue type
-              </option>
-              <option className="option" value="bug">
-                Bug
-              </option>
-              <option className="option" value="feature request">
-                Feature Request
-              </option>
-              <option className="option" value="how to">
-                How To
-              </option>
-              <option className="option" value="technical issue">
-                Technical Issue
-              </option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="summary">Summary*</label>
-            <input onChange={setFormValue} id="summary" type="text" required />
-          </div>
-          <div>
-            <label htmlFor="description">Description</label>
-            <textarea
-              onChange={setFormValue}
-              onBlur={createCurrentDateAndTime}
-              id="description"
-              rows="5"
-              cols="33"
-              required
-            ></textarea>
-          </div>
-          <div>
-            <label htmlFor="assignee">Assignee</label>
-            <select onChange={setFormValue} id="assignee">
-              <option className="option" defaultValue={assignee}>
-                Support
-              </option>
-              <option className="option" value="Robbie Meijer">
-                Robbie Meijer
-              </option>
-              <option className="option" value="Rianna Vos">
-                Rianna Vos
-              </option>
-              <option className="option" value="Ronald Peters">
-                Ronald Peters
-              </option>
-              <option className="option" value="Hanna van Leeuwen">
-                Hanna van Leeuwen
-              </option>
-            </select>
-            <div>
-              <button>Assign to me</button>
-            </div>
-          </div>
-          <div>
-            <label htmlFor="reporter">Reporter</label>
-            <input id="reporter" type="text" value={reporter} readOnly />
-          </div>
-          <div>
-            <button onClick={onSaveTicket}>Create</button>
-            <button>Cancel</button>
-          </div>
-        </form>
-      );
-    }
-
-    return 'Please log in to create a ticket.';
-  };
-
   const onSaveTicket = async () => {
     // input values can not be empty
     if (issuetype === '' || summary === '' || description === '') return;
@@ -229,6 +131,87 @@ const CreateTicket = () => {
     //   },
     // });
     // }
+  };
+
+  const renderTicketForm = () => {
+    if (isAuthenticated) {
+      return (
+        <form onSubmit={onFormSubmit}>
+          <h4>Create Issue</h4>
+          <div>
+            <label htmlFor="issuetype">Issue Type*</label>
+            <select onChange={setFormValue} id="issuetype" required>
+              <option className="option" defaultValue={issuetype}>
+                Select an issue type
+              </option>
+              <option className="option" value="bug">
+                Bug
+              </option>
+              <option className="option" value="feature request">
+                Feature Request
+              </option>
+              <option className="option" value="how to">
+                How To
+              </option>
+              <option className="option" value="technical issue">
+                Technical Issue
+              </option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="summary">Summary*</label>
+            <input onChange={setFormValue} id="summary" type="text" required />
+          </div>
+          <div>
+            <label htmlFor="description">Description</label>
+            <textarea
+              onChange={setFormValue}
+              onBlur={() => {
+                setDate(CreateCurrentDateAndTime.date());
+                setTime(CreateCurrentDateAndTime.time());
+              }}
+              id="description"
+              rows="5"
+              cols="33"
+              required
+            ></textarea>
+          </div>
+          <div>
+            <label htmlFor="assignee">Assignee</label>
+            <select onChange={setFormValue} id="assignee">
+              <option className="option" defaultValue={assignee}>
+                Support
+              </option>
+              <option className="option" value="Robbie Meijer">
+                Robbie Meijer
+              </option>
+              <option className="option" value="Rianna Vos">
+                Rianna Vos
+              </option>
+              <option className="option" value="Ronald Peters">
+                Ronald Peters
+              </option>
+              <option className="option" value="Hanna van Leeuwen">
+                Hanna van Leeuwen
+              </option>
+            </select>
+            <div>
+              <button>Assign to me</button>
+            </div>
+          </div>
+          <div>
+            <label htmlFor="reporter">Reporter</label>
+            <input id="reporter" type="text" value={reporter} readOnly />
+          </div>
+          <div>
+            <button onClick={onSaveTicket}>Create</button>
+            <button>Cancel</button>
+          </div>
+        </form>
+      );
+    }
+
+    return 'Please log in to create a ticket.';
   };
 
   return ticketSubmitted ? 'Thank you for submitting' : renderTicketForm();
