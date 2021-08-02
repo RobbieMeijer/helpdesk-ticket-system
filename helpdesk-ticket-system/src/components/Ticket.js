@@ -45,14 +45,16 @@ const Ticket = (props) => {
   useEffect(() => {
     // get the data from easybase when component is rendered
     mounted();
-  }, [commentDeleted]);
+  }, [commentDeleted]); // rerender ticket when a comment is deleted
 
   const editComment = (key) => {
+    // must be refactored with useRef
     const textarea = document.getElementById(key);
     textarea.disabled = false;
   };
 
   const saveComment = async (key) => {
+    // must be refactored with useRef
     const textarea = document.getElementById(key);
     textarea.disabled = true;
 
@@ -63,8 +65,13 @@ const Ticket = (props) => {
   };
 
   const deleteComment = async (key) => {
-    await db('COMMENTS').delete().where({ _key: key }).one();
+    await db('COMMENTS') // FROM table comments
+      .delete() // DELETE
+      .where({ _key: key }) // WHERE condition deleting record with the current key
+      .one(); // execute queries for current record
 
+    // change state commentDeleted to true, so the ticket component will
+    // rerender with the updated comments beneath ticket
     setCommentDeleted(true);
   };
 
@@ -85,12 +92,12 @@ const Ticket = (props) => {
           defaultValue={content}
           disabled
           onChange={(e) => {
+            // slight delay in changing the comment content state
             setTimeout(setUpdatedCommentContent(e.target.value), 600);
           }}
         ></textarea>
         <button
           onClick={() => {
-            // editComment(comment, e);
             editComment(_key);
           }}
         >

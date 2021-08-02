@@ -180,32 +180,32 @@ const CreateTicket = () => {
   };
 
   const onSaveTicket = async () => {
-    try {
-      // input values can not be empty
-      if (issuetype === '' || summary === '' || description === '') return;
+    // input values can not be empty
+    if (issuetype === '' || summary === '' || description === '') return;
 
-      // set ticket submitted state to true
-      setTicketSubmitted(true);
+    // POST ticket and update the db
+    const uploadTicket = await db('TICKETLIST') // FROM table Ticketlist
+      .insert({
+        // INSERT INTO: the values into the columns
+        assignee,
+        description,
+        issuetype,
+        priority: getPriority(issuetype),
+        reporter,
+        status,
+        summary,
+        ticketid,
+        date,
+        time,
+      })
+      .one(); // execute for one record
 
-      // insert and update the db
-      await db('TICKETLIST')
-        .insert({
-          assignee,
-          description,
-          issuetype,
-          priority: getPriority(issuetype),
-          reporter,
-          status,
-          summary,
-          ticketid,
-          date,
-          time,
-        })
-        .one(); // Inserts, updates, and deletes will refresh the `frame` below
-    } catch (error) {
-      // error if above fails
-      console.log('Error: ', error);
-    }
+    // set ticket submitted state to true
+    const ticketIsSubmitted = setTicketSubmitted(true);
+
+    // execute functions in order: only execute ticketIsSubmitted
+    // if uploadTicket was successfull
+    return [uploadTicket, ticketIsSubmitted];
 
     // dispatch({
     //   type: 'TICKET_LIST',
