@@ -25,9 +25,6 @@ const App = () => {
           <Route path="/profile">
             <Profile />
           </Route>
-          <Route path="/ticket">
-            <Ticket />
-          </Route>
           <Route path="/tickets">
             <TicketList />
           </Route>
@@ -36,12 +33,6 @@ const App = () => {
           </Route>
           <Route path="/customers">
             <Customers />
-          </Route>
-          <Route path="/reports">
-            <Reports />
-          </Route>
-          <Route path="/knowledgebase">
-            <KnowledgeBase />
           </Route>
           <Route path="/search">
             <Search />
