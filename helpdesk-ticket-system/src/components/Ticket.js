@@ -3,8 +3,6 @@ import { useEasybase } from 'easybase-react';
 import AddComment from './AddComment';
 
 const Ticket = (props) => {
-  console.log('props from ticket: ', props);
-
   // deconstruct ticket details from parent props object
   const {
     ticketid,
@@ -24,6 +22,7 @@ const Ticket = (props) => {
   const [commentTimeUpdated, setCommentTimeUpdated] = useState('');
   const [commentEditable, setCommentEditable] = useState(false);
   const [commentDeleted, setCommentDeleted] = useState(false);
+  const [commentAdded, setCommentAdded] = useState(false);
 
   //ref
   // const currentTextarea = useRef(null);
@@ -46,7 +45,13 @@ const Ticket = (props) => {
   useEffect(() => {
     // get the data from easybase when component is rendered
     mounted();
-  }, [commentDeleted]); // rerender ticket when a comment is deleted
+
+    // reset commentDeleted and commentAdded
+    setCommentDeleted(false);
+    setCommentAdded(false);
+
+    console.log('ticket component rendered');
+  }, [commentDeleted, commentAdded]); // rerender ticket when a comment is deleted or added
 
   const editComment = (key) => {
     // must be refactored with useRef
@@ -76,9 +81,12 @@ const Ticket = (props) => {
     setCommentDeleted(true);
   };
 
+  const onAddComment = () => {
+    setCommentAdded(true);
+  };
+
   // render all comment data linked to ticket from state
   const renderCommentList = comments.map((comment) => {
-    console.log(comment);
     const { content, reporter_name, _key } = comment;
 
     return (
@@ -94,7 +102,7 @@ const Ticket = (props) => {
           disabled
           onChange={(e) => {
             // slight delay in changing the comment content state
-            setTimeout(setUpdatedCommentContent(e.target.value), 600);
+            setTimeout(setUpdatedCommentContent(e.target.value), 800);
           }}
         ></textarea>
         <button
@@ -140,7 +148,7 @@ const Ticket = (props) => {
             <h2>Comments</h2>
             {renderCommentList}
           </section>
-          <AddComment ticketid={ticketid} />
+          <AddComment ticketid={ticketid} onAddComment={onAddComment} />
         </main>
         <aside>
           <section>
