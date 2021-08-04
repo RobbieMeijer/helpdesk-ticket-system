@@ -2,8 +2,10 @@ import React from 'react';
 import NavigationLink from './NavigationLink';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import LoginButton from './LoginButton';
-import LogoutButton from './LogoutButton';
+// import LoginButton from './LoginButton';
+// import LogoutButton from './LogoutButton';
+
+import SignOutButton from './SignOutButton';
 
 const Sidebar = () => {
   const { isAuthenticated } = useAuth0();
@@ -12,7 +14,10 @@ const Sidebar = () => {
     <div className="sidebar">
       <nav>
         <ul>
-          <li>{isAuthenticated ? <LogoutButton /> : <LoginButton />}</li>
+          {/* <li>{isAuthenticated ? <LogoutButton /> : <LoginButton />}</li> */}
+          <li>
+            <SignOutButton />
+          </li>
           <li>
             <NavigationLink href="/dashboard">Dashboard</NavigationLink>
           </li>
