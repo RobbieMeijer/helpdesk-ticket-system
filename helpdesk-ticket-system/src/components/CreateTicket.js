@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import { useDispatch } from 'react-redux';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 import { useEasybase } from 'easybase-react';
 
 import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
@@ -10,10 +10,10 @@ const CreateTicket = () => {
   // const dispatch = useDispatch();
 
   // easybase hook
-  const { db } = useEasybase();
+  const { isUserSignedIn, db } = useEasybase();
 
   // auth0 hook
-  const { user, isAuthenticated } = useAuth0();
+  // const { user, isAuthenticated } = useAuth0();
 
   // setting up local ticket state for temporary storage/reference
   // before sending form data to the store
@@ -24,7 +24,7 @@ const CreateTicket = () => {
   const [description, setDescription] = useState('');
   const [issuetype, setIssuetype] = useState('');
   const [summary, setSummary] = useState('');
-  const reporter = isAuthenticated ? user.name : 'Reporter Name';
+  // const reporter = isUserSignedIn ? user.name : 'Reporter Name';
   const [updated, setUpdated] = useState('');
   const [status, setStatus] = useState('open');
   let timeRemaining = null;
@@ -93,7 +93,7 @@ const CreateTicket = () => {
         description,
         issuetype,
         priority: getPriority(issuetype),
-        reporter,
+        // reporter,
         status,
         summary,
         ticketid,
@@ -133,88 +133,81 @@ const CreateTicket = () => {
     // }
   };
 
-  const renderTicketForm = () => {
-    if (isAuthenticated) {
-      return (
-        <form onSubmit={onFormSubmit}>
-          <h4>Create Issue</h4>
-          <div>
-            <label htmlFor="issuetype">Issue Type*</label>
-            <select onChange={setFormValue} id="issuetype" required>
-              <option className="option" defaultValue={issuetype}>
-                Select an issue type
-              </option>
-              <option className="option" value="bug">
-                Bug
-              </option>
-              <option className="option" value="feature request">
-                Feature Request
-              </option>
-              <option className="option" value="how to">
-                How To
-              </option>
-              <option className="option" value="technical issue">
-                Technical Issue
-              </option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="summary">Summary*</label>
-            <input onChange={setFormValue} id="summary" type="text" required />
-          </div>
-          <div>
-            <label htmlFor="description">Description</label>
-            <textarea
-              onChange={setFormValue}
-              onBlur={() => {
-                setDate(CreateCurrentDateAndTime.date());
-                setTime(CreateCurrentDateAndTime.time());
-              }}
-              id="description"
-              rows="5"
-              cols="33"
-              required
-            ></textarea>
-          </div>
-          <div>
-            <label htmlFor="assignee">Assignee</label>
-            <select onChange={setFormValue} id="assignee">
-              <option className="option" defaultValue={assignee}>
-                Support
-              </option>
-              <option className="option" value="Robbie Meijer">
-                Robbie Meijer
-              </option>
-              <option className="option" value="Rianna Vos">
-                Rianna Vos
-              </option>
-              <option className="option" value="Ronald Peters">
-                Ronald Peters
-              </option>
-              <option className="option" value="Hanna van Leeuwen">
-                Hanna van Leeuwen
-              </option>
-            </select>
-            <div>
-              <button>Assign to me</button>
-            </div>
-          </div>
-          <div>
-            <label htmlFor="reporter">Reporter</label>
-            <input id="reporter" type="text" value={reporter} readOnly />
-          </div>
-          <div>
-            <button onClick={onSaveTicket}>Create</button>
-            <button>Cancel</button>
-          </div>
-        </form>
-      );
-    }
-
-    return 'Please log in to create a ticket.';
-  };
-
-  return ticketSubmitted ? 'Thank you for submitting' : renderTicketForm();
+  return (
+    <form onSubmit={onFormSubmit}>
+      <h4>Create Issue</h4>
+      <div>
+        <label htmlFor="issuetype">Issue Type*</label>
+        <select onChange={setFormValue} id="issuetype" required>
+          <option className="option" defaultValue={issuetype}>
+            Select an issue type
+          </option>
+          <option className="option" value="bug">
+            Bug
+          </option>
+          <option className="option" value="feature request">
+            Feature Request
+          </option>
+          <option className="option" value="how to">
+            How To
+          </option>
+          <option className="option" value="technical issue">
+            Technical Issue
+          </option>
+        </select>
+      </div>
+      <div>
+        <label htmlFor="summary">Summary*</label>
+        <input onChange={setFormValue} id="summary" type="text" required />
+      </div>
+      <div>
+        <label htmlFor="description">Description</label>
+        <textarea
+          onChange={setFormValue}
+          onBlur={() => {
+            setDate(CreateCurrentDateAndTime.date());
+            setTime(CreateCurrentDateAndTime.time());
+          }}
+          id="description"
+          rows="5"
+          cols="33"
+          required
+        ></textarea>
+      </div>
+      <div>
+        <label htmlFor="assignee">Assignee</label>
+        <select onChange={setFormValue} id="assignee">
+          <option className="option" defaultValue={assignee}>
+            Support
+          </option>
+          <option className="option" value="Robbie Meijer">
+            Robbie Meijer
+          </option>
+          <option className="option" value="Rianna Vos">
+            Rianna Vos
+          </option>
+          <option className="option" value="Ronald Peters">
+            Ronald Peters
+          </option>
+          <option className="option" value="Hanna van Leeuwen">
+            Hanna van Leeuwen
+          </option>
+        </select>
+        <div>
+          <button>Assign to me</button>
+        </div>
+      </div>
+      <div>
+        <label htmlFor="reporter">Reporter</label>
+        {/* <input id="reporter" type="text" value={reporter} readOnly /> */}
+        <input id="reporter" type="text" value="" readOnly />
+      </div>
+      <div>
+        <button onClick={onSaveTicket}>Create</button>
+        <button>Cancel</button>
+      </div>
+    </form>
+  );
 };
 
 export default CreateTicket;

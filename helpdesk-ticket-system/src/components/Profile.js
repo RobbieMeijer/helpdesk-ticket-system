@@ -7,20 +7,24 @@ const Profile = () => {
   // const { user, isAuthenticated } = useAuth0();
 
   // state
+  const [user, setUser] = useState(null);
   const [fullname, setFullname] = useState();
 
   //easybase hook
   const { isUserSignedIn, getUserAttributes } = useEasybase();
 
-  const getUser = async () => {
-    const fullname = await getUserAttributes().userID();
+  const getUserData = async () => {
+    const userData = await getUserAttributes();
 
-    // setFullname(fullname);
-    console.log('user: ', fullname);
+    setUser(userData);
+    setFullname(userData.fullName);
+
+    console.log('userData: ', userData);
   };
 
   useEffect(() => {
-    getUser();
+    getUserData();
+    console.log('user: ', user);
   }, []);
 
   const renderProfileContent = () => {
@@ -40,8 +44,8 @@ const Profile = () => {
       // </div>
       <div>
         {/* <img src={user.picture} alt={user.name} /> */}
-        <h2>{fullname}</h2>
-        <h2>hello</h2>
+        {/* <h2>{fullname}</h2> */}
+        <h2>Hello {fullname}</h2>
         {/* <p>e-mail: {user.email}</p> */}
         {/* <p>updated at: {user.updated_at}</p> */}
       </div>

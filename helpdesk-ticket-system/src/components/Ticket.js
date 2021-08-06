@@ -12,6 +12,7 @@ const Ticket = (props) => {
     reporter,
     assignee,
     status,
+    userid,
   } = props;
 
   // state
@@ -30,21 +31,21 @@ const Ticket = (props) => {
   // easybase hook
   const { db } = useEasybase();
 
-  const mounted = async () => {
+  const getCommentsData = async () => {
     // getting the easybase table data: comments linked to current ticket
-    const ebData = await db('COMMENTS') // FROM table
+    const commentsData = await db('COMMENTS') // FROM table
       .return() // SELECT * column statement
       .where({ comment_ticketid: ticketid }) // WHERE condition statement
       .orderBy({ by: 'date' }, { by: 'time' }) // ORDER BY statement
       .all(); // execute queries returning all records true to condition
 
     // save requested data to the easybaseData state
-    setComments(ebData);
+    setComments(commentsData);
   };
 
   useEffect(() => {
     // get the data from easybase when component is rendered
-    mounted();
+    getCommentsData();
 
     // reset commentDeleted and commentAdded
     setCommentDeleted(false);
@@ -148,7 +149,11 @@ const Ticket = (props) => {
             <h2>Comments</h2>
             {renderCommentList}
           </section>
-          <AddComment ticketid={ticketid} onAddComment={onAddComment} />
+          <AddComment
+            userid={userid}
+            ticketid={ticketid}
+            onAddComment={onAddComment}
+          />
         </main>
         <aside>
           <section>

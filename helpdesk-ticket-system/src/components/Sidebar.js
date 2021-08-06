@@ -15,9 +15,9 @@ const Sidebar = () => {
       <nav>
         <ul>
           {/* <li>{isAuthenticated ? <LogoutButton /> : <LoginButton />}</li> */}
-          <li>
+          {/* <li>
             <SignOutButton />
-          </li>
+          </li> */}
           <li>
             <NavigationLink href="/dashboard">Dashboard</NavigationLink>
           </li>

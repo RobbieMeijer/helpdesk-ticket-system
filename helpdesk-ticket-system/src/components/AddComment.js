@@ -6,7 +6,7 @@ import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
 
 const AddComment = (props) => {
   // get ticket data
-  const { ticketid, onAddComment } = props;
+  const { ticketid, onAddComment, userid } = props;
 
   // state
   const [commentid, setCommentid] = useState();
@@ -17,11 +17,14 @@ const AddComment = (props) => {
   const [comment_ticketid, setComment_ticketid] = useState(null);
   const [commentAdded, setCommentAdded] = useState(false);
 
+  // user state
+  const [user, setUser] = useState({});
+
   // easybase hook
   const { db } = useEasybase();
 
   // auth0 hook
-  const { user } = useAuth0();
+  // const { user } = useAuth0();
 
   // useRef
   const textInput = useRef(null);

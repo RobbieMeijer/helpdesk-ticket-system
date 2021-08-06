@@ -4,7 +4,7 @@ import Ticket from './Ticket';
 
 const TicketList = () => {
   // easybase stateful data
-  const [easybaseData, setEasybaseData] = useState([]);
+  const [ticketList, setTicketList] = useState([]);
 
   // to do: time remaining state stuff for tickets
   const [timeUntilDeadline, setTimeUntilDeadline] = useState('');
@@ -16,26 +16,36 @@ const TicketList = () => {
   const [issuetype, setIssuetype] = useState('');
   const [summary, setSummary] = useState('');
   const [description, setDescription] = useState('');
-  const [reporter, setReporter] = useState('');
   const [assignee, setAssignee] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [status, setStatus] = useState('');
 
+  // user state
+  const [userid, setUserid] = useState(null);
+  const [fullname, setFullname] = useState();
+
   // easybase hook
-  const { db } = useEasybase();
+  const { getUserAttributes, db } = useEasybase();
 
-  // getting the easybase table data
-  const mounted = async () => {
-    const ebData = await db('TICKETLIST').return().limit(20).all();
+  // getting tickets data
+  const getTicketListData = async (user) => {
+    // 1 get user data
+    const userData = await getUserAttributes();
 
-    // storing table data to state
-    setEasybaseData(ebData);
+    // 2 get ticketlist linked to this user
+    const ticketListData = await db('TICKETLIST') // FROM table
+      .return() // SELECT * column statement
+      .where({ userID: userData.userID }) // WHERE condition statement
+      .limit(20) // limit the returned amount
+      .all(); // execute queries returning all records true to condition
+
+    setUserid(userData.userID);
+    setTicketList(ticketListData);
   };
 
   useEffect(() => {
-    // get the data from easybase when component is rendered
-    mounted();
+    getTicketListData();
   }, []);
 
   // define deadline by priority category
@@ -99,11 +109,11 @@ const TicketList = () => {
     issuetype,
     summary,
     description,
-    reporter,
     assignee,
     date,
     time,
-    status
+    status,
+    userid
   ) => {
     setTicketClicked(true);
     setTicketid(ticketid);
@@ -111,11 +121,11 @@ const TicketList = () => {
     setIssuetype(issuetype);
     setSummary(summary);
     setDescription(description);
-    setReporter(reporter);
     setAssignee(assignee);
     setDate(date);
     setTime(time);
     setStatus(status);
+    setUserid(userid);
 
     console.log('ticketClicked: ', ticketClicked);
     console.log('ticketid from list: ', ticketid);
@@ -128,11 +138,11 @@ const TicketList = () => {
     issuetype,
     summary,
     description,
-    reporter,
     assignee,
     date,
     time,
-    status
+    status,
+    userid
   ) => {
     return (
       <Ticket
@@ -141,24 +151,23 @@ const TicketList = () => {
         issuetype={issuetype}
         summary={summary}
         description={description}
-        reporter={reporter}
         assignee={assignee}
         date={date}
         time={time}
         status={status}
+        userid={userid}
       />
     );
   };
 
   // getting all ticket data
-  const getTicketList = easybaseData.map((ticket) => {
+  const getTicketList = ticketList.map((ticket) => {
     const {
       ticketid,
       priority,
       issuetype,
       summary,
       description,
-      reporter,
       assignee,
       date,
       time,
@@ -175,11 +184,11 @@ const TicketList = () => {
             issuetype,
             summary,
             description,
-            reporter,
             assignee,
             date,
             time,
-            status
+            status,
+            userid
           )
         }
       >
@@ -187,7 +196,6 @@ const TicketList = () => {
         <td>{issuetype}</td>
         <td>{ticketid}</td>
         <td>{summary}</td>
-        <td>{reporter}</td>
         <td>{assignee}</td>
         <td>{`${formattedDate(date)} at ${time}`}</td>
         <td>{/* {updated} */}</td>
@@ -199,6 +207,8 @@ const TicketList = () => {
 
   // rendering the ticket list data
   const renderTicketList = () => {
+    console.log('ticketList: ', ticketList);
+
     return (
       <div>
         <table>
@@ -208,7 +218,6 @@ const TicketList = () => {
               <th>Issue Type</th>
               <th>Ticket nr.</th>
               <th>Summary</th>
-              <th>Reporter</th>
               <th>Assignee</th>
               <th>Created</th>
               <th>Updated</th>
@@ -222,7 +231,7 @@ const TicketList = () => {
     );
   };
 
-  return !ticketClicked
+  return !ticketClicked && ticketList !== []
     ? renderTicketList()
     : renderTicket(
         ticketid,
@@ -230,11 +239,11 @@ const TicketList = () => {
         issuetype,
         summary,
         description,
-        reporter,
         assignee,
         date,
         time,
-        status
+        status,
+        userid
       );
 };
 
