@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useEasybase } from 'easybase-react';
 import './Authentication.css';
 
+// if signed in, show child components
 const Authentication = ({ children }) => {
   // easybase hooks
   const { isUserSignedIn, signIn, signOut, signUp } = useEasybase();
@@ -11,27 +12,39 @@ const Authentication = ({ children }) => {
   const [fullnameValue, setFullnameValue] = useState('');
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
-  const [signInFields, setSignInFields] = useState(true);
+  const [logInFields, setLogInFields] = useState(true);
   const [signUpFields, setSignUpFields] = useState(false);
 
   const onAuthButtonClick = () => {
     if (isUserSignedIn()) {
       signOut();
     } else {
-      setSignInFields(true);
+      // change log in state to active and sign up state to inactive
+      // so only depending input fields are rendered
+      setLogInFields(true);
       setSignUpFields(false);
+
+      // open dialog form
       setDialogOpen(true);
     }
   };
 
   const onSignUpButtonClick = () => {
-    setSignInFields(false);
+    // change sign up state to active and log in state to inactive
+    // so only depending input fields are rendered
+    setLogInFields(false);
     setSignUpFields(true);
+
+    // open dialog form
     setDialogOpen(true);
   };
 
-  const onSignInClick = async () => {
+  const onLogInClick = async () => {
+    // get sign in data back
     const res = await signIn(emailValue, passwordValue);
+
+    // if promise response is ok (stored in db), close dialoge form
+    // and empty the mail and password state from input fields
     if (res.success) {
       setDialogOpen(false);
       setEmailValue('');
@@ -40,36 +53,50 @@ const Authentication = ({ children }) => {
   };
 
   const onSignUpClick = async () => {
+    // create userID
     const userIDValue = `uid${new Date().getTime()}`;
 
-    const res = await signUp(emailValue, passwordValue, {
-      userID: userIDValue,
-      fullName: fullnameValue,
-      email: emailValue,
-    });
+    // fullname must not be empty
+    if (fullnameValue !== '') {
+      // send sign up data to db
+      const res = await signUp(
+        emailValue,
+        passwordValue, // required by eb
+        {
+          // optional
+          userID: userIDValue,
+          fullName: fullnameValue,
+          email: emailValue,
+        }
+      );
 
-    if (res.success) {
-      await signIn(emailValue, passwordValue);
-      setDialogOpen('');
-      setEmailValue('');
-      setPasswordValue('');
+      // if promise response is ok (stored in db), sign in
+      if (res.success) {
+        await signIn(emailValue, passwordValue);
+        setDialogOpen('');
+        setEmailValue('');
+        setPasswordValue('');
+      }
     }
   };
 
+  // id user signed in show log out button
   if (isUserSignedIn()) {
     return (
       <>
         <button onClick={onAuthButtonClick} className="authButton">
-          Sign Out
+          Log Out
         </button>
         {children}
       </>
     );
-  } else
+  } // if user is nog signed in, show log in, log out buttons and
+  // render the log in and sign up form
+  else
     return (
       <>
         <button onClick={onAuthButtonClick} className="authButton">
-          Sign In
+          Log In
         </button>
         <button
           onClick={onSignUpButtonClick}
@@ -83,7 +110,7 @@ const Authentication = ({ children }) => {
           style={dialogOpen ? { opacity: 1, visibility: 'visible' } : {}}
         >
           <div>
-            {!signInFields && signUpFields ? (
+            {!logInFields && signUpFields ? (
               <input
                 type="text"
                 placeholder="Full name"
@@ -107,8 +134,8 @@ const Authentication = ({ children }) => {
               required
             />
             <div>
-              {signInFields && !signUpFields ? (
-                <button onClick={onSignInClick}>Sign In</button>
+              {logInFields && !signUpFields ? (
+                <button onClick={onLogInClick}>Log In</button>
               ) : (
                 <button onClick={onSignUpClick}>Sign Up</button>
               )}
