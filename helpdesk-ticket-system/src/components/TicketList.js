@@ -131,18 +131,7 @@ const TicketList = () => {
   };
 
   // render ticket detail data
-  const renderTicket = (
-    ticketid,
-    priority,
-    issuetype,
-    summary,
-    description,
-    assignee,
-    date,
-    time,
-    status,
-    userid
-  ) => {
+  const renderTicket = (...ticketFields) => {
     return (
       <Ticket
         ticketid={ticketid}
