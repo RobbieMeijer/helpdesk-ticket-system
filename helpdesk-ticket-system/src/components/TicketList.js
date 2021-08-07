@@ -23,23 +23,33 @@ const TicketList = () => {
 
   // user state
   const [userid, setUserid] = useState(null);
-  const [fullname, setFullname] = useState();
 
   // easybase hook
   const { getUserAttributes, db } = useEasybase();
 
   // getting tickets data
-  const getTicketListData = async (user) => {
+  const getTicketListData = async () => {
     // 1 get user data
     const userData = await getUserAttributes();
 
-    // 2 get ticketlist linked to this user
-    const ticketListData = await db('TICKETLIST') // FROM table
-      .return() // SELECT * column statement
-      .where({ userID: userData.userID }) // WHERE condition statement
-      .limit(20) // limit the returned amount
-      .all(); // execute queries returning all records true to condition
+    // 2 initial ticket list data not set
+    let ticketListData;
 
+    // 3 get ticketlist based on user role
+    if (userData.userRole === 'support') {
+      ticketListData = await db('TICKETLIST') // FROM table
+        .return() // SELECT * column statement
+        .limit(20) // limit the returned amount
+        .all(); // execute queries returning all records true to condition
+    } else {
+      ticketListData = await db('TICKETLIST') // FROM table
+        .return() // SELECT * column statement
+        .where({ userID: userData.userID }) // WHERE condition statement
+        .limit(20) // limit the returned amount
+        .all(); // execute queries returning all records true to condition
+    }
+
+    // 4 store data to state
     setUserid(userData.userID);
     setTicketList(ticketListData);
   };
@@ -102,19 +112,8 @@ const TicketList = () => {
 
   const formattedDate = (date) => (date !== null ? date.slice(0, 10) : '');
 
-  // set ticket details to state, passing through data to single Ticket component
-  const setTicketState = (
-    ticketid,
-    priority,
-    issuetype,
-    summary,
-    description,
-    assignee,
-    date,
-    time,
-    status,
-    userid
-  ) => {
+  // save ticket details to state, passing through data to single Ticket component
+  const setTicketState = (...ticketFields) => {
     setTicketClicked(true);
     setTicketid(ticketid);
     setPriority(priority);
