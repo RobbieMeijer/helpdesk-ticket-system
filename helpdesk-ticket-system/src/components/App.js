@@ -4,12 +4,9 @@ import Route from './Route';
 import Sidebar from './Sidebar';
 import TicketList from './TicketList';
 import Customers from './Customers';
-import Reports from './Reports';
-import KnowledgeBase from './KnowledgeBase';
 import Search from './Search';
 import CreateTicket from './CreateTicket';
 import Profile from './Profile';
-import Ticket from './Ticket';
 
 const App = () => {
   return (
