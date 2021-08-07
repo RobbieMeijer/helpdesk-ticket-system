@@ -44,14 +44,15 @@ const Ticket = (props) => {
   };
 
   useEffect(() => {
+    console.log('ticket component rendered');
+    console.log('props: ', props);
+
     // get the data from easybase when component is rendered
     getCommentsData();
 
     // reset commentDeleted and commentAdded
     setCommentDeleted(false);
     setCommentAdded(false);
-
-    console.log('ticket component rendered');
   }, [commentDeleted, commentAdded]); // rerender ticket when a comment is deleted or added
 
   const editComment = (key) => {

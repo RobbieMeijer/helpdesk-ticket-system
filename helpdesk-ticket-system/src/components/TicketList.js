@@ -114,6 +114,21 @@ const TicketList = () => {
 
   // save ticket details to state, passing through data to single Ticket component
   const setTicketState = (...ticketFields) => {
+    console.log('ticketFields from setTicketState: ', ticketFields);
+
+    const [
+      ticketid,
+      priority,
+      issuetype,
+      summary,
+      description,
+      assignee,
+      date,
+      time,
+      status,
+      userid,
+    ] = ticketFields;
+
     setTicketClicked(true);
     setTicketid(ticketid);
     setPriority(priority);
@@ -131,7 +146,7 @@ const TicketList = () => {
   };
 
   // render ticket detail data
-  const renderTicket = (...ticketFields) => {
+  const renderTicket = () => {
     return (
       <Ticket
         ticketid={ticketid}
