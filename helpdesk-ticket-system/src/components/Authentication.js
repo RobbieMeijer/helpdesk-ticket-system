@@ -55,6 +55,8 @@ const Authentication = ({ children }) => {
   const onSignUpClick = async () => {
     // create userID
     const userIDValue = `uid${new Date().getTime()}`;
+    // create userRole
+    const userRole = 'customer';
 
     // fullname must not be empty
     if (fullnameValue !== '') {
@@ -67,6 +69,7 @@ const Authentication = ({ children }) => {
           userID: userIDValue,
           fullName: fullnameValue,
           email: emailValue,
+          userRole,
         }
       );
 
