@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useEasybase } from 'easybase-react';
 import AddComment from './AddComment';
 
+import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
+
 const Ticket = (props) => {
   // deconstruct ticket details from clicked ticket parent component
   const {
@@ -15,8 +17,10 @@ const Ticket = (props) => {
     reporter,
   } = props;
 
-  // state
+  // all comments state
   const [comments, setComments] = useState([]);
+
+  // single comment state
   const [comment, setComment] = useState({});
   const [updatedCommentContent, setUpdatedCommentContent] = useState('');
   const [commentDateUpdated, setCommentDateUpdated] = useState('');
@@ -24,14 +28,17 @@ const Ticket = (props) => {
   const [commentEditable, setCommentEditable] = useState(false);
   const [commentDeleted, setCommentDeleted] = useState(false);
   const [commentAdded, setCommentAdded] = useState(false);
+  const [commentDate, setCommentDate] = useState('');
+  const [commentTime, setCommentTime] = useState('');
 
-  // user state
+  // current user logged in state
+  const [currentUserId, setCurrentUserId] = useState('');
 
   //ref
   // const currentTextarea = useRef(null);
 
   // easybase hook
-  const { db } = useEasybase();
+  const { getUserAttributes, db } = useEasybase();
 
   const getCommentsData = async () => {
     // getting the data: comments linked to current ticket
@@ -45,39 +52,51 @@ const Ticket = (props) => {
     setComments(commentsData);
   };
 
+  // need to be retrieved from redux later on
+  const getUserData = async () => {
+    const userData = await getUserAttributes();
+
+    setCurrentUserId(userData.userID);
+  };
+
   useEffect(() => {
     console.log('ticket component rendered');
     console.log('comments: ', comments);
 
     // get the data from easybase when component is rendered
     getCommentsData();
+    getUserData();
 
     // reset commentDeleted and commentAdded
     setCommentDeleted(false);
     setCommentAdded(false);
   }, [commentDeleted, commentAdded]); // rerender ticket when a comment is deleted or added
 
-  const editComment = (key) => {
+  const editComment = (commentKey) => {
     // must be refactored with useRef
-    const textarea = document.getElementById(key);
+    const textarea = document.getElementById(commentKey);
     textarea.disabled = false;
   };
 
-  const saveComment = async (key) => {
+  const saveComment = async (commentKey) => {
     // must be refactored with useRef
-    const textarea = document.getElementById(key);
+    const textarea = document.getElementById(commentKey);
     textarea.disabled = true;
 
     await db('COMMENTS') // FROM table comments
-      .where({ _key: key }) // WHERE condition current comment record
-      .set({ content: updatedCommentContent }) // change column value of record
+      .where({ _key: commentKey }) // WHERE condition current comment record
+      .set({
+        content: updatedCommentContent,
+        date: commentDate,
+        time: commentTime,
+      }) // change columns value of record
       .one(); // execute queries for current record
   };
 
-  const deleteComment = async (key) => {
+  const deleteComment = async (commentKey) => {
     await db('COMMENTS') // FROM table comments
       .delete() // DELETE
-      .where({ _key: key }) // WHERE condition deleting record with the current key
+      .where({ _key: commentKey }) // WHERE condition deleting record with the current key
       .one(); // execute queries for current record
 
     // change state commentDeleted to true, so the ticket component will
@@ -89,9 +108,42 @@ const Ticket = (props) => {
     setCommentAdded(true);
   };
 
+  const renderCommentButtons = (commentKey, comment_userid) => {
+    // if comment user id equals current logged in user id
+    // then render these buttons
+    if (comment_userid === currentUserId) {
+      return (
+        <>
+          <button
+            onClick={() => {
+              editComment(commentKey);
+            }}
+          >
+            Edit
+          </button>
+          <button
+            onClick={(e) => {
+              saveComment(commentKey);
+            }}
+          >
+            Save
+          </button>
+          <button
+            onClick={() => {
+              deleteComment(commentKey);
+            }}
+          >
+            Delete
+          </button>
+        </>
+      );
+    }
+  };
+
   // render all comment data linked to ticket from state
   const renderCommentList = comments.map((comment) => {
-    const { content, reporter, _key } = comment;
+    // get the comment fields data of single comment
+    const { content, reporter, userid, _key } = comment;
 
     return (
       <article key={_key}>
@@ -107,28 +159,12 @@ const Ticket = (props) => {
             // slight delay in changing the comment content state
             setTimeout(setUpdatedCommentContent(e.target.value), 800);
           }}
+          onBlur={() => {
+            setCommentDate(CreateCurrentDateAndTime.date());
+            setCommentTime(CreateCurrentDateAndTime.time());
+          }}
         ></textarea>
-        <button
-          onClick={() => {
-            editComment(_key);
-          }}
-        >
-          Edit
-        </button>
-        <button
-          onClick={(e) => {
-            saveComment(_key);
-          }}
-        >
-          Save
-        </button>
-        <button
-          onClick={() => {
-            deleteComment(_key);
-          }}
-        >
-          Delete
-        </button>
+        {renderCommentButtons(_key, userid)}
       </article>
     );
   });
