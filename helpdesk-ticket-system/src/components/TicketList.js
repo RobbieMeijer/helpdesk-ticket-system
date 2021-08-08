@@ -20,8 +20,6 @@ const TicketList = () => {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [status, setStatus] = useState('');
-
-  // user state single ticket, setting state for clicked ticket
   const [userid, setUserid] = useState('');
   const [reporter, setReporter] = useState('');
 

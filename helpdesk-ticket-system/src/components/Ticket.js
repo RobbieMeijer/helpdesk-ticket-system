@@ -3,7 +3,7 @@ import { useEasybase } from 'easybase-react';
 import AddComment from './AddComment';
 
 const Ticket = (props) => {
-  // deconstruct ticket details from parent props object
+  // deconstruct ticket details from clicked ticket parent component
   const {
     ticketid,
     priority,
@@ -31,7 +31,7 @@ const Ticket = (props) => {
   // const currentTextarea = useRef(null);
 
   // easybase hook
-  const { getUserAttributes, db } = useEasybase();
+  const { db } = useEasybase();
 
   const getCommentsData = async () => {
     // getting the data: comments linked to current ticket
@@ -47,6 +47,7 @@ const Ticket = (props) => {
 
   useEffect(() => {
     console.log('ticket component rendered');
+    console.log('comments: ', comments);
 
     // get the data from easybase when component is rendered
     getCommentsData();
@@ -151,8 +152,7 @@ const Ticket = (props) => {
             {renderCommentList}
           </section>
           <AddComment
-            userid={userid}
-            ticketid={ticketid}
+            ticketid={ticketid} // ticket id from this ticket
             onAddComment={onAddComment}
           />
         </main>

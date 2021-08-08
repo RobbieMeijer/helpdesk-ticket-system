@@ -1,40 +1,42 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useEasybase } from 'easybase-react';
-import { useAuth0 } from '@auth0/auth0-react';
 
 import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
 
 const AddComment = (props) => {
-  // get ticket data
-  const { ticketid, onAddComment, userid } = props;
+  // get ticket data from parent component
+  const { ticketid, onAddComment } = props;
 
-  // ticket state
+  // add single comment state
   const [commentid, setCommentid] = useState();
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [comment_ticketid, setComment_ticketid] = useState('');
   const [commentAdded, setCommentAdded] = useState(false);
-
-  // user state
-  const [user, setUser] = useState({});
-  const [fullname, setFullname] = useState('');
+  const [reporter, setReporter] = useState('');
+  const [userid, setUserid] = useState('');
 
   // easybase hook
-  const { db } = useEasybase();
-
-  // auth0 hook
-  // const { user } = useAuth0();
+  const { getUserAttributes, db } = useEasybase();
 
   // useRef
   const textInput = useRef('');
 
+  // get user data, must be retrieved from redux later on
+  const getUserData = async () => {
+    const userData = await getUserAttributes();
+
+    setUserid(userData.userID);
+    setReporter(userData.fullName);
+  };
+
   useEffect(() => {
     console.log('AddComment component rendered');
 
+    getUserData();
     setCommentid(`cmmnt${new Date().getTime()}`);
     setComment_ticketid(ticketid);
-    setFullname();
     resetTextInput();
     setContent('');
     setCommentAdded(false);
@@ -55,9 +57,10 @@ const AddComment = (props) => {
         content,
         date,
         time,
-        comment_ticketid,
         commentid,
         userid,
+        comment_ticketid,
+        reporter,
       })
       .one(); // execute for one record
 
