@@ -25,14 +25,24 @@ const Ticket = (props) => {
   const [commentDeleted, setCommentDeleted] = useState(false);
   const [commentAdded, setCommentAdded] = useState(false);
 
+  // user state
+  const [user, setUser] = useState({});
+  const [fullname, setFullname] = useState('');
+
   //ref
   // const currentTextarea = useRef(null);
 
   // easybase hook
-  const { db } = useEasybase();
+  const { getUserAttributes, db } = useEasybase();
 
+  // user data must be stored in the redux store later on
   const getCommentsData = async () => {
-    // getting the easybase table data: comments linked to current ticket
+    // getting user data
+    const userData = await getUserAttributes();
+    setUser(userData);
+    setFullname(fullname);
+
+    // getting the data: comments linked to current ticket
     const commentsData = await db('COMMENTS') // FROM table
       .return() // SELECT * column statement
       .where({ comment_ticketid: ticketid }) // WHERE condition statement
@@ -93,7 +103,7 @@ const Ticket = (props) => {
 
     return (
       <article key={_key}>
-        <h3>{reporter_name} .. minute(s) ago</h3>
+        <h3>{} .. minute(s) ago</h3>
         <textarea
           // ref={currentTextarea}
           name="commentContent"
@@ -141,7 +151,7 @@ const Ticket = (props) => {
             <h1>{summary}</h1>
             <small>Ticket ID: {ticketid}</small>
             <article>
-              <h2>{reporter} raised this request</h2>
+              <h2>{fullname} raised this request</h2>
               <h3>Description</h3>
               <p>{description}</p>
             </article>

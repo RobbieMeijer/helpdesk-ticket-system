@@ -8,17 +8,17 @@ const AddComment = (props) => {
   // get ticket data
   const { ticketid, onAddComment, userid } = props;
 
-  // state
+  // ticket state
   const [commentid, setCommentid] = useState();
   const [content, setContent] = useState('');
-  const [reporter_name, setReporter_name] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const [comment_ticketid, setComment_ticketid] = useState(null);
+  const [comment_ticketid, setComment_ticketid] = useState('');
   const [commentAdded, setCommentAdded] = useState(false);
 
   // user state
   const [user, setUser] = useState({});
+  const [fullname, setFullname] = useState('');
 
   // easybase hook
   const { db } = useEasybase();
@@ -27,16 +27,17 @@ const AddComment = (props) => {
   // const { user } = useAuth0();
 
   // useRef
-  const textInput = useRef(null);
+  const textInput = useRef('');
 
   useEffect(() => {
+    console.log('AddComment component rendered');
+
     setCommentid(`cmmnt${new Date().getTime()}`);
     setComment_ticketid(ticketid);
-    setReporter_name(user.name);
+    setFullname();
     resetTextInput();
     setContent('');
     setCommentAdded(false);
-    console.log('AddComment component rendered');
   }, [commentAdded]);
 
   const resetTextInput = () => {
@@ -52,11 +53,11 @@ const AddComment = (props) => {
       .insert({
         // INSERT INTO: the values into the columns
         content,
-        reporter_name,
         date,
         time,
         comment_ticketid,
         commentid,
+        userid,
       })
       .one(); // execute for one record
 
