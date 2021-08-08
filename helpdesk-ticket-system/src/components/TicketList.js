@@ -21,15 +21,16 @@ const TicketList = () => {
   const [time, setTime] = useState('');
   const [status, setStatus] = useState('');
 
-  // user state
-  const [userid, setUserid] = useState(null);
+  // user state single ticket, setting state for clicked ticket
+  const [userid, setUserid] = useState('');
+  const [reporter, setReporter] = useState('');
 
   // easybase hook
   const { getUserAttributes, db } = useEasybase();
 
   // getting tickets data
   const getTicketListData = async () => {
-    // 1 get user data
+    // 1 get current user data for passing to the Ticket component
     const userData = await getUserAttributes();
 
     // 2 initial ticket list data not set
@@ -50,7 +51,6 @@ const TicketList = () => {
     }
 
     // 4 store data to state
-    setUserid(userData.userID);
     setTicketList(ticketListData);
   };
 
@@ -127,6 +127,7 @@ const TicketList = () => {
       time,
       status,
       userid,
+      reporter,
     ] = ticketFields;
 
     setTicketClicked(true);
@@ -140,6 +141,7 @@ const TicketList = () => {
     setTime(time);
     setStatus(status);
     setUserid(userid);
+    setReporter(reporter);
 
     console.log('ticketClicked: ', ticketClicked);
     console.log('ticketid from list: ', ticketid);
@@ -159,6 +161,7 @@ const TicketList = () => {
         time={time}
         status={status}
         userid={userid}
+        reporter={reporter}
       />
     );
   };
@@ -175,6 +178,8 @@ const TicketList = () => {
       date,
       time,
       status,
+      userid,
+      reporter,
     } = ticket;
 
     return (
@@ -191,7 +196,8 @@ const TicketList = () => {
             date,
             time,
             status,
-            userid
+            userid,
+            reporter
           )
         }
       >
@@ -246,7 +252,8 @@ const TicketList = () => {
         date,
         time,
         status,
-        userid
+        userid,
+        reporter
       );
 };
 

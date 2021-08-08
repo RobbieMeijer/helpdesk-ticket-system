@@ -9,10 +9,10 @@ const Ticket = (props) => {
     priority,
     summary,
     description,
-    reporter,
     assignee,
     status,
     userid,
+    reporter,
   } = props;
 
   // state
@@ -26,8 +26,6 @@ const Ticket = (props) => {
   const [commentAdded, setCommentAdded] = useState(false);
 
   // user state
-  const [user, setUser] = useState({});
-  const [fullname, setFullname] = useState('');
 
   //ref
   // const currentTextarea = useRef(null);
@@ -35,13 +33,7 @@ const Ticket = (props) => {
   // easybase hook
   const { getUserAttributes, db } = useEasybase();
 
-  // user data must be stored in the redux store later on
   const getCommentsData = async () => {
-    // getting user data
-    const userData = await getUserAttributes();
-    setUser(userData);
-    setFullname(fullname);
-
     // getting the data: comments linked to current ticket
     const commentsData = await db('COMMENTS') // FROM table
       .return() // SELECT * column statement
@@ -49,13 +41,12 @@ const Ticket = (props) => {
       .orderBy({ by: 'date' }, { by: 'time' }) // ORDER BY statement
       .all(); // execute queries returning all records true to condition
 
-    // save requested data to the easybaseData state
+    // save requested data to state
     setComments(commentsData);
   };
 
   useEffect(() => {
     console.log('ticket component rendered');
-    console.log('props: ', props);
 
     // get the data from easybase when component is rendered
     getCommentsData();
@@ -99,13 +90,12 @@ const Ticket = (props) => {
 
   // render all comment data linked to ticket from state
   const renderCommentList = comments.map((comment) => {
-    const { content, reporter_name, _key } = comment;
+    const { content, reporter, _key } = comment;
 
     return (
       <article key={_key}>
-        <h3>{} .. minute(s) ago</h3>
+        <h3>{reporter} .. minute(s) ago</h3>
         <textarea
-          // ref={currentTextarea}
           name="commentContent"
           id={_key}
           cols="60"
@@ -151,7 +141,7 @@ const Ticket = (props) => {
             <h1>{summary}</h1>
             <small>Ticket ID: {ticketid}</small>
             <article>
-              <h2>{fullname} raised this request</h2>
+              <h2>{reporter} raised this request</h2>
               <h3>Description</h3>
               <p>{description}</p>
             </article>
