@@ -1,23 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useEasybase } from 'easybase-react';
+
 import NavigationLink from './NavigationLink';
-import { useAuth0 } from '@auth0/auth0-react';
-
-// import LoginButton from './LoginButton';
-// import LogoutButton from './LogoutButton';
-
-import SignOutButton from './SignOutButton';
 
 const Sidebar = () => {
-  const { isAuthenticated } = useAuth0();
+  // current user state
+  const [fullname, setFullname] = useState('');
+
+  // easybase hooks
+  const { getUserAttributes } = useEasybase();
+
+  // user date must be retrieved from redux later on
+  const getUserData = async () => {
+    const userData = await getUserAttributes();
+
+    setFullname(userData.fullName);
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   return (
     <div className="sidebar">
+      <p>{fullname}</p>
       <nav>
         <ul>
-          {/* <li>{isAuthenticated ? <LogoutButton /> : <LoginButton />}</li> */}
-          {/* <li>
-            <SignOutButton />
-          </li> */}
           <li>
             <NavigationLink href="/dashboard">Dashboard</NavigationLink>
           </li>
