@@ -117,6 +117,7 @@ const CreateTicket = () => {
         date,
         time,
         userID: user.userID,
+        reporter: fullname,
       })
       .one(); // execute for one record
 
