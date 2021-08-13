@@ -8,14 +8,33 @@ import Search from './Search';
 import CreateTicket from './CreateTicket';
 import Profile from './Profile';
 
+/** @jsx jsx */ /** @jsxRuntime classic */ import {
+  jsx,
+  css,
+} from '@emotion/react';
+
 const App = () => {
   return (
-    <div className="">
-      <div className="row">
-        <div className="col-2">
+    <div
+      css={css`
+        margin: 0;
+        padding: 1rem;
+      `}
+    >
+      <div
+        css={css`
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
+        `}
+      >
+        <aside
+          css={css`
+            max-width: 200px;
+          `}
+        >
           <Sidebar />
-        </div>
-        <div className="col-10">
+        </aside>
+        <main>
           <Route path="/dashboard">
             <Dashboard />
           </Route>
@@ -34,7 +53,7 @@ const App = () => {
           <Route path="/search">
             <Search />
           </Route>
-        </div>
+        </main>
       </div>
     </div>
   );
