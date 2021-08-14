@@ -189,12 +189,7 @@ const CreateTicket = () => {
       return (
         <>
           <label htmlFor="assignee">Assignee</label>
-          <select
-            onChange={setFormValue}
-            id="assignee"
-            className="input"
-            ref={refAssignee}
-          >
+          <select onChange={setFormValue} id="assignee" ref={refAssignee}>
             <option className="option" defaultValue={assignee}>
               Support
             </option>
@@ -224,12 +219,7 @@ const CreateTicket = () => {
       <h4>Create Issue</h4>
       <div className="field">
         <label htmlFor="issuetype">Issue Type*</label>
-        <select
-          onChange={setFormValue}
-          id="issuetype"
-          className="input"
-          required
-        >
+        <select onChange={setFormValue} id="issuetype" required>
           <option className="option" defaultValue={issuetype}>
             Select an issue type
           </option>
@@ -249,18 +239,11 @@ const CreateTicket = () => {
       </div>
       <div className="field">
         <label htmlFor="summary">Summary*</label>
-        <input
-          className="input"
-          onChange={setFormValue}
-          id="summary"
-          type="text"
-          required
-        />
+        <input onChange={setFormValue} id="summary" type="text" required />
       </div>
       <div className="field">
         <label htmlFor="description">Description</label>
         <textarea
-          className="input"
           onChange={setFormValue}
           onBlur={() => {
             setDate(CreateCurrentDateAndTime.date());
@@ -277,13 +260,7 @@ const CreateTicket = () => {
       </div>
       <div className="field">
         <label htmlFor="reporter">Reporter</label>
-        <input
-          className="input"
-          id="reporter"
-          type="text"
-          value={fullname}
-          readOnly
-        />
+        <input id="reporter" type="text" value={fullname} readOnly />
       </div>
       <div>
         <button className="button" onClick={onSaveTicket}>

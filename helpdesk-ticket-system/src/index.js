@@ -55,30 +55,6 @@ ReactDOM.render(
           will-change: '';
         }
 
-        .input {
-          position: relative;
-          font-weight: 400;
-          font-style: normal;
-          display: inline-flex;
-          color: rgba(0, 0, 0, 0.87);
-          margin: 0;
-          max-width: 100%;
-          flex: 1 0 auto;
-          outline: 0;
-          text-align: left;
-          line-height: 1.21428571rem;
-          font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
-          padding: 0.67857143em 1rem;
-          background: #fff;
-          border: 1px solid rgba(34, 36, 38, 0.15);
-          color: rgba(0, 0, 0, 0.87);
-          border-radius: 0.28571429rem;
-          transition: border-color 0.1s ease;
-          transition: box-shadow 0.1s ease, border-color 0.1s ease;
-          transition: box-shadow 0.1s ease, border-color 0.1s ease;
-          box-shadow: none;
-        }
-
         .field {
           display: flex;
           align-items: baseline;
@@ -94,6 +70,33 @@ ReactDOM.render(
             font-size: 0.92857143rem;
             font-weight: 700;
             text-transform: none;
+          }
+
+          input,
+          .input,
+          select,
+          textarea {
+            position: relative;
+            font-weight: 400;
+            font-style: normal;
+            display: inline-flex;
+            color: rgba(0, 0, 0, 0.87);
+            margin: 0;
+            max-width: 100%;
+            flex: 1 0 auto;
+            outline: 0;
+            text-align: left;
+            line-height: 1.21428571rem;
+            font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            padding: 0.67857143em 1rem;
+            background: #fff;
+            border: 1px solid rgba(34, 36, 38, 0.15);
+            color: rgba(0, 0, 0, 0.87);
+            border-radius: 0.28571429rem;
+            transition: border-color 0.1s ease;
+            transition: box-shadow 0.1s ease, border-color 0.1s ease;
+            transition: box-shadow 0.1s ease, border-color 0.1s ease;
+            box-shadow: none;
           }
         }
       `}
