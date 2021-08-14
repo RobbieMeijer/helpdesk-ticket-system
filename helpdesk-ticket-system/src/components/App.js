@@ -13,7 +13,7 @@ import Profile from './Profile';
   css,
 } from '@emotion/react';
 
-const App = () => {
+const App = ({ children }) => {
   return (
     <div
       css={css`
