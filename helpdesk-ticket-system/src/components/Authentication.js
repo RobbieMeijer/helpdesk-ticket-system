@@ -1,6 +1,22 @@
 import React, { useState } from 'react';
 import { useEasybase } from 'easybase-react';
-import './Authentication.css';
+
+/** @jsx jsx */ /** @jsxRuntime classic */ import {
+  Global,
+  jsx,
+  css,
+} from '@emotion/react';
+
+// css variables
+const authButton = css`
+  position: absolute;
+  top: 10px;
+  right: 50px;
+`;
+
+const authInput = css`
+  margin-bottom: 0.75rem;
+`;
 
 // if signed in, show child components
 const Authentication = ({ children }) => {
@@ -87,7 +103,13 @@ const Authentication = ({ children }) => {
   if (isUserSignedIn()) {
     return (
       <>
-        <button onClick={onAuthButtonClick} className="authButton">
+        <button
+          className="button"
+          onClick={onAuthButtonClick}
+          css={css`
+            ${authButton}
+          `}
+        >
           Log Out
         </button>
         {children}
@@ -98,49 +120,96 @@ const Authentication = ({ children }) => {
   else
     return (
       <>
-        <button onClick={onAuthButtonClick} className="authButton">
+        <button
+          className="button"
+          onClick={onAuthButtonClick}
+          css={css`
+            ${authButton}
+          `}
+        >
           Log In
         </button>
         <button
+          className="button"
           onClick={onSignUpButtonClick}
-          className="authButton"
-          style={{ marginTop: '4rem' }}
+          css={css`
+            ${authButton}
+            margin-top: 3.25rem;
+          `}
+          style={{}}
         >
           Sign Up
         </button>
         <div
-          className="authDialog"
+          css={css`
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          `}
           style={dialogOpen ? { opacity: 1, visibility: 'visible' } : {}}
         >
-          <div>
+          <div
+            css={css`
+              padding: 1.75rem;
+              background-color: white;
+              display: flex;
+              flex-direction: column;
+              border-radius: 4px;
+            `}
+          >
             {!logInFields && signUpFields ? (
               <input
+                className="input"
                 type="text"
                 placeholder="Full name"
                 value={fullnameValue}
                 onChange={(e) => setFullnameValue(e.target.value)}
+                css={css`
+                  ${authInput}
+                `}
                 required
               />
             ) : null}
             <input
+              className="input"
               type="email"
               placeholder="email"
               value={emailValue}
               onChange={(e) => setEmailValue(e.target.value)}
+              css={css`
+                ${authInput}
+              `}
               required
             />
             <input
+              className="input"
               type="password"
               placeholder="Password"
               value={passwordValue}
               onChange={(e) => setPasswordValue(e.target.value)}
+              css={css`
+                ${authInput}
+              `}
               required
             />
             <div>
               {logInFields && !signUpFields ? (
-                <button onClick={onLogInClick}>Log In</button>
+                <button className="button" onClick={onLogInClick}>
+                  Log In
+                </button>
               ) : (
-                <button onClick={onSignUpClick}>Sign Up</button>
+                <button className="button" onClick={onSignUpClick}>
+                  Sign Up
+                </button>
               )}
             </div>
           </div>

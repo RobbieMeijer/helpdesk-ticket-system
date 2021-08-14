@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import { useDispatch } from 'react-redux';
 import { useEasybase } from 'easybase-react';
-
 import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
 
 const CreateTicket = () => {
@@ -190,7 +189,12 @@ const CreateTicket = () => {
       return (
         <>
           <label htmlFor="assignee">Assignee</label>
-          <select onChange={setFormValue} id="assignee" ref={refAssignee}>
+          <select
+            onChange={setFormValue}
+            id="assignee"
+            className="input"
+            ref={refAssignee}
+          >
             <option className="option" defaultValue={assignee}>
               Support
             </option>
@@ -207,7 +211,9 @@ const CreateTicket = () => {
               Hanna van Leeuwen
             </option>
           </select>
-          <button onClick={setAssigneeToUser}>Assign to me</button>
+          <button className="button" onClick={setAssigneeToUser}>
+            Assign to me
+          </button>
         </>
       );
     }
@@ -216,9 +222,14 @@ const CreateTicket = () => {
   return (
     <form onSubmit={onFormSubmit}>
       <h4>Create Issue</h4>
-      <div>
+      <div className="field">
         <label htmlFor="issuetype">Issue Type*</label>
-        <select onChange={setFormValue} id="issuetype" required>
+        <select
+          onChange={setFormValue}
+          id="issuetype"
+          className="input"
+          required
+        >
           <option className="option" defaultValue={issuetype}>
             Select an issue type
           </option>
@@ -236,13 +247,20 @@ const CreateTicket = () => {
           </option>
         </select>
       </div>
-      <div>
+      <div className="field">
         <label htmlFor="summary">Summary*</label>
-        <input onChange={setFormValue} id="summary" type="text" required />
+        <input
+          className="input"
+          onChange={setFormValue}
+          id="summary"
+          type="text"
+          required
+        />
       </div>
-      <div>
+      <div className="field">
         <label htmlFor="description">Description</label>
         <textarea
+          className="input"
           onChange={setFormValue}
           onBlur={() => {
             setDate(CreateCurrentDateAndTime.date());
@@ -255,15 +273,25 @@ const CreateTicket = () => {
         ></textarea>
       </div>
       <div>
-        <div>{renderAssignee()}</div>
+        <div className="field">{renderAssignee()}</div>
       </div>
-      <div>
+      <div className="field">
         <label htmlFor="reporter">Reporter</label>
-        <input id="reporter" type="text" value={fullname} readOnly />
+        <input
+          className="input"
+          id="reporter"
+          type="text"
+          value={fullname}
+          readOnly
+        />
       </div>
       <div>
-        <button onClick={onSaveTicket}>Create</button>
-        <button onClick={onCancelTicket}>Cancel</button>
+        <button className="button" onClick={onSaveTicket}>
+          Create
+        </button>
+        <button className="button" onClick={onCancelTicket}>
+          Cancel
+        </button>
       </div>
     </form>
   );

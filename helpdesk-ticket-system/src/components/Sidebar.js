@@ -9,7 +9,7 @@ import NavigationLink from './NavigationLink';
 } from '@emotion/react';
 
 // css variables
-const iconProps = css`
+const icon = css`
   width: 1.5rem;
   font-size: 1rem;
   color: #3391ff;
@@ -61,7 +61,7 @@ const Sidebar = () => {
               <i
                 className="fa fa-dashboard"
                 css={css`
-                  ${iconProps}
+                  ${icon}
                 `}
               ></i>
               Dashboard
@@ -72,7 +72,7 @@ const Sidebar = () => {
               <i
                 className="fa fa-user-circle-o"
                 css={css`
-                  ${iconProps}
+                  ${icon}
                 `}
               ></i>
               Profile
@@ -83,7 +83,7 @@ const Sidebar = () => {
               <i
                 className="fa fa-ticket"
                 css={css`
-                  ${iconProps}
+                  ${icon}
                 `}
               ></i>
               Tickets
@@ -94,7 +94,7 @@ const Sidebar = () => {
               <i
                 className="fa fa-plus"
                 css={css`
-                  ${iconProps}
+                  ${icon}
                 `}
               ></i>
               Create Ticket
@@ -105,7 +105,7 @@ const Sidebar = () => {
               <i
                 className="fa fa-group"
                 css={css`
-                  ${iconProps}
+                  ${icon}
                 `}
               ></i>
               Customers
@@ -116,7 +116,7 @@ const Sidebar = () => {
               <i
                 className="fa fa-search"
                 css={css`
-                  ${iconProps}
+                  ${icon}
                 `}
               ></i>
               Search
