@@ -1,10 +1,10 @@
+/** @jsx jsx */ /** @jsxRuntime classic */
+import { jsx, css } from '@emotion/react';
+
 import React, { useState, useEffect, useRef } from 'react';
 // import { useDispatch } from 'react-redux';
 import { useEasybase } from 'easybase-react';
 import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
-
-/** @jsx jsx */ /** @jsxRuntime classic */
-import { jsx, css } from '@emotion/react';
 
 const CreateTicket = () => {
   // ticket state
@@ -198,6 +198,8 @@ const CreateTicket = () => {
             ref={refAssignee}
             css={css`
               margin-right: 1rem;
+              min-width: 168px;
+              width: 20%;
             `}
           >
             <option className="option" defaultValue={assignee}>
@@ -275,11 +277,11 @@ const CreateTicket = () => {
         <label htmlFor="reporter">Reporter</label>
         <input id="reporter" type="text" value={fullname} readOnly />
       </div>
-      <div>
+      <div className="field">
         <button
           onClick={onSaveTicket}
           css={css`
-            margin-right: 1rem;
+            margin: 0 1rem 0 auto;
           `}
         >
           Create

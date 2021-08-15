@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useEasybase } from 'easybase-react';
-
 /** @jsx jsx */ /** @jsxRuntime classic */
 import { jsx, css } from '@emotion/react';
+
+import React, { useState } from 'react';
+import { useEasybase } from 'easybase-react';
 
 // css variables
 const authButton = css`
@@ -162,7 +162,6 @@ const Authentication = ({ children }) => {
           >
             {!logInFields && signUpFields ? (
               <input
-                className="input"
                 type="text"
                 placeholder="Full name"
                 value={fullnameValue}
@@ -174,7 +173,6 @@ const Authentication = ({ children }) => {
               />
             ) : null}
             <input
-              className="input"
               type="email"
               placeholder="email"
               value={emailValue}
@@ -185,7 +183,6 @@ const Authentication = ({ children }) => {
               required
             />
             <input
-              className="input"
               type="password"
               placeholder="Password"
               value={passwordValue}

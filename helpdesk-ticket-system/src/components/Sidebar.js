@@ -1,12 +1,10 @@
+/** @jsx jsx */ /** @jsxRuntime classic */
+import { jsx, css } from '@emotion/react';
+
 import React, { useEffect, useState } from 'react';
 import { useEasybase } from 'easybase-react';
 
 import NavigationLink from './NavigationLink';
-
-/** @jsx jsx */ /** @jsxRuntime classic */ import {
-  jsx,
-  css,
-} from '@emotion/react';
 
 // css variables
 const icon = css`

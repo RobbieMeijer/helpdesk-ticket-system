@@ -1,3 +1,7 @@
+import 'normalize.css';
+/** @jsx jsx */ /** @jsxRuntime classic */
+import { Global, jsx, css } from '@emotion/react';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -8,10 +12,6 @@ import ebconfig from './ebconfig';
 import App from './components/App';
 import reducers from './reducers';
 import Authentication from './components/Authentication';
-
-import 'normalize.css';
-/** @jsx jsx */ /** @jsxRuntime classic */
-import { Global, jsx, css } from '@emotion/react';
 
 ReactDOM.render(
   <>
@@ -35,6 +35,7 @@ ReactDOM.render(
           padding: 0.75rem 1.5rem 0.75rem;
           text-transform: none;
           text-shadow: none;
+          font-size: 1rem;
           font-weight: 700;
           line-height: 1rem;
           font-style: normal;
@@ -52,9 +53,11 @@ ReactDOM.render(
           clear: both;
           margin: 0 0 1rem;
         }
+
         label {
           display: inline-block;
-          width: 95px;
+          min-width: 80px;
+          width: 20%;
           margin: 0 1rem 0 0;
           vertical-align: baseline;
           font-size: 1rem;
@@ -62,16 +65,17 @@ ReactDOM.render(
         }
 
         input,
-        .input,
         select,
         textarea {
           font-size: 1rem;
           position: relative;
           font-weight: 400;
           font-style: normal;
-          display: inline-flex;
+          display: block;
           color: rgba(0, 0, 0, 0.87);
           margin: 0;
+          min-width: 209px;
+          width: calc(100% - 9rem);
           max-width: 100%;
           flex: 1 0 auto;
           outline: 0;
