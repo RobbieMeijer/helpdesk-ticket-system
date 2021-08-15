@@ -15,44 +15,46 @@ const App = () => {
   return (
     <div
       css={css`
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, max-content));
+        height: 100vh;
         margin: 0;
-        padding: 1rem;
       `}
     >
-      <div
+      <aside
         css={css`
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
+          max-width: 200px;
+          background-color: #3391ff;
+          margin-top: 3.5rem;
         `}
       >
-        <aside
-          css={css`
-            max-width: 200px;
-          `}
-        >
-          <Sidebar />
-        </aside>
-        <main>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          <Route path="/tickets">
-            <TicketList />
-          </Route>
-          <Route path="/create-ticket">
-            <CreateTicket />
-          </Route>
-          <Route path="/customers">
-            <Customers />
-          </Route>
-          <Route path="/search">
-            <Search />
-          </Route>
-        </main>
-      </div>
+        <Sidebar />
+      </aside>
+      <main
+        css={css`
+          padding: 1rem 1.25rem;
+          font-size: 14px;
+        `}
+      >
+        <Route path="/dashboard">
+          <Dashboard />
+        </Route>
+        <Route path="/profile">
+          <Profile />
+        </Route>
+        <Route path="/tickets">
+          <TicketList />
+        </Route>
+        <Route path="/create-ticket">
+          <CreateTicket />
+        </Route>
+        <Route path="/customers">
+          <Customers />
+        </Route>
+        <Route path="/search">
+          <Search />
+        </Route>
+      </main>
     </div>
   );
 };

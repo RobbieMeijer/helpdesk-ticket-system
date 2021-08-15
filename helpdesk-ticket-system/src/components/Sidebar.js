@@ -1,6 +1,5 @@
 /** @jsx jsx */ /** @jsxRuntime classic */
 import { jsx, css } from '@emotion/react';
-
 import React, { useEffect, useState } from 'react';
 import { useEasybase } from 'easybase-react';
 
@@ -10,9 +9,10 @@ import NavigationLink from './NavigationLink';
 const icon = css`
   width: 1.5rem;
   font-size: 1rem;
-  color: #3391ff;
   top: 2px;
 `;
+const breakpoints = [420, 768, 992, 1200];
+const mediaQuery = breakpoints.map((bp) => `@media (min-width: ${bp}px)`);
 
 const Sidebar = () => {
   // current user state
@@ -38,6 +38,11 @@ const Sidebar = () => {
         margin: 0;
         padding-left: 1rem;
         font: normal 100 1.25rem /1.5 'Roboto', sans-serif;
+        color: #ffffff;
+
+        ${mediaQuery[0]} {
+          position: fixed;
+        }
       `}
     >
       <p

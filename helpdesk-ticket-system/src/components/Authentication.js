@@ -1,6 +1,5 @@
 /** @jsx jsx */ /** @jsxRuntime classic */
 import { jsx, css } from '@emotion/react';
-
 import React, { useState } from 'react';
 import { useEasybase } from 'easybase-react';
 
@@ -100,14 +99,22 @@ const Authentication = ({ children }) => {
   if (isUserSignedIn()) {
     return (
       <>
-        <button
-          onClick={onAuthButtonClick}
+        <div
           css={css`
-            ${authButton}
+            width: 200px;
+            background-color: #3391ff;
+            position: fixed;
           `}
         >
-          Log Out
-        </button>
+          <button
+            onClick={onAuthButtonClick}
+            css={css`
+              margin: 1rem 1rem 0;
+            `}
+          >
+            Log Out
+          </button>
+        </div>
         {children}
       </>
     );

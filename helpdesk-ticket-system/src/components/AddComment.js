@@ -1,3 +1,5 @@
+/** @jsx jsx */ /** @jsxRuntime classic */
+import { jsx, css } from '@emotion/react';
 import React, { useState, useEffect, useRef } from 'react';
 import { useEasybase } from 'easybase-react';
 
@@ -76,7 +78,7 @@ const AddComment = (props) => {
   };
 
   return (
-    <section>
+    <article>
       <h2>Add comment</h2>
       <textarea
         ref={textInput}
@@ -89,10 +91,11 @@ const AddComment = (props) => {
           setDate(CreateCurrentDateAndTime.date());
           setTime(CreateCurrentDateAndTime.time());
         }}
-        name=""
-        id=""
-        cols="30"
         rows="10"
+        css={css`
+          width: calc(100% - 2.25rem);
+          resize: none;
+        `}
         required
       ></textarea>
       <div>
@@ -106,7 +109,7 @@ const AddComment = (props) => {
           Cancel
         </button>
       </div>
-    </section>
+    </article>
   );
 };
 

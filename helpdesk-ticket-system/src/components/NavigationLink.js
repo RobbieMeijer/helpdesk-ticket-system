@@ -1,10 +1,8 @@
-/** @jsx jsx */ /** @jsxRuntime classic */ import {
-  jsx,
-  css,
-} from '@emotion/react';
+/** @jsx jsx */ /** @jsxRuntime classic */
+import { jsx, css } from '@emotion/react';
 
 // css variables
-const linkBorderProps = css`
+const link = css`
   transition: all 0.25s ease-in-out;
   position: absolute;
   content: '';
@@ -14,7 +12,7 @@ const linkBorderProps = css`
   bottom: 0;
   left: 1.5rem;
 `;
-const iconProps = css`
+const icon = css`
   transition: all 0.25s ease-in-out;
 `;
 
@@ -35,28 +33,29 @@ const NavigationLink = ({ href, children }) => {
         text-decoration: none;
         position: relative;
         transition: all 0.25s ease-in-out;
+        color: white;
 
         &::after {
-          ${linkBorderProps}
+          ${link}
           width: 0%;
         }
 
         &:hover {
           &::after {
-            ${linkBorderProps}
+            ${link}
             width: calc(100% - 1.5rem);
             left: 1.5rem;
           }
         }
 
         .fa {
-          ${iconProps}
+          ${icon}
           transform: skew(0);
         }
 
         &:hover {
           .fa {
-            ${iconProps}
+            ${icon}
             transform: skew(.300rad);
           }
         }
