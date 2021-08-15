@@ -164,7 +164,7 @@ const Ticket = (props) => {
           id={_key}
           defaultValue={content}
           disabled
-          onLoad={setCommentTextHeight()}
+          onLoad={() => setCommentTextHeight()}
           onChange={(e) => {
             // slight delay in changing the comment content state
             setTimeout(setUpdatedCommentContent(e.target.value), 800);
