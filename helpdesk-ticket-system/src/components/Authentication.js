@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { useEasybase } from 'easybase-react';
 
-/** @jsx jsx */ /** @jsxRuntime classic */ import {
-  Global,
-  jsx,
-  css,
-} from '@emotion/react';
+/** @jsx jsx */ /** @jsxRuntime classic */
+import { jsx, css } from '@emotion/react';
 
 // css variables
 const authButton = css`
@@ -104,7 +101,6 @@ const Authentication = ({ children }) => {
     return (
       <>
         <button
-          className="button"
           onClick={onAuthButtonClick}
           css={css`
             ${authButton}
@@ -121,7 +117,6 @@ const Authentication = ({ children }) => {
     return (
       <>
         <button
-          className="button"
           onClick={onAuthButtonClick}
           css={css`
             ${authButton}
@@ -130,7 +125,6 @@ const Authentication = ({ children }) => {
           Log In
         </button>
         <button
-          className="button"
           onClick={onSignUpButtonClick}
           css={css`
             ${authButton}
@@ -203,13 +197,9 @@ const Authentication = ({ children }) => {
             />
             <div>
               {logInFields && !signUpFields ? (
-                <button className="button" onClick={onLogInClick}>
-                  Log In
-                </button>
+                <button onClick={onLogInClick}>Log In</button>
               ) : (
-                <button className="button" onClick={onSignUpClick}>
-                  Sign Up
-                </button>
+                <button onClick={onSignUpClick}>Sign Up</button>
               )}
             </div>
           </div>

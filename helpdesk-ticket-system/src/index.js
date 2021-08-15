@@ -9,11 +9,9 @@ import App from './components/App';
 import reducers from './reducers';
 import Authentication from './components/Authentication';
 
-/** @jsx jsx */ /** @jsxRuntime classic */ import {
-  Global,
-  jsx,
-  css,
-} from '@emotion/react';
+import 'normalize.css';
+/** @jsx jsx */ /** @jsxRuntime classic */
+import { Global, jsx, css } from '@emotion/react';
 
 ReactDOM.render(
   <>
@@ -23,7 +21,7 @@ ReactDOM.render(
           font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
         }
 
-        .button {
+        button {
           cursor: pointer;
           display: inline-block;
           min-height: 1rem;
@@ -33,8 +31,8 @@ ReactDOM.render(
           background: #e0e1e2 none;
           color: rgba(0, 0, 0, 0.6);
           font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
-          margin: 0 0.25em 0 0;
-          padding: 0.78571429em 1.5em 0.78571429rem;
+          margin: 0 0.25rem 0 0;
+          padding: 0.75rem 1.5rem 0.75rem;
           text-transform: none;
           text-shadow: none;
           font-weight: 700;
@@ -42,62 +40,50 @@ ReactDOM.render(
           font-style: normal;
           text-align: center;
           text-decoration: none;
-          border-radius: 0.28571429rem;
+          border-radius: 0.25rem;
           box-shadow: 0 0 0 1px transparent inset,
             0 0 0 0 rgba(34, 36, 38, 0.15) inset;
           user-select: none;
-          transition: opacity 0.1s ease, background-color 0.1s ease,
-            color 0.1s ease, background 0.1s ease;
-          transition: opacity 0.1s ease, background-color 0.1s ease,
-            color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
-          transition: opacity 0.1s ease, background-color 0.1s ease,
-            color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
-          will-change: '';
         }
 
         .field {
           display: flex;
           align-items: baseline;
-          font-size: 1rem;
           clear: both;
           margin: 0 0 1rem;
+        }
+        label {
+          display: inline-block;
+          width: 95px;
+          margin: 0 1rem 0 0;
+          vertical-align: baseline;
+          font-size: 1rem;
+          text-transform: none;
+        }
 
-          label {
-            display: inline-block;
-            width: 95px;
-            margin: 0 1rem 0 0;
-            vertical-align: baseline;
-            font-size: 0.92857143rem;
-            font-weight: 700;
-            text-transform: none;
-          }
-
-          input,
-          .input,
-          select,
-          textarea {
-            position: relative;
-            font-weight: 400;
-            font-style: normal;
-            display: inline-flex;
-            color: rgba(0, 0, 0, 0.87);
-            margin: 0;
-            max-width: 100%;
-            flex: 1 0 auto;
-            outline: 0;
-            text-align: left;
-            line-height: 1.21428571rem;
-            font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            padding: 0.67857143em 1rem;
-            background: #fff;
-            border: 1px solid rgba(34, 36, 38, 0.15);
-            color: rgba(0, 0, 0, 0.87);
-            border-radius: 0.28571429rem;
-            transition: border-color 0.1s ease;
-            transition: box-shadow 0.1s ease, border-color 0.1s ease;
-            transition: box-shadow 0.1s ease, border-color 0.1s ease;
-            box-shadow: none;
-          }
+        input,
+        .input,
+        select,
+        textarea {
+          font-size: 1rem;
+          position: relative;
+          font-weight: 400;
+          font-style: normal;
+          display: inline-flex;
+          color: rgba(0, 0, 0, 0.87);
+          margin: 0;
+          max-width: 100%;
+          flex: 1 0 auto;
+          outline: 0;
+          text-align: left;
+          line-height: 1.25rem;
+          font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+          padding: 0.65rem 1rem;
+          background: #fff;
+          border: 1px solid rgba(34, 36, 38, 0.15);
+          color: rgba(0, 0, 0, 0.87);
+          border-radius: 0.25rem;
+          box-shadow: none;
         }
       `}
     />

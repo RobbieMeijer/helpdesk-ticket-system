@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useEasybase } from 'easybase-react';
 import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
 
+/** @jsx jsx */ /** @jsxRuntime classic */
+import { jsx, css } from '@emotion/react';
+
 const CreateTicket = () => {
   // ticket state
   const [ticketid, setTicketid] = useState('');
@@ -189,7 +192,14 @@ const CreateTicket = () => {
       return (
         <>
           <label htmlFor="assignee">Assignee</label>
-          <select onChange={setFormValue} id="assignee" ref={refAssignee}>
+          <select
+            onChange={setFormValue}
+            id="assignee"
+            ref={refAssignee}
+            css={css`
+              margin-right: 1rem;
+            `}
+          >
             <option className="option" defaultValue={assignee}>
               Support
             </option>
@@ -206,7 +216,12 @@ const CreateTicket = () => {
               Hanna van Leeuwen
             </option>
           </select>
-          <button className="button" onClick={setAssigneeToUser}>
+          <button
+            onClick={setAssigneeToUser}
+            css={css`
+              margin: auto 0;
+            `}
+          >
             Assign to me
           </button>
         </>
@@ -255,20 +270,21 @@ const CreateTicket = () => {
           required
         ></textarea>
       </div>
-      <div>
-        <div className="field">{renderAssignee()}</div>
-      </div>
+      <div className="field">{renderAssignee()}</div>
       <div className="field">
         <label htmlFor="reporter">Reporter</label>
         <input id="reporter" type="text" value={fullname} readOnly />
       </div>
       <div>
-        <button className="button" onClick={onSaveTicket}>
+        <button
+          onClick={onSaveTicket}
+          css={css`
+            margin-right: 1rem;
+          `}
+        >
           Create
         </button>
-        <button className="button" onClick={onCancelTicket}>
-          Cancel
-        </button>
+        <button onClick={onCancelTicket}>Cancel</button>
       </div>
     </form>
   );

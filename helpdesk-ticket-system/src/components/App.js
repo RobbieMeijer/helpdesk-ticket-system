@@ -8,10 +8,8 @@ import Search from './Search';
 import CreateTicket from './CreateTicket';
 import Profile from './Profile';
 
-/** @jsx jsx */ /** @jsxRuntime classic */ import {
-  jsx,
-  css,
-} from '@emotion/react';
+/** @jsx jsx */ /** @jsxRuntime classic */
+import { jsx, css } from '@emotion/react';
 
 const App = () => {
   return (
