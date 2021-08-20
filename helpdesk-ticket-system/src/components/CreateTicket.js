@@ -1,5 +1,3 @@
-/** @jsx jsx */ /** @jsxRuntime classic */
-import { jsx, css } from '@emotion/react';
 import React, { useState, useEffect, useRef } from 'react';
 // import { useDispatch } from 'react-redux';
 import { useEasybase } from 'easybase-react';
@@ -191,16 +189,7 @@ const CreateTicket = () => {
       return (
         <>
           <label htmlFor="assignee">Assignee</label>
-          <select
-            onChange={setFormValue}
-            id="assignee"
-            ref={refAssignee}
-            css={css`
-              margin-right: 1rem;
-              min-width: 168px;
-              width: 20%;
-            `}
-          >
+          <select onChange={setFormValue} id="assignee" ref={refAssignee}>
             <option className="option" defaultValue={assignee}>
               Support
             </option>
@@ -217,14 +206,7 @@ const CreateTicket = () => {
               Hanna van Leeuwen
             </option>
           </select>
-          <button
-            onClick={setAssigneeToUser}
-            css={css`
-              margin: auto 0;
-            `}
-          >
-            Assign to me
-          </button>
+          <button onClick={setAssigneeToUser}>Assign to me</button>
         </>
       );
     }
@@ -277,14 +259,7 @@ const CreateTicket = () => {
         <input id="reporter" type="text" value={fullname} readOnly />
       </div>
       <div className="field">
-        <button
-          onClick={onSaveTicket}
-          css={css`
-            margin: 0 1rem 0 auto;
-          `}
-        >
-          Create
-        </button>
+        <button onClick={onSaveTicket}>Create</button>
         <button onClick={onCancelTicket}>Cancel</button>
       </div>
     </form>

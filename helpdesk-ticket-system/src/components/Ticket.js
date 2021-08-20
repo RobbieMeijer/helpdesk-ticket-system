@@ -1,13 +1,8 @@
-/** @jsx jsx */ /** @jsxRuntime classic */
-import { jsx, css } from '@emotion/react';
 import React, { useState, useEffect } from 'react';
 import { useEasybase } from 'easybase-react';
 import AddComment from './AddComment';
 
 import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
-
-// css variables
-const sectionWidth = `max-width: 768px;`;
 
 const Ticket = (props) => {
   // deconstruct ticket details from clicked ticket parent component
@@ -173,12 +168,6 @@ const Ticket = (props) => {
             setCommentDate(CreateCurrentDateAndTime.date());
             setCommentTime(CreateCurrentDateAndTime.time());
           }}
-          css={css`
-            border: 0;
-            padding: 0;
-            width: 100%;
-            resize: none;
-          `}
         ></textarea>
         {renderCommentButtons(_key, userid)}
       </article>
@@ -188,26 +177,9 @@ const Ticket = (props) => {
   // render all ticket data to the UI
   const renderTicket = () => {
     return (
-      <div
-        key={ticketid}
-        css={css`
-          display: flex;
-        `}
-      >
-        <main
-          css={css`
-            padding-right: 1.25rem;
-
-            @media screen and (min-width: 768px) {
-              width: calc(100vw - (200px * 2));
-            }
-          `}
-        >
-          <section
-            css={css`
-              ${sectionWidth}
-            `}
-          >
+      <div key={ticketid}>
+        <main>
+          <section>
             <h1>{summary}</h1>
             <small>Ticket ID: {ticketid}</small>
             <article>
@@ -216,34 +188,22 @@ const Ticket = (props) => {
               <p>{description}</p>
             </article>
           </section>
-          <section
-            css={css`
-              ${sectionWidth}
-            `}
-          >
+          <section>
             <h2>Comments</h2>
             {renderCommentList}
           </section>
-          <section
-            css={css`
-              ${sectionWidth}
-            `}
-          >
+          <section>
             <AddComment
               ticketid={ticketid} // ticket id from this ticket
               onAddComment={onAddComment}
             />
           </section>
         </main>
-        <aside
-          css={css`
-            width: 200px;
-          `}
-        >
-          <section>
+        <aside>
+          <asideSection>
             <h4>Status</h4>
             <p>{status}</p> <button>change status</button>
-          </section>
+          </asideSection>
           <section>
             <h4>SLA</h4>
             <p>6 hours time to done</p>

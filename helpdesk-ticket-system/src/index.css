@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply font-sans;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  @apply text-sm;
+}
+
+button {
+  @apply cursor-pointer 
+    inline-block 
+    leading-4 
+    outline-none 
+    border-none 
+    align-baseline 
+    bg-gray-300 
+    text-gray-600 
+    mr-1 
+    py-3 
+    px-6 
+    normal-case 
+    font-bold 
+    text-center 
+    no-underline 
+    rounded 
+    select-none
+    shadow;
+}
+
+input,
+select,
+textarea {
+  @apply relative 
+    font-normal 
+    not-italic 
+    block 
+    text-gray-800 
+    m-0 
+    min-w-full 
+    outline-none 
+    text-left 
+    leading-5 
+    py-2.5 
+    px-4 
+    bg-white 
+    border 
+    border-gray-300 
+    rounded mb-3
+    min-w-full
+    sm:min-w-min;
+}
+
+table {
+  @apply min-w-full 
+    divide-y 
+    divide-gray-200;
+}
+thead {
+  @apply bg-gray-50;
+}
+th {
+  @apply px-6 
+    py-3 
+    text-left 
+    text-xs 
+    font-medium 
+    text-gray-500 
+    uppercase 
+    tracking-wider;
+}
+tbody {
+  @apply bg-white 
+    divide-y 
+    divide-gray-200;
+}
+tr {
+  @apply px-6 
+    py-4;
+}
