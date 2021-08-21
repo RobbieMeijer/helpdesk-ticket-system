@@ -184,7 +184,7 @@ const Ticket = (props) => {
   const renderTicket = () => {
     return (
       <div key={ticketid} className="sm:flex">
-        <main className="sm:pr-3">
+        <main className="sm:pr-3 sm:w-full">
           <section>
             <h1>{summary}</h1>
             <small>Ticket ID: {ticketid}</small>
@@ -205,7 +205,7 @@ const Ticket = (props) => {
             />
           </section>
         </main>
-        <aside className="sm:pl-3 sm:h-screen">
+        <aside className="sm:pl-3 sm:w-64 sm:h-screen">
           <section>
             <h4>Status</h4>
             <p>{status}</p> <button>change status</button>
