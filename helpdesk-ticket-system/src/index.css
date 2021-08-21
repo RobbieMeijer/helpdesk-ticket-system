@@ -16,7 +16,7 @@ button,
 .field,
 .field label,
 p {
-  @apply mb-3;
+  @apply mb-2;
 }
 
 section,
