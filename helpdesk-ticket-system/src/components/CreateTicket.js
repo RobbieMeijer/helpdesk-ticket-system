@@ -189,7 +189,12 @@ const CreateTicket = () => {
       return (
         <>
           <label htmlFor="assignee">Assignee</label>
-          <select onChange={setFormValue} id="assignee" ref={refAssignee}>
+          <select
+            className="md:w-60 md:mr-2"
+            onChange={setFormValue}
+            id="assignee"
+            ref={refAssignee}
+          >
             <option className="option" defaultValue={assignee}>
               Support
             </option>
@@ -249,17 +254,24 @@ const CreateTicket = () => {
           }}
           id="description"
           rows="5"
-          cols="33"
           required
         ></textarea>
       </div>
-      <div className="field">{renderAssignee()}</div>
+      <div className="field md:max-h-full">{renderAssignee()}</div>
       <div className="field">
         <label htmlFor="reporter">Reporter</label>
-        <input id="reporter" type="text" value={fullname} readOnly />
+        <input
+          className="focus:ring-0"
+          id="reporter"
+          type="text"
+          value={fullname}
+          readOnly
+        />
       </div>
       <div className="field">
-        <button onClick={onSaveTicket}>Create</button>
+        <button className="md:ml-36" onClick={onSaveTicket}>
+          Create
+        </button>
         <button onClick={onCancelTicket}>Cancel</button>
       </div>
     </form>

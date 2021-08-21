@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useEasybase } from 'easybase-react';
-import AddComment from './AddComment';
+import AddComment from '../AddComment';
+import './index.css';
 
-import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
+import CreateCurrentDateAndTime from '../CreateCurrentDateAndTime';
 
 const Ticket = (props) => {
   // deconstruct ticket details from clicked ticket parent component
@@ -73,12 +74,14 @@ const Ticket = (props) => {
     // must be refactored with useRef
     const textarea = document.getElementById(commentKey);
     textarea.disabled = false;
+    textarea.className = 'comment-edit';
   };
 
   const saveComment = async (commentKey) => {
     // must be refactored with useRef
     const textarea = document.getElementById(commentKey);
     textarea.disabled = true;
+    textarea.className = 'comment-render';
 
     await db('COMMENTS') // FROM table comments
       .where({ _key: commentKey }) // WHERE condition current comment record
@@ -155,12 +158,15 @@ const Ticket = (props) => {
       <article key={_key}>
         <h3>{reporter} .. minute(s) ago</h3>
         <textarea
+          className="comment-render"
           name="commentContent"
           id={_key}
           defaultValue={content}
           disabled
           onLoad={setCommentTextHeight()}
           onChange={(e) => {
+            e.target.className = 'comment-edit';
+
             // slight delay in changing the comment content state
             setTimeout(setUpdatedCommentContent(e.target.value), 800);
           }}
@@ -177,8 +183,8 @@ const Ticket = (props) => {
   // render all ticket data to the UI
   const renderTicket = () => {
     return (
-      <div key={ticketid}>
-        <main>
+      <div key={ticketid} className="sm:flex">
+        <main className="sm:pr-3">
           <section>
             <h1>{summary}</h1>
             <small>Ticket ID: {ticketid}</small>
@@ -199,11 +205,11 @@ const Ticket = (props) => {
             />
           </section>
         </main>
-        <aside>
-          <asideSection>
+        <aside className="sm:pl-3 sm:h-screen">
+          <section>
             <h4>Status</h4>
             <p>{status}</p> <button>change status</button>
-          </asideSection>
+          </section>
           <section>
             <h4>SLA</h4>
             <p>6 hours time to done</p>

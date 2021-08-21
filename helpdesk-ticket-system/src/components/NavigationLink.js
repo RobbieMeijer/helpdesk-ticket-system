@@ -8,7 +8,11 @@ const NavigationLink = ({ href, children }) => {
   };
 
   return (
-    <a onClick={onClick} href={href}>
+    <a
+      className="text-left text-sm font-medium uppercase text-gray-800"
+      onClick={onClick}
+      href={href}
+    >
       {children}
     </a>
   );

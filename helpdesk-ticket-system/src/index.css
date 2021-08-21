@@ -6,12 +6,60 @@
   @apply font-sans;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+.field,
+.field label,
+p {
+  @apply mb-3;
+}
+
+section,
+article {
+  @apply mb-6;
+}
+
+h1 {
+  @apply text-4xl;
+}
+h2 {
+  @apply text-3xl;
+}
+h3 {
+  @apply text-2xl;
+}
+h4 {
+  @apply text-xl;
+}
+h5 {
+  @apply text-lg;
+}
+h6 {
+  @apply text-base;
+}
+
 button,
 input,
-optgroup,
+select,
+option,
+label,
+textarea,
+table,
+p {
+  @apply text-sm;
+}
+
+button,
+input,
 select,
 textarea {
-  @apply text-sm;
+  @apply mr-2
+  focus:outline-none;
 }
 
 button {
@@ -23,7 +71,6 @@ button {
     align-baseline 
     bg-gray-300 
     text-gray-600 
-    mr-1 
     py-3 
     px-6 
     normal-case 
@@ -32,30 +79,46 @@ button {
     no-underline 
     rounded 
     select-none
-    shadow;
+    shadow-sm
+    whitespace-nowrap
+    transform
+    uppercase
+    focus:bg-gray-400
+    focus:scale-95
+    focus:text-black;
+}
+
+.field {
+  @apply md:flex;
+}
+.field label {
+  @apply md:w-36
+    md:px-3 
+    md:py-2.5;
 }
 
 input,
 select,
 textarea {
   @apply relative 
+    w-full
+    max-w-sm
     font-normal 
     not-italic 
     block 
     text-gray-800 
     m-0 
-    min-w-full 
     outline-none 
     text-left 
     leading-5 
+    px-3 
     py-2.5 
-    px-4 
     bg-white 
     border 
     border-gray-300 
     rounded mb-3
-    min-w-full
-    sm:min-w-min;
+    focus:ring-1
+    focus:ring-green-300;
 }
 
 table {
@@ -83,5 +146,12 @@ tbody {
 }
 tr {
   @apply px-6 
-    py-4;
+    py-4
+    hover:bg-gray-50;
+}
+
+td {
+  @apply px-6 
+    py-4 
+    whitespace-nowrap;
 }

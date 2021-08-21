@@ -87,7 +87,9 @@ const Authentication = ({ children }) => {
     return (
       <>
         <div className="fixed top-0 left-0 px-5 py-3 bg-green-300 z-10 w-full md:w-52">
-          <button onClick={onAuthButtonClick}>Log Out</button>
+          <button className="mb-0" onClick={onAuthButtonClick}>
+            Log Out
+          </button>
         </div>
         {children}
       </>
@@ -107,7 +109,7 @@ const Authentication = ({ children }) => {
               : { opacity: 0, visibility: 'hidden' }
           }
         >
-          <div className="p-7 bg-white flex flex-col rounded max-h-64 mt-12">
+          <div className="w-80 max-h-64 p-7 bg-white flex flex-col rounded mt-12">
             {!logInFields && signUpFields ? (
               <input
                 type="text"

@@ -1,0 +1,10 @@
+.comment-render {
+  @apply border-0
+    pl-0
+    resize-none;
+}
+.comment-edit {
+  @apply border
+    pl-3
+    resize-y;
+}

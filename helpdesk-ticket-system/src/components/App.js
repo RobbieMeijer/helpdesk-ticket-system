@@ -14,7 +14,7 @@ const App = () => {
       <aside className="px-5 pb-5 mt-16 bg-green-300 md:block md:w-52 md:h-screen md:fixed">
         <Sidebar />
       </aside>
-      <main className="p-5 md:ml-52">
+      <main className="w-full p-5 md:ml-52">
         <Route path="/dashboard">
           <Dashboard />
         </Route>
