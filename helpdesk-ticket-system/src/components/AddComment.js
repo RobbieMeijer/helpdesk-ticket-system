@@ -1,5 +1,3 @@
-/** @jsx jsx */ /** @jsxRuntime classic */
-import { jsx, css } from '@emotion/react';
 import React, { useState, useEffect, useRef } from 'react';
 import { useEasybase } from 'easybase-react';
 
@@ -92,10 +90,6 @@ const AddComment = (props) => {
           setTime(CreateCurrentDateAndTime.time());
         }}
         rows="10"
-        css={css`
-          width: calc(100% - 2.25rem);
-          resize: none;
-        `}
         required
       ></textarea>
       <div>

@@ -182,6 +182,7 @@ const TicketList = () => {
 
     return (
       <tr
+        className="cursor-pointer"
         key={ticketid}
         onClick={() =>
           setTicketState(
@@ -221,15 +222,15 @@ const TicketList = () => {
         <table>
           <thead>
             <tr>
-              <th>Priority</th>
-              <th>Issue Type</th>
-              <th>Ticket nr.</th>
-              <th>Summary</th>
-              <th>Assignee</th>
-              <th>Created</th>
-              <th>Updated</th>
-              <th>Status</th>
-              <th>Time Remaining</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Issue Type</th>
+              <th scope="col">Ticket nr.</th>
+              <th scope="col">Summary</th>
+              <th scope="col">Assignee</th>
+              <th scope="col">Created</th>
+              <th scope="col">Updated</th>
+              <th scope="col">Status</th>
+              <th scope="col">Time Remaining</th>
             </tr>
           </thead>
           <tbody>{getTicketList}</tbody>

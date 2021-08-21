@@ -8,34 +8,13 @@ import Search from './Search';
 import CreateTicket from './CreateTicket';
 import Profile from './Profile';
 
-/** @jsx jsx */ /** @jsxRuntime classic */
-import { jsx, css } from '@emotion/react';
-
 const App = () => {
   return (
-    <div
-      css={css`
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(210px, max-content));
-        height: 100vh;
-        margin: 0;
-      `}
-    >
-      <aside
-        css={css`
-          max-width: 200px;
-          background-color: #3391ff;
-          margin-top: 3.5rem;
-        `}
-      >
+    <div className="md:flex">
+      <aside className="px-5 pb-5 mt-16 bg-green-300 md:block md:w-52 md:h-screen md:fixed">
         <Sidebar />
       </aside>
-      <main
-        css={css`
-          padding: 1rem 1.25rem;
-          font-size: 14px;
-        `}
-      >
+      <main className="w-full p-5 md:ml-52">
         <Route path="/dashboard">
           <Dashboard />
         </Route>

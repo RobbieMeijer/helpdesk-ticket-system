@@ -1,5 +1,3 @@
-/** @jsx jsx */ /** @jsxRuntime classic */
-import { jsx, css } from '@emotion/react';
 import React, { useState, useEffect, useRef } from 'react';
 // import { useDispatch } from 'react-redux';
 import { useEasybase } from 'easybase-react';
@@ -192,14 +190,10 @@ const CreateTicket = () => {
         <>
           <label htmlFor="assignee">Assignee</label>
           <select
+            className="md:w-60 md:mr-2"
             onChange={setFormValue}
             id="assignee"
             ref={refAssignee}
-            css={css`
-              margin-right: 1rem;
-              min-width: 168px;
-              width: 20%;
-            `}
           >
             <option className="option" defaultValue={assignee}>
               Support
@@ -217,14 +211,7 @@ const CreateTicket = () => {
               Hanna van Leeuwen
             </option>
           </select>
-          <button
-            onClick={setAssigneeToUser}
-            css={css`
-              margin: auto 0;
-            `}
-          >
-            Assign to me
-          </button>
+          <button onClick={setAssigneeToUser}>Assign to me</button>
         </>
       );
     }
@@ -267,22 +254,22 @@ const CreateTicket = () => {
           }}
           id="description"
           rows="5"
-          cols="33"
           required
         ></textarea>
       </div>
-      <div className="field">{renderAssignee()}</div>
+      <div className="field md:max-h-full">{renderAssignee()}</div>
       <div className="field">
         <label htmlFor="reporter">Reporter</label>
-        <input id="reporter" type="text" value={fullname} readOnly />
+        <input
+          className="focus:ring-0"
+          id="reporter"
+          type="text"
+          value={fullname}
+          readOnly
+        />
       </div>
       <div className="field">
-        <button
-          onClick={onSaveTicket}
-          css={css`
-            margin: 0 1rem 0 auto;
-          `}
-        >
+        <button className="md:ml-36" onClick={onSaveTicket}>
           Create
         </button>
         <button onClick={onCancelTicket}>Cancel</button>

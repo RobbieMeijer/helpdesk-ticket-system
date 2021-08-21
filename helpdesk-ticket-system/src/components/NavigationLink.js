@@ -1,21 +1,3 @@
-/** @jsx jsx */ /** @jsxRuntime classic */
-import { jsx, css } from '@emotion/react';
-
-// css variables
-const link = css`
-  transition: all 0.25s ease-in-out;
-  position: absolute;
-  content: '';
-  background-color: hotpink;
-  width: 0%;
-  height: 1px;
-  bottom: 0;
-  left: 1.5rem;
-`;
-const icon = css`
-  transition: all 0.25s ease-in-out;
-`;
-
 const NavigationLink = ({ href, children }) => {
   const onClick = (event) => {
     event.preventDefault();
@@ -27,39 +9,9 @@ const NavigationLink = ({ href, children }) => {
 
   return (
     <a
+      className="text-left text-sm font-medium uppercase text-gray-800"
       onClick={onClick}
       href={href}
-      css={css`
-        text-decoration: none;
-        position: relative;
-        transition: all 0.25s ease-in-out;
-        color: white;
-
-        &::after {
-          ${link}
-          width: 0%;
-        }
-
-        &:hover {
-          &::after {
-            ${link}
-            width: calc(100% - 1.5rem);
-            left: 1.5rem;
-          }
-        }
-
-        .fa {
-          ${icon}
-          transform: skew(0);
-        }
-
-        &:hover {
-          .fa {
-            ${icon}
-            transform: skew(.300rad);
-          }
-        }
-      `}
     >
       {children}
     </a>

@@ -1,18 +1,5 @@
-/** @jsx jsx */ /** @jsxRuntime classic */
-import { jsx, css } from '@emotion/react';
 import React, { useState } from 'react';
 import { useEasybase } from 'easybase-react';
-
-// css variables
-const authButton = css`
-  position: absolute;
-  top: 10px;
-  right: 50px;
-`;
-
-const authInput = css`
-  margin-bottom: 0.75rem;
-`;
 
 // if signed in, show child components
 const Authentication = ({ children }) => {
@@ -99,19 +86,8 @@ const Authentication = ({ children }) => {
   if (isUserSignedIn()) {
     return (
       <>
-        <div
-          css={css`
-            width: 200px;
-            background-color: #3391ff;
-            position: fixed;
-          `}
-        >
-          <button
-            onClick={onAuthButtonClick}
-            css={css`
-              margin: 1rem 1rem 0;
-            `}
-          >
+        <div className="fixed top-0 left-0 px-5 py-3 bg-green-300 z-10 w-full md:w-52">
+          <button className="mb-0" onClick={onAuthButtonClick}>
             Log Out
           </button>
         </div>
@@ -123,59 +99,23 @@ const Authentication = ({ children }) => {
   else
     return (
       <>
-        <button
-          onClick={onAuthButtonClick}
-          css={css`
-            ${authButton}
-          `}
-        >
-          Log In
-        </button>
-        <button
-          onClick={onSignUpButtonClick}
-          css={css`
-            ${authButton}
-            margin-top: 3.25rem;
-          `}
-          style={{}}
-        >
-          Sign Up
-        </button>
+        <button onClick={onAuthButtonClick}>Log In</button>
+        <button onClick={onSignUpButtonClick}>Sign Up</button>
         <div
-          css={css`
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            transition: opacity 500ms;
-            visibility: hidden;
-            opacity: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          `}
-          style={dialogOpen ? { opacity: 1, visibility: 'visible' } : {}}
+          className="fixed inset-0 bg-gray-700 bg-opacity-70 transition-opacity duration-500 flex justify-center items-top"
+          style={
+            dialogOpen
+              ? { opacity: 1, visibility: 'visible' }
+              : { opacity: 0, visibility: 'hidden' }
+          }
         >
-          <div
-            css={css`
-              padding: 1.75rem;
-              background-color: white;
-              display: flex;
-              flex-direction: column;
-              border-radius: 4px;
-            `}
-          >
+          <div className="w-80 max-h-64 p-7 bg-white flex flex-col rounded mt-12">
             {!logInFields && signUpFields ? (
               <input
                 type="text"
                 placeholder="Full name"
                 value={fullnameValue}
                 onChange={(e) => setFullnameValue(e.target.value)}
-                css={css`
-                  ${authInput}
-                `}
                 required
               />
             ) : null}
@@ -184,9 +124,6 @@ const Authentication = ({ children }) => {
               placeholder="email"
               value={emailValue}
               onChange={(e) => setEmailValue(e.target.value)}
-              css={css`
-                ${authInput}
-              `}
               required
             />
             <input
@@ -194,9 +131,6 @@ const Authentication = ({ children }) => {
               placeholder="Password"
               value={passwordValue}
               onChange={(e) => setPasswordValue(e.target.value)}
-              css={css`
-                ${authInput}
-              `}
               required
             />
             <div>
