@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { useEasybase } from 'easybase-react';
+import { useDispatch, useSelector } from 'react-redux';
 
 // if signed in, show child components
 const Authentication = ({ children }) => {
+  // useSelector: extract data from the Redux store state
+  const theUser = useSelector((state) => state.user);
+  // dispath: sending data to the redux store state
+  const dispatch = useDispatch();
+
   // easybase hooks
   const { isUserSignedIn, signIn, signOut, signUp } = useEasybase();
 

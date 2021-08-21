@@ -1,39 +1,35 @@
 import { combineReducers } from 'redux';
-
-// o.a. prototype voor een ticket object
-// const initialTicketList = [
-//   {
-//     priority: '',
-//     issueType: '',
-//     ticketId: '',
-//     summary: '',
-//     description: '',
-//     assignee: '',
-//     reporter: '',
-//     created: '',
-//     updated: '',
-//     status: '',
-//     timeRemaining: '',
-//   },
-// ];
-
-const ticketsReducer = (ticketList = [], action) => {
-  if (action.type === 'TICKET_LIST') {
-    return [...ticketList, action.payload];
-  }
-
-  return ticketList;
-};
-
-const theUserReducer = (systemUser = [], action) => {
-  if (action.type === 'TICKET_LIST') {
-    return [...systemUser, action.payload];
-  }
-
-  return systemUser;
-};
+import userReducer from './userReducer';
+import ticketReducer from './ticketReducer';
 
 export default combineReducers({
-  ticketList: ticketsReducer,
-  systemUser: theUserReducer,
+  user: userReducer,
+  // ticket: ticketReducer,
 });
+
+/*
+the rootReducer will look like this:
+
+const store = {
+  user: {
+    isLoggedIn: false,
+    email: '',
+    fullName: '',
+    userID: '',
+    userRole: ''
+  },
+  ticket: {
+    assignee: '',
+    date: '',
+    description: '',
+    issuetype: '',
+    priority: '',
+    reporter: '',
+    status: '',
+    summary: '',
+    ticketid: '',
+    time: '',
+    userid: ''
+  }
+};
+*/

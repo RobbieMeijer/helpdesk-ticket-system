@@ -6,6 +6,8 @@ import './index.css';
 import CreateCurrentDateAndTime from '../CreateCurrentDateAndTime';
 
 const Ticket = (props) => {
+  console.log('ticketData: ', props);
+
   // deconstruct ticket details from clicked ticket parent component
   const {
     ticketid,
