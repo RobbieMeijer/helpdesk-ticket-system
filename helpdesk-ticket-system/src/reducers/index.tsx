@@ -3,7 +3,7 @@ import userReducer from './userReducer';
 import ticketReducer from './ticketReducer';
 
 export default combineReducers({
-  user: userReducer,
+  // user: userReducer,
   // ticket: ticketReducer,
 });
 

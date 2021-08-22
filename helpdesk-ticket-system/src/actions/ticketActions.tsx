@@ -1,4 +1,4 @@
-const ticket = (ticket) => {
+const ticket = () => {
   return {
     type: 'TICKET',
     payload: ticket,

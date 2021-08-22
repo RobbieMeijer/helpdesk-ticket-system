@@ -3,12 +3,12 @@ import { useEasybase } from 'easybase-react';
 
 import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
 
-const AddComment = (props) => {
+const AddComment = (props: { ticketid: string; onAddComment: any }) => {
   // get ticket data from parent component
   const { ticketid, onAddComment } = props;
 
   // add single comment state
-  const [commentid, setCommentid] = useState();
+  const [commentid, setCommentid] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -21,7 +21,7 @@ const AddComment = (props) => {
   const { getUserAttributes, db } = useEasybase();
 
   // useRef
-  const textInput = useRef('');
+  const textInput = useRef();
 
   // get user data, must be retrieved from redux later on
   const getUserData = async () => {
@@ -89,7 +89,6 @@ const AddComment = (props) => {
           setDate(CreateCurrentDateAndTime.date());
           setTime(CreateCurrentDateAndTime.time());
         }}
-        rows="10"
         required
       ></textarea>
       <div>
