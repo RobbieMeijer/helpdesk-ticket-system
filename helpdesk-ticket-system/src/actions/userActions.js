@@ -1,9 +1,14 @@
 // action creator: returns the action
-const theUser = (user) => {
+export const theUser = (isLoggedIn, email, fullName, userID, userRole) => {
   // action: object describing the type of change to the state
   return {
     type: 'USER',
-    payload: theUser,
+    payload: {
+      isLoggedIn,
+      email,
+      fullName,
+      userID,
+      userRole,
+    },
   };
 };
-export default theUser;

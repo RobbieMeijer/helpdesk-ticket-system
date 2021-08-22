@@ -11,7 +11,14 @@ const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'USER':
       // update old state with new object adding new property value
-      return { ...state, isLoggedIn: !state.isLoggedIn };
+      return {
+        ...state,
+        isLoggedIn: !state.isLoggedIn,
+        email: action.payload.email,
+        fullName: action.payload.fullName,
+        userID: action.payload.userID,
+        userRole: action.payload.userRole,
+      };
     default:
       return state;
   }

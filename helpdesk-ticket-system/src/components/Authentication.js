@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useEasybase } from 'easybase-react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { theUser } from '../actions/userActions';
 
 // if signed in, show child components
 const Authentication = ({ children }) => {
-  // useSelector: extract data from the Redux store state
-  const theUser = useSelector((state) => state.user);
   // dispath: sending data to the redux store state
   const dispatch = useDispatch();
 
   // easybase hooks
-  const { isUserSignedIn, signIn, signOut, signUp } = useEasybase();
+  const { getUserAttributes, isUserSignedIn, signIn, signOut, signUp } =
+    useEasybase();
 
   // state
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -19,6 +19,16 @@ const Authentication = ({ children }) => {
   const [passwordValue, setPasswordValue] = useState('');
   const [logInFields, setLogInFields] = useState(true);
   const [signUpFields, setSignUpFields] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+
+  // get current user data
+  const getUserData = async () => {
+    const userData = await getUserAttributes();
+
+    if (userData.success) {
+      setCurrentUser(userData);
+    }
+  };
 
   const onAuthButtonClick = () => {
     if (isUserSignedIn()) {
@@ -51,9 +61,34 @@ const Authentication = ({ children }) => {
     // if promise response is ok (stored in db), close dialoge form
     // and empty the mail and password state from input fields
     if (res.success) {
+      // 1 reset dialog ui
       setDialogOpen(false);
       setEmailValue('');
       setPasswordValue('');
+
+      // 2 get the current user data and dispath it to redux store
+      getUserData();
+
+      // 3 send the current user date to redux store
+      // dispatch({
+      //   type: 'USER',
+      //   payload: {
+      //     isLoggedIn: true,
+      //     email: emailValue,
+      //     fullName: currentUser.fullName,
+      //     userID: currentUser.userID,
+      //     userRole: currentUser.userRole,
+      //   },
+      // });
+      dispatch(
+        theUser(
+          true,
+          emailValue,
+          currentUser.fullName,
+          currentUser.userID,
+          currentUser.userRole
+        )
+      );
     }
   };
 
