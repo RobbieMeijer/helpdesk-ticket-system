@@ -70,8 +70,8 @@ const Ticket = () => {
     getUserData();
 
     // state reset
-    // setCommentDeleted(false);
-    // setCommentAdded(false);
+    setCommentDeleted(false);
+    setCommentAdded(false);
   }, [commentDeleted, commentAdded]); // rerender ticket when a comment is deleted or added
 
   const editComment = (commentKey) => {
