@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useEasybase } from 'easybase-react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 import NavigationLink from './NavigationLink';
 
 const Sidebar = () => {
   // useSelector: extract data from the Redux store state
-  const userStore = useSelector((state) => state.user);
+  // const userStore = useSelector((state) => state.user);
 
   // easybase hooks
   const { getUserAttributes } = useEasybase();
@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <div>
-      <p className="mb-4">{userStore.fullname}</p>
+      {/* <p className="mb-4">{userStore.fullname}</p> */}
       <nav>
         <ul>
           <li>

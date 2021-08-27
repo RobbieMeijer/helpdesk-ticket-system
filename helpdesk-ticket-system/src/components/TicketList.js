@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useEasybase } from 'easybase-react';
 import Ticket from './Ticket';
+import { useSelector, useDispatch } from 'react-redux';
+import { getTicketAction } from '../redux/actions/ticketActions';
 
 const TicketList = () => {
   // easybase stateful data
@@ -10,18 +12,10 @@ const TicketList = () => {
   const [timeUntilDeadline, setTimeUntilDeadline] = useState('');
 
   // single ticket state, setting state for clicked ticket
+  // const [currentTicket, setCurrentTicket] = useState({});
   const [ticketClicked, setTicketClicked] = useState(false);
-  const [ticketid, setTicketid] = useState('');
-  const [priority, setPriority] = useState('');
-  const [issuetype, setIssuetype] = useState('');
-  const [summary, setSummary] = useState('');
-  const [description, setDescription] = useState('');
-  const [assignee, setAssignee] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [status, setStatus] = useState('');
-  const [userid, setUserid] = useState('');
-  const [reporter, setReporter] = useState('');
+  // const ticket = useSelector((state) => state.ticketReducer);
+  const dispatch = useDispatch();
 
   // easybase hook
   const { getUserAttributes, db } = useEasybase();
@@ -54,7 +48,9 @@ const TicketList = () => {
 
   useEffect(() => {
     getTicketListData();
-  }, []);
+
+    console.log('ticketClicked: ', ticketClicked);
+  }, [ticketClicked]);
 
   // define deadline by priority category
   const deadlineInHours = (priority) => {
@@ -110,58 +106,36 @@ const TicketList = () => {
 
   const formattedDate = (date) => (date !== null ? date.slice(0, 10) : '');
 
-  // save ticket details to state, passing through data to single Ticket component
-  const setTicketState = (...ticketFields) => {
-    console.log('ticketFields from setTicketState: ', ticketFields);
-
-    const [
-      ticketid,
-      priority,
-      issuetype,
-      summary,
-      description,
-      assignee,
-      date,
-      time,
-      status,
-      userid,
-      reporter,
-    ] = ticketFields;
-
-    setTicketClicked(true);
-    setTicketid(ticketid);
-    setPriority(priority);
-    setIssuetype(issuetype);
-    setSummary(summary);
-    setDescription(description);
-    setAssignee(assignee);
-    setDate(date);
-    setTime(time);
-    setStatus(status);
-    setUserid(userid);
-    setReporter(reporter);
-
-    console.log('ticketClicked: ', ticketClicked);
-    console.log('ticketid from list: ', ticketid);
-  };
-
   // render ticket detail data
   const renderTicket = () => {
-    return (
-      <Ticket
-        ticketid={ticketid}
-        priority={priority}
-        issuetype={issuetype}
-        summary={summary}
-        description={description}
-        assignee={assignee}
-        date={date}
-        time={time}
-        status={status}
-        userid={userid}
-        reporter={reporter}
-      />
-    );
+    // console.log('ticket: ', ticket);
+    // const {
+    //   ticketid,
+    //   priority,
+    //   issuetype,
+    //   summary,
+    //   description,
+    //   assignee,
+    //   date,
+    //   time,
+    //   status,
+    //   userid,
+    //   reporter,
+    // } = ticket;
+    // <Ticket
+    //   ticketid={ticketid}
+    //   priority={priority}
+    //   issuetype={issuetype}
+    //   summary={summary}
+    //   description={description}
+    //   assignee={assignee}
+    //   date={date}
+    //   time={time}
+    //   status={status}
+    //   userid={userid}
+    //   reporter={reporter}
+    //   ticket={{ ticket }}
+    // />;
   };
 
   // getting all ticket data
@@ -184,21 +158,10 @@ const TicketList = () => {
       <tr
         className="cursor-pointer"
         key={ticketid}
-        onClick={() =>
-          setTicketState(
-            ticketid,
-            priority,
-            issuetype,
-            summary,
-            description,
-            assignee,
-            date,
-            time,
-            status,
-            userid,
-            reporter
-          )
-        }
+        onClick={() => {
+          dispatch(getTicketAction({ ...ticket }));
+          setTicketClicked(true);
+        }}
       >
         <td>{priority}</td>
         <td>{issuetype}</td>
@@ -239,21 +202,7 @@ const TicketList = () => {
     );
   };
 
-  return !ticketClicked && ticketList !== []
-    ? renderTicketList()
-    : renderTicket(
-        ticketid,
-        priority,
-        issuetype,
-        summary,
-        description,
-        assignee,
-        date,
-        time,
-        status,
-        userid,
-        reporter
-      );
+  return !ticketClicked && ticketList !== [] ? renderTicketList() : <Ticket />;
 };
 
 export default TicketList;

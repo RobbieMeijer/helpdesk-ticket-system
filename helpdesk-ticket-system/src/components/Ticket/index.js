@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useEasybase } from 'easybase-react';
 import AddComment from '../AddComment';
+import { useSelector } from 'react-redux';
 import './index.css';
 
 import CreateCurrentDateAndTime from '../CreateCurrentDateAndTime';
 
-const Ticket = (props) => {
-  console.log('ticketData: ', props);
+const Ticket = () => {
+  //  get current ticket data from redux store
+  const ticket = useSelector((state) => state.currentTicket.ticket.payload);
 
   // deconstruct ticket details from clicked ticket parent component
+  // via the redux store
   const {
     ticketid,
     priority,
@@ -18,7 +21,7 @@ const Ticket = (props) => {
     status,
     userid,
     reporter,
-  } = props;
+  } = ticket;
 
   // all comments state
   const [comments, setComments] = useState([]);
@@ -60,16 +63,15 @@ const Ticket = (props) => {
   };
 
   useEffect(() => {
-    console.log('ticket component rendered');
-    console.log('comments: ', comments);
+    console.log('ticketid from store: ', ticketid);
 
     // get the data from easybase when component is rendered
     getCommentsData();
     getUserData();
 
     // state reset
-    setCommentDeleted(false);
-    setCommentAdded(false);
+    // setCommentDeleted(false);
+    // setCommentAdded(false);
   }, [commentDeleted, commentAdded]); // rerender ticket when a comment is deleted or added
 
   const editComment = (commentKey) => {

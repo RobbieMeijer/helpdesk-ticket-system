@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useEasybase } from 'easybase-react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 const Profile = () => {
   // useSelector allows to extract data from the Redux store state
-  const theUser = useSelector((state) => state.user);
+  // const theUser = useSelector((state) => state.user);
 
   // state
   const [user, setUser] = useState(null);
@@ -25,8 +25,7 @@ const Profile = () => {
   useEffect(() => {
     // getUserData();
     // console.log('user: ', user);
-
-    console.log('theUser from profile: ', theUser);
+    // console.log('theUser from profile: ', theUser);
   }, []);
 
   const renderProfileContent = () => {

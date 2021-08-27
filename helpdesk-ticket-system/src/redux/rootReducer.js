@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import userReducer from './userReducer';
-import ticketReducer from './ticketReducer';
+import ticketReducer from './reducers/ticketReducer';
+// import userReducer from './reducers/userReducer';
 
-export default combineReducers({
-  user: userReducer,
-  // ticket: ticketReducer,
+const rootReducer = combineReducers({
+  // user: userReducer,
+  currentTicket: ticketReducer,
 });
 
 /*
@@ -33,3 +33,4 @@ const store = {
   }
 };
 */
+export default rootReducer;

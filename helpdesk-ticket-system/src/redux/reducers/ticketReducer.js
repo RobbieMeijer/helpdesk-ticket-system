@@ -1,22 +1,16 @@
 const initialState = {
-  assignee: '',
-  date: '',
-  description: '',
-  issuetype: '',
-  priority: '',
-  reporter: '',
-  status: '',
-  summary: '',
-  ticketid: '',
-  time: '',
-  userid: '',
+  ticket: {},
 };
 
 const ticketReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'TICKET':
-      // return {...state, action.payload};
-      return { ...state, assignee: 'henkie' };
+  const { type, payload } = action;
+
+  switch (type) {
+    case 'GET_TICKET':
+      return {
+        ...state,
+        ticket: { ...state.ticket, payload }, // the payload contains the new values to save to store
+      };
     default:
       return state;
   }

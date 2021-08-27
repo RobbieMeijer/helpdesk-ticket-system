@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useEasybase } from 'easybase-react';
-import { useDispatch } from 'react-redux';
-import { theUser } from '../actions/userActions';
 
 // if signed in, show child components
 const Authentication = ({ children }) => {
   // dispath: sending data to the redux store state
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // easybase hooks
   const { getUserAttributes, isUserSignedIn, signIn, signOut, signUp } =
@@ -80,15 +78,16 @@ const Authentication = ({ children }) => {
       //     userRole: currentUser.userRole,
       //   },
       // });
-      dispatch(
-        theUser(
-          true,
-          emailValue,
-          currentUser.fullName,
-          currentUser.userID,
-          currentUser.userRole
-        )
-      );
+
+      // dispatch(
+      //   theUser(
+      //     true,
+      //     emailValue,
+      //     currentUser.fullName,
+      //     currentUser.userID,
+      //     currentUser.userRole
+      //   )
+      // );
     }
   };
 
