@@ -8,7 +8,7 @@ import CreateCurrentDateAndTime from '../CreateCurrentDateAndTime';
 
 const Ticket = () => {
   //  get current ticket data from redux store
-  const ticket = useSelector((state) => state.currentTicket.ticket.payload);
+  const ticket = useSelector((state) => state.currentTicket.payload);
 
   // deconstruct ticket details from clicked ticket parent component
   // via the redux store
@@ -63,7 +63,7 @@ const Ticket = () => {
   };
 
   useEffect(() => {
-    console.log('ticketid from store: ', ticketid);
+    console.log('ticket from store: ', ticket);
 
     // get the data from easybase when component is rendered
     getCommentsData();

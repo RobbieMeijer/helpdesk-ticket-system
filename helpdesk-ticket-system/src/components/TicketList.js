@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useEasybase } from 'easybase-react';
 import Ticket from './Ticket';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getTicketAction } from '../redux/actions/ticketActions';
 
 const TicketList = () => {
@@ -12,9 +12,7 @@ const TicketList = () => {
   const [timeUntilDeadline, setTimeUntilDeadline] = useState('');
 
   // single ticket state, setting state for clicked ticket
-  // const [currentTicket, setCurrentTicket] = useState({});
   const [ticketClicked, setTicketClicked] = useState(false);
-  // const ticket = useSelector((state) => state.ticketReducer);
   const dispatch = useDispatch();
 
   // easybase hook
@@ -106,38 +104,6 @@ const TicketList = () => {
 
   const formattedDate = (date) => (date !== null ? date.slice(0, 10) : '');
 
-  // render ticket detail data
-  const renderTicket = () => {
-    // console.log('ticket: ', ticket);
-    // const {
-    //   ticketid,
-    //   priority,
-    //   issuetype,
-    //   summary,
-    //   description,
-    //   assignee,
-    //   date,
-    //   time,
-    //   status,
-    //   userid,
-    //   reporter,
-    // } = ticket;
-    // <Ticket
-    //   ticketid={ticketid}
-    //   priority={priority}
-    //   issuetype={issuetype}
-    //   summary={summary}
-    //   description={description}
-    //   assignee={assignee}
-    //   date={date}
-    //   time={time}
-    //   status={status}
-    //   userid={userid}
-    //   reporter={reporter}
-    //   ticket={{ ticket }}
-    // />;
-  };
-
   // getting all ticket data
   const getTicketList = ticketList.map((ticket) => {
     const {
@@ -145,13 +111,10 @@ const TicketList = () => {
       priority,
       issuetype,
       summary,
-      description,
       assignee,
       date,
       time,
       status,
-      userid,
-      reporter,
     } = ticket;
 
     return (

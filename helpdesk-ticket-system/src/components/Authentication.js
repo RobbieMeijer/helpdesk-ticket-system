@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useEasybase } from 'easybase-react';
+import { useDispatch } from 'react-redux';
+import { getUserAction } from '../redux/actions/userActions';
 
 // if signed in, show child components
 const Authentication = ({ children }) => {
   // dispath: sending data to the redux store state
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   // easybase hooks
   const { getUserAttributes, isUserSignedIn, signIn, signOut, signUp } =
@@ -18,15 +20,6 @@ const Authentication = ({ children }) => {
   const [logInFields, setLogInFields] = useState(true);
   const [signUpFields, setSignUpFields] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-
-  // get current user data
-  const getUserData = async () => {
-    const userData = await getUserAttributes();
-
-    if (userData.success) {
-      setCurrentUser(userData);
-    }
-  };
 
   const onAuthButtonClick = () => {
     if (isUserSignedIn()) {
@@ -55,39 +48,17 @@ const Authentication = ({ children }) => {
   const onLogInClick = async () => {
     // get sign in data back
     const res = await signIn(emailValue, passwordValue);
+    const userData = await getUserAttributes();
 
-    // if promise response is ok (stored in db), close dialoge form
-    // and empty the mail and password state from input fields
-    if (res.success) {
+    if (res.success && userData !== undefined) {
       // 1 reset dialog ui
       setDialogOpen(false);
       setEmailValue('');
       setPasswordValue('');
 
-      // 2 get the current user data and dispath it to redux store
-      getUserData();
-
-      // 3 send the current user date to redux store
-      // dispatch({
-      //   type: 'USER',
-      //   payload: {
-      //     isLoggedIn: true,
-      //     email: emailValue,
-      //     fullName: currentUser.fullName,
-      //     userID: currentUser.userID,
-      //     userRole: currentUser.userRole,
-      //   },
-      // });
-
-      // dispatch(
-      //   theUser(
-      //     true,
-      //     emailValue,
-      //     currentUser.fullName,
-      //     currentUser.userID,
-      //     currentUser.userRole
-      //   )
-      // );
+      // 2 send the current user date to redux store
+      setCurrentUser(userData);
+      dispatch(getUserAction({ ...currentUser }));
     }
   };
 
