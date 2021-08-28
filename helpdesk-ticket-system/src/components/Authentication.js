@@ -19,7 +19,6 @@ const Authentication = ({ children }) => {
   const [passwordValue, setPasswordValue] = useState('');
   const [logInFields, setLogInFields] = useState(true);
   const [signUpFields, setSignUpFields] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
 
   const onAuthButtonClick = () => {
     if (isUserSignedIn()) {
@@ -57,8 +56,7 @@ const Authentication = ({ children }) => {
       setPasswordValue('');
 
       // 2 send the current user date to redux store
-      setCurrentUser(userData);
-      dispatch(getUserAction({ ...currentUser }));
+      dispatch(getUserAction({ ...userData }));
     }
   };
 
