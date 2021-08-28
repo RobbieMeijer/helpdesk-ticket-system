@@ -3,7 +3,6 @@ import { useEasybase } from 'easybase-react';
 import AddComment from '../AddComment';
 import { useSelector } from 'react-redux';
 import './index.css';
-
 import CreateCurrentDateAndTime from '../CreateCurrentDateAndTime';
 
 const Ticket = () => {
@@ -23,7 +22,7 @@ const Ticket = () => {
     reporter,
   } = ticket;
 
-  // all comments state
+  // all comments state for this specific ticket
   const [comments, setComments] = useState([]);
 
   // single comment state

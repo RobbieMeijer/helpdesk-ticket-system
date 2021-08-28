@@ -1,30 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useEasybase } from 'easybase-react';
-// import { useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import NavigationLink from './NavigationLink';
 
 const Sidebar = () => {
-  // useSelector: extract data from the Redux store state
-  // const userStore = useSelector((state) => state.user);
-
-  // easybase hooks
-  const { getUserAttributes } = useEasybase();
-
-  // user date must be retrieved from redux later on
-  // const getUserData = async () => {
-  //   const userData = await getUserAttributes();
-
-  //   console.log('userData from eb: ', userData);
-  // };
-
-  useEffect(() => {
-    // getUserData();
-  }, []);
+  // redux state: current user
+  const user = useSelector((state) => state.currentUser.payload);
 
   return (
     <div>
-      {/* <p className="mb-4">{userStore.fullname}</p> */}
+      <h5 className="mb-4">{user.fullName}</h5>
       <nav>
         <ul>
           <li>
