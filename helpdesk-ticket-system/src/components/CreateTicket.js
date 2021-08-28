@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useEasybase } from 'easybase-react';
 import CreateCurrentDateAndTime from './CreateCurrentDateAndTime';
 
@@ -12,44 +12,23 @@ const CreateTicket = () => {
   const [description, setDescription] = useState('');
   const [issuetype, setIssuetype] = useState('');
   const [summary, setSummary] = useState('');
-  const [updated, setUpdated] = useState('');
-  const [status, setStatus] = useState('open');
   let timeRemaining = null;
   const [ticketSubmitted, setTicketSubmitted] = useState(false);
 
-  // user state
-  const [user, setUser] = useState({});
-  const [fullname, setFullname] = useState('');
-  const [userRole, setUserRole] = useState('');
-  const [userID, setUserID] = useState('');
+  // redux state: current user
+  const user = useSelector((state) => state.currentUser.payload);
+  const { fullName, userRole, userID } = user;
 
-  // sending action to store
-  // const dispatch = useDispatch();
+  // easybase database hook
+  const { db } = useEasybase();
 
-  // easybase hook
-  const { getUserAttributes, db } = useEasybase();
-
-  // user data must be stored in the redux store later on
-  const getUserData = async () => {
-    const userData = await getUserAttributes();
-
-    setUser(userData);
-    setFullname(userData.fullName);
-    setUserRole(userData.userRole);
-    setUserID(userData.userID);
-
-    console.log('userData: ', userData);
-  };
-
+  // ref
   const refAssignee = useRef(null);
 
   // run code when component initially renders and rerendered
   useEffect(() => {
     // create ticket id based on timestamp
     setTicketid(`tckt${new Date().getTime()}`);
-
-    // user data must be stored in the redux store
-    getUserData();
   }, []);
 
   // prevent form submitting while typing
@@ -110,13 +89,13 @@ const CreateTicket = () => {
         description,
         issuetype,
         priority: getPriority(issuetype),
-        status,
+        status: 'open',
         summary,
         ticketid,
         date,
         time,
-        userID: user.userID,
-        reporter: fullname,
+        userID,
+        reporter: fullName,
       })
       .one(); // execute for one record
 
@@ -126,29 +105,6 @@ const CreateTicket = () => {
     // execute functions in order: only execute ticketIsSubmitted
     // if uploadTicket was successfull
     return [uploadTicket, ticketIsSubmitted];
-
-    // dispatch({
-    //   type: 'TICKET_LIST',
-    //   payload: {
-    //     assignee,
-    //     createdYear,
-    //     createdMonth,
-    //     createdDay,
-    //     createdHours,
-    //     createdMinutes,
-    //     createdSeconds,
-    //     description,
-    //     issueType,
-    //     priority: getPriority(issueType),
-    //     reporter,
-    //     status,
-    //     timeRemaining,
-    //     summary,
-    //     ticketid,
-    //     updated,
-    //   },
-    // });
-    // }
   };
 
   const onCancelTicket = () => {
@@ -171,12 +127,10 @@ const CreateTicket = () => {
   };
 
   const setAssigneeToUser = () => {
-    console.log('userID: ', userID);
-
     // save current user to assignee state
-    setAssignee(fullname);
-    // change assignee UI to fullname of current user
-    refAssignee.current.value = fullname;
+    setAssignee(fullName);
+    // change assignee UI to full name of current user
+    refAssignee.current.value = fullName;
     console.log('refAssignee.current.value: ', refAssignee.current.value);
   };
 
@@ -264,7 +218,7 @@ const CreateTicket = () => {
           className="focus:ring-0"
           id="reporter"
           type="text"
-          value={fullname}
+          value={fullName}
           readOnly
         />
       </div>

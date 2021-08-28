@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useEasybase } from 'easybase-react';
-import AddComment from '../AddComment';
 import { useSelector } from 'react-redux';
-import './index.css';
 import CreateCurrentDateAndTime from '../CreateCurrentDateAndTime';
+import AddComment from '../AddComment';
+import './index.css';
 
 const Ticket = () => {
-  //  get current ticket data from redux store
+  // redux state: current ticket, current user
   const ticket = useSelector((state) => state.currentTicket.payload);
+  const user = useSelector((state) => state.currentUser.payload);
 
   // deconstruct ticket details from clicked ticket parent component
   // via the redux store
@@ -18,29 +19,26 @@ const Ticket = () => {
     description,
     assignee,
     status,
-    userid,
     reporter,
   } = ticket;
+
+  // user id of current user
+  const { userID: currentUser } = user;
 
   // all comments state for this specific ticket
   const [comments, setComments] = useState([]);
 
   // single comment state
-  const [comment, setComment] = useState({});
   const [updatedCommentContent, setUpdatedCommentContent] = useState('');
   const [commentDateUpdated, setCommentDateUpdated] = useState('');
   const [commentTimeUpdated, setCommentTimeUpdated] = useState('');
-  const [commentEditable, setCommentEditable] = useState(false);
   const [commentDeleted, setCommentDeleted] = useState(false);
   const [commentAdded, setCommentAdded] = useState(false);
   const [commentDate, setCommentDate] = useState('');
   const [commentTime, setCommentTime] = useState('');
 
-  // current user logged in state
-  const [currentUserId, setCurrentUserId] = useState('');
-
   // easybase hook
-  const { getUserAttributes, db } = useEasybase();
+  const { db } = useEasybase();
 
   const getCommentsData = async () => {
     // getting the data: comments linked to current ticket
@@ -54,19 +52,11 @@ const Ticket = () => {
     setComments(commentsData);
   };
 
-  // need to be retrieved from redux later on
-  const getUserData = async () => {
-    const userData = await getUserAttributes();
-
-    setCurrentUserId(userData.userID);
-  };
-
   useEffect(() => {
     console.log('ticket from store: ', ticket);
 
     // get the data from easybase when component is rendered
     getCommentsData();
-    getUserData();
 
     // state reset
     setCommentDeleted(false);
@@ -112,9 +102,9 @@ const Ticket = () => {
   };
 
   const renderCommentButtons = (commentKey, comment_userid) => {
-    // if comment user id equals current logged in user id
-    // then render these buttons
-    if (comment_userid === currentUserId) {
+    // if the owner of comment equals current logged in user
+    // then he/she can edit, save and delete comment
+    if (comment_userid === currentUser) {
       return (
         <>
           <button
