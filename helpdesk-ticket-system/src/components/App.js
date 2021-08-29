@@ -11,7 +11,7 @@ import Profile from './Profile';
 const App = () => {
   return (
     <div className="md:flex">
-      <aside className="px-5 pb-5 mt-16 bg-green-300 md:block md:w-52 md:h-screen md:fixed">
+      <aside className="px-5 pb-5 mt-16 bg-green-300 md:block md:w-52 md:h-screen md:fixed z-10">
         <Sidebar />
       </aside>
       <main className="w-full p-5 md:ml-52">

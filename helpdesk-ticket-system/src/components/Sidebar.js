@@ -1,15 +1,15 @@
 import React from 'react';
 import NavigationLink from './NavigationLink';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 const Sidebar = () => {
   // redux state: current user
-  const user = useSelector((state) => state.currentUser.payload);
-  const { fullName } = user;
+  // const user = useSelector((state) => state.currentUser.payload);
+  // const { fullName } = user;
 
   return (
     <div>
-      <h5 className="mb-4">{fullName}</h5>
+      {/* <h5 className="mb-4">{fullName}</h5> */}
       <nav>
         <ul>
           <li>

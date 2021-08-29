@@ -15,6 +15,12 @@ const TicketList = () => {
   const [ticketClicked, setTicketClicked] = useState(false);
   const dispatch = useDispatch();
 
+  // state: ticket list options and pagination
+  const [maxTicketsPage, setMaxTicketsPage] = useState(10);
+  const [pageOrderBy, setPageOrderBy] = useState({ by: 'date', sort: 'desc' });
+  const [currentOffset, setCurrentOffset] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
   // easybase hook
   const { getUserAttributes, db } = useEasybase();
 
@@ -30,25 +36,29 @@ const TicketList = () => {
     if (userData.userRole === 'support') {
       ticketListData = await db('TICKETLIST') // FROM table
         .return() // SELECT * column statement
-        .limit(20) // limit the returned amount
+        .limit(maxTicketsPage) // limit the returned amount
+        .offset(currentOffset) // pagination
+        .orderBy(pageOrderBy) // order and sorting table
         .all(); // execute queries returning all records true to condition
     } else {
       ticketListData = await db('TICKETLIST') // FROM table
         .return() // SELECT * column statement
         .where({ userID: userData.userID }) // WHERE condition statement
-        .limit(20) // limit the returned amount
+        .limit(maxTicketsPage) // limit the returned amount
+        .offset(currentOffset) // pagination
+        .orderBy(pageOrderBy) // order and sorting table
         .all(); // execute queries returning all records true to condition
     }
 
     // 4 store data to state
-    setTicketList(ticketListData);
+    if (ticketListData !== undefined) {
+      setTicketList(ticketListData);
+    }
   };
 
   useEffect(() => {
     getTicketListData();
-
-    console.log('ticketClicked: ', ticketClicked);
-  }, [ticketClicked]);
+  }, [currentOffset]);
 
   // define deadline by priority category
   const deadlineInHours = (priority) => {
@@ -139,12 +149,32 @@ const TicketList = () => {
     );
   });
 
+  // pagination
+  const getPage = (pageChange) => {
+    setCurrentOffset(currentOffset + pageChange);
+    getCurrentPage(pageChange);
+  };
+
+  // set currentpage
+  const getCurrentPage = (pageChange) => {
+    if (pageChange === 10) {
+      setCurrentPage(currentPage + 1);
+    } else {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   // rendering the ticket list data
   const renderTicketList = () => {
-    console.log('ticketList: ', ticketList);
-
     return (
-      <div>
+      <>
+        <nav>
+          Sort by: &nbsp;
+          <button>priority</button>
+          <button>date</button>
+          <button>status</button>
+        </nav>
+        <br />
         <table>
           <thead>
             <tr>
@@ -161,7 +191,29 @@ const TicketList = () => {
           </thead>
           <tbody>{getTicketList}</tbody>
         </table>
-      </div>
+        <br />
+        <nav>
+          <button
+            onClick={() =>
+              currentPage !== 1
+                ? getPage(maxTicketsPage - 2 * maxTicketsPage)
+                : null
+            }
+          >
+            {'<'} prev
+          </button>
+          &nbsp; {currentPage} &nbsp;&nbsp;&nbsp;
+          <button
+            onClick={() =>
+              ticketList.length === maxTicketsPage
+                ? getPage(maxTicketsPage)
+                : null
+            }
+          >
+            next {'>'}
+          </button>
+        </nav>
+      </>
     );
   };
 
