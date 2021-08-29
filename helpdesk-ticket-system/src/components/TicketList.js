@@ -200,7 +200,7 @@ const TicketList = () => {
                 : null
             }
           >
-            {'<'} prev
+            {'<'}
           </button>
           &nbsp; {currentPage} &nbsp;&nbsp;&nbsp;
           <button
@@ -210,7 +210,7 @@ const TicketList = () => {
                 : null
             }
           >
-            next {'>'}
+            {'>'}
           </button>
         </nav>
       </>
