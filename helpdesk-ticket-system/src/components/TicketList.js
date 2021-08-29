@@ -52,13 +52,19 @@ const TicketList = () => {
 
     // 4 store data to state
     if (ticketListData !== undefined) {
+      // console.log('ticketListData: ', ticketListData);
+      // console.log('typeof ticketListData: ', typeof ticketListData);
+      // console.log(
+      //   'Array.isArray(ticketListData): ',
+      //   Array.isArray(ticketListData)
+      // );
       setTicketList(ticketListData);
     }
   };
 
   useEffect(() => {
     getTicketListData();
-  }, [currentOffset]);
+  }, [currentOffset, pageOrderBy]);
 
   // define deadline by priority category
   const deadlineInHours = (priority) => {
@@ -112,10 +118,10 @@ const TicketList = () => {
     }, 1000);
   };
 
-  const formattedDate = (date) => (date !== null ? date.slice(0, 10) : '');
+  const formattedDate = (date) => (date !== undefined ? date.slice(0, 10) : '');
 
   // getting all ticket data
-  const getTicketList = ticketList.map((ticket) => {
+  const getTicketList = ticketList.map((ticket, index) => {
     const {
       ticketid,
       priority,
@@ -130,7 +136,7 @@ const TicketList = () => {
     return (
       <tr
         className="cursor-pointer"
-        key={ticketid}
+        key={index}
         onClick={() => {
           dispatch(getTicketAction({ ...ticket }));
           setTicketClicked(true);
@@ -155,7 +161,7 @@ const TicketList = () => {
     getCurrentPage(pageChange);
   };
 
-  // set currentpage
+  // get currentpage
   const getCurrentPage = (pageChange) => {
     if (pageChange === 10) {
       setCurrentPage(currentPage + 1);
@@ -170,9 +176,19 @@ const TicketList = () => {
       <>
         <nav>
           Sort by: &nbsp;
-          <button>priority</button>
-          <button>date</button>
-          <button>status</button>
+          <button
+            onClick={() => setPageOrderBy({ by: 'priority', sort: 'desc' })}
+          >
+            priority
+          </button>
+          <button onClick={() => setPageOrderBy({ by: 'date', sort: 'desc' })}>
+            date
+          </button>
+          <button
+            onClick={() => setPageOrderBy({ by: 'status', sort: 'desc' })}
+          >
+            status
+          </button>
         </nav>
         <br />
         <table>
