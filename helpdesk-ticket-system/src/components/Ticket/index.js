@@ -29,7 +29,7 @@ const Ticket = () => {
   const [comments, setComments] = useState([]);
 
   // single comment state
-  const [updatedCommentContent, setUpdatedCommentContent] = useState('');
+  const [updatedCommentContent, setUpdatedCommentContent] = useState([]);
   const [commentDateUpdated, setCommentDateUpdated] = useState('');
   const [commentTimeUpdated, setCommentTimeUpdated] = useState('');
   const [commentDeleted, setCommentDeleted] = useState(false);

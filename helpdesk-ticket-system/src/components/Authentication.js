@@ -57,6 +57,8 @@ const Authentication = ({ children }) => {
 
       // 2 send the current user date to redux store
       dispatch(getUserAction({ ...userData }));
+      // set user fullname to session storage for the sidebar
+      // sessionStorage.setItem('currentUserFullName', userData.fullName);
     }
   };
 
