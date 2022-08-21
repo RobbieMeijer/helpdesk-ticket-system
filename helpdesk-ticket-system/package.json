@@ -14,7 +14,11 @@
     "react-scripts": "^4.0.3",
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "1.1.1",
+    "immer": ">=9.0.6",
+    "url-parse": ">=1.5.9",
+    "minimist": ">=1.2.6",
+    "eventsource": ">=1.1.1"
   },
   "scripts": {
     "start": "craco start",
@@ -43,6 +47,10 @@
   "devDependencies": {
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.36",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7",
+    "immer": ">=9.0.6",
+    "url-parse": ">=1.5.9",
+    "minimist": ">=1.2.6",
+    "eventsource": ">=1.1.1"
   }
 }
